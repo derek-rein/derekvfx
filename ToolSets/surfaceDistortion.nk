@@ -1,0 +1,197 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push 0
+push $cut_paste_input
+Group {
+ inputs 2
+ name surfaceDistortion
+ tile_color 0x421010ff
+ selected true
+ xpos -433
+ ypos 1377
+ addUserKnob {20 surfaceDistortion}
+ addUserKnob {41 channels T IDistort1.channels}
+ addUserKnob {41 translate T Noise3.translate}
+ addUserKnob {41 rotate -STARTLINE T Noise3.rotate}
+ addUserKnob {41 scale T Noise3.scale}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {41 uv_scale l "UV scale" T IDistort1.uv_scale}
+ addUserKnob {7 speeder l speed R 0 200}
+ speeder 100
+ addUserKnob {41 size_1 l blur T Blur1.size}
+ addUserKnob {41 size l x/ysize T Noise3.size}
+ addUserKnob {41 gain T Noise3.gain}
+ addUserKnob {41 gamma T Noise3.gamma}
+ addUserKnob {41 filter T IDistort1.filter}
+ addUserKnob {6 outUV l "output uv" +STARTLINE}
+ addUserKnob {41 invertMask l "invert mask" T Keymix1.invertMask}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "Surface Distortion v1.2"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos -928
+  ypos 502
+  number 1
+ }
+ Invert {
+  name Invert1
+  xpos -799
+  ypos 496
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos -149
+  ypos -96
+ }
+set N1e512000 [stack 0]
+ Remove {
+  name Remove1
+  xpos -721
+  ypos -102
+ }
+ Noise {
+  size 100
+  zoffset {{frame/speeder}}
+  gain 1
+  center {1024 778}
+  name Noise3
+  selected true
+  xpos -721
+  ypos -16
+ }
+set N4ad56800 [stack 0]
+ Position {
+  translate {2 0}
+  name Position1
+  xpos -814
+  ypos 26
+ }
+push $N4ad56800
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge2
+  xpos -814
+  ypos 135
+ }
+push $N4ad56800
+ Position {
+  translate {0 2}
+  name Position2
+  xpos -629
+  ypos 32
+ }
+push $N4ad56800
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge3
+  xpos -629
+  ypos 142
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  green red2
+  blue black
+  alpha black
+  name ShuffleCopy1
+  xpos -629
+  ypos 219
+ }
+set N18447c00 [stack 0]
+ Dot {
+  name Dot2
+  xpos -406
+  ypos 223
+ }
+ Multiply {
+  value 0
+  name Multiply2
+  xpos -440
+  ypos 335
+ }
+ Dot {
+  name Dot3
+  xpos -406
+  ypos 506
+ }
+push $N18447c00
+ Multiply {
+  channels rgb
+  value 10
+  name Multiply1
+  xpos -629
+  ypos 328
+ }
+ Blur {
+  channels {rgba.red rgba.green -rgba.blue none}
+  size 50
+  name Blur1
+  xpos -629
+  ypos 354
+ }
+ Keymix {
+  inputs 3
+  name Keymix1
+  xpos -629
+  ypos 496
+ }
+ Dot {
+  name Dot1
+  xpos -595
+  ypos 697
+ }
+set N4ab08400 [stack 0]
+push $N1e512000
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 forward.u
+  from1 rgba.green
+  to1 forward.v
+  name Copy2
+  xpos -149
+  ypos 680
+ }
+ IDistort {
+  channels rgba
+  uv forward
+  uv_scale 100
+  filter Parzen
+  name IDistort1
+  xpos -149
+  ypos 789
+ }
+set N89c5ec00 [stack 0]
+ Viewer {
+  frame 1013
+  frame_range 989-1112
+  name Viewer1
+  xpos 928
+  ypos 2297
+ }
+push $N4ab08400
+ Dot {
+  name Dot4
+  xpos -595
+  ypos 977
+ }
+push $N89c5ec00
+ Switch {
+  inputs 2
+  which {{outUV}}
+  name Switch1
+  xpos -149
+  ypos 973
+ }
+ Output {
+  name Output1
+  xpos -149
+  ypos 1057
+ }
+end_group

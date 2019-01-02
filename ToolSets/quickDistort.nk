@@ -1,0 +1,129 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push $cut_paste_input
+Group {
+ name quickDistort
+ tile_color 0x421010ff
+ selected true
+ xpos -574
+ ypos 201
+ addUserKnob {20 user l quickDistort}
+ addUserKnob {41 size l "U Size" T Noise2.size}
+ addUserKnob {41 zoffset l "U Offset" T Noise2.zoffset}
+ addUserKnob {41 size_1 l "V Size" T Noise1.size}
+ addUserKnob {41 zoffset_1 l "V Offset" T Noise1.zoffset}
+ addUserKnob {41 uv_scale l "UV scale" T IDistort1.uv_scale}
+ addUserKnob {41 uv_offset l "UV offset" T IDistort1.uv_offset}
+ addUserKnob {41 lacunarity l Lacunarity T Noise1.lacunarity}
+ addUserKnob {41 gain l Gain T Noise1.gain}
+ addUserKnob {41 gamma l Gamma T Noise1.gamma}
+ addUserKnob {41 size_2 l Blur T Blur1.size}
+ addUserKnob {6 checkDist l "Check UVs" -STARTLINE}
+ addUserKnob {26 space l "  " T " "}
+ addUserKnob {41 which l mix T Dissolve1.which}
+ addUserKnob {26 ""}
+ addUserKnob {26 label_1 l "" +STARTLINE T "Quick Distort v1.2 derekvfx.ca"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -405
+  ypos -708
+ }
+set Nb0263c00 [stack 0]
+ Remove {
+  name Remove2
+  xpos -646
+  ypos -714
+ }
+ Noise {
+  output {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  replace true
+  size {{parent.Noise2.size}}
+  zoffset 3.04
+  lacunarity 2.38
+  gain 0.2
+  gamma 0.29
+  center {960 540}
+  name Noise1
+  xpos -646
+  ypos -607
+ }
+ Noise {
+  output {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  size 51
+  zoffset 1.52
+  lacunarity {{parent.Noise1.lacunarity}}
+  gain {{parent.Noise1.gain}}
+  gamma {{parent.Noise1.gamma}}
+  center {960 540}
+  name Noise2
+  xpos -646
+  ypos -546
+ }
+ Blur {
+  channels {rgba.red rgba.green -rgba.blue none}
+  name Blur1
+  xpos -646
+  ypos -471
+ }
+set N79c05400 [stack 0]
+push $N79c05400
+push $Nb0263c00
+ ShuffleCopy {
+  inputs 2
+  alpha alpha2
+  black red
+  white green
+  red2 red
+  green2 green
+  out2 motion
+  name ShuffleCopy1
+  xpos -500
+  ypos -434
+ }
+ IDistort {
+  channels rgba
+  uv motion
+  uv_offset 0.152
+  uv_scale 1000
+  name IDistort1
+  xpos -500
+  ypos -384
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos -500
+  ypos -338
+ }
+push $Nb0263c00
+ Dissolve {
+  inputs 2
+  which 1
+  name Dissolve1
+  xpos -405
+  ypos -226
+ }
+ Switch {
+  inputs 2
+  which {{parent.checkDist i}}
+  name Switch1
+  xpos -405
+  ypos -101
+ }
+ Output {
+  name Output1
+  xpos -405
+  ypos -30
+ }
+push $N79c05400
+ Viewer {
+  frame_range 1-650
+  name Viewer1
+  selected true
+  xpos -909
+  ypos -570
+ }
+end_group

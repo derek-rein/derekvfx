@@ -1,0 +1,77 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push $cut_paste_input
+Group {
+ name highPass
+ tile_color 0x421010ff
+ selected true
+ xpos -213
+ ypos 53
+ addUserKnob {20 User l highPass}
+ addUserKnob {41 size T Blur3.size}
+ addUserKnob {41 mix T Blur3.mix}
+ addUserKnob {41 whitepoint T Grade2.whitepoint}
+ addUserKnob {41 black l lift T Grade2.black}
+ addUserKnob {41 multiply T Grade2.multiply}
+ addUserKnob {41 gamma T Grade2.gamma}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "High Pass v1.0"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 341
+  ypos 113
+ }
+ Dot {
+  name Dot1
+  xpos 375
+  ypos 153
+ }
+set N5e4f6c00 [stack 0]
+push $N5e4f6c00
+push $N5e4f6c00
+ Blur {
+  size 7.4
+  name Blur3
+  xpos 159
+  ypos 150
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge7
+  xpos 159
+  ypos 237
+ }
+push $N5e4f6c00
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge8
+  xpos 159
+  ypos 293
+ }
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge9
+  xpos 159
+  ypos 357
+ }
+ Grade {
+  whitepoint 0.08
+  black 0.065
+  multiply 4
+  gamma 0.88
+  name Grade2
+  xpos 159
+  ypos 404
+ }
+ Output {
+  name Output1
+  xpos 159
+  ypos 504
+ }
+end_group

@@ -1,0 +1,150 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push $cut_paste_input
+Group {
+ name framePincher
+ tile_color 0x421010ff
+ label "\[value frame2Pinch]"
+ selected true
+ xpos -1338
+ ypos 6443
+ addUserKnob {20 User l framePincher}
+ addUserKnob {41 retimedChannels l Channels T OFlow2.retimedChannels}
+ addUserKnob {41 input.first l "Input Range" T OFlow2.input.first}
+ addUserKnob {41 input.last l "" -STARTLINE T OFlow2.input.last}
+ addUserKnob {41 resetInputRange l Reset -STARTLINE T OFlow2.resetInputRange}
+ addUserKnob {3 frame2Pinch l Frame}
+ frame2Pinch 1024
+ addUserKnob {6 moa l "Motion Analysis" -STARTLINE}
+ moa true
+ addUserKnob {41 which l "Neighbor Balance" T Dissolve1.which}
+ addUserKnob {26 ""}
+ addUserKnob {26 label_1 l "" +STARTLINE T "Frame Pincher v1.1"}
+ addUserKnob {22 btn l DerekVFX.ca +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 458
+  ypos 290
+ }
+ NoOp {
+  name NoOp1
+  xpos 458
+  ypos 370
+ }
+set Naa78f400 [stack 0]
+ TimeOffset {
+  time_offset -1
+  time ""
+  name TimeOffset1
+  xpos 94
+  ypos 402
+ }
+push $Naa78f400
+ Switch {
+  inputs 2
+  which {{"parent.frame2Pinch <= frame" i}}
+  name Switch2
+  xpos 94
+  ypos 513
+ }
+set Nae0ff000 [stack 0]
+ OFlow2 {
+  input.first 1001
+  input.last 1116
+  retimedChannels rgba
+  timing2 Frame
+  timingFrame2 {{parent.frame2Pinch-1+Dissolve1.which}}
+  vectorDetailLocal 0.01
+  smoothnessLocal 0.22
+  Shutter 1
+  Advanced 1
+  flickerCompensation true
+  name OFlow2
+  xpos 94
+  ypos 611
+ }
+set N41fab400 [stack 0]
+push $Naa78f400
+ Switch {
+  inputs 2
+  which {{"parent.frame2Pinch == frame" x8 0 1 0}}
+  name Switch4
+  xpos 94
+  ypos 711
+ }
+push $Naa78f400
+ FrameHold {
+  first_frame {{parent.frame2Pinch+1 i}}
+  name FrameHold6
+  xpos 745
+  ypos 516
+ }
+push $Naa78f400
+ FrameHold {
+  first_frame {{parent.frame2Pinch-1 i}}
+  name FrameHold7
+  xpos 563
+  ypos 522
+ }
+ Dissolve {
+  inputs 2
+  which 0.5
+  name Dissolve1
+  xpos 563
+  ypos 606
+ }
+push $Naa78f400
+ Switch {
+  inputs 2
+  which {{"parent.frame2Pinch == frame" i x8 0 1 0}}
+  name Switch1
+  xpos 458
+  ypos 719
+ }
+ Switch {
+  inputs 2
+  which {{parent.moa}}
+  name Switch3
+  xpos 458
+  ypos 885
+ }
+ Output {
+  name Output1
+  xpos 458
+  ypos 943
+ }
+push $Nae0ff000
+ OFXuk.co.thefoundry.time.oflow_v100 {
+  method Motion
+  timing "Source Frame"
+  timingFrame {{parent.frame2Pinch-1+Dissolve1.which}}
+  timingSpeed 0.5
+  filtering Normal
+  warpMode Normal
+  correctLuminance false
+  automaticShutterTime false
+  shutterTime 0
+  shutterSamples 1
+  vectorDetail 0.2
+  smoothness 0.5
+  blockSize 6
+  Tolerances 0
+  weightRed 0.3
+  weightGreen 0.6
+  weightBlue 0.1
+  showVectors false
+  cacheBreaker false
+  name OFlow1
+  xpos -89
+  ypos 567
+ }
+push $N41fab400
+ Viewer {
+  frame_range 1001-1116
+  name Viewer1
+  xpos -89
+  ypos 593
+ }
+end_group

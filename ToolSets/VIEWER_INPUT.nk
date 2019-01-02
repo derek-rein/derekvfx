@@ -1,0 +1,113 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push $cut_paste_input
+Group {
+ name VIEWER_INPUT
+ tile_color 0xff0000ff
+ selected true
+ xpos -271
+ ypos 291
+ addUserKnob {20 User l viewerInput}
+ addUserKnob {6 tc +STARTLINE}
+ tc true
+ addUserKnob {4 setMode l mode M {boost HSV HSL}}
+ addUserKnob {41 mix T Merge1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "viewer input v1.9"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -420
+  ypos 472
+ }
+set N49598400 [stack 0]
+ Colorspace {
+  colorspace_out HSV
+  name Colorspace2
+  xpos -110
+  ypos 613
+ }
+push $N49598400
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace1
+  xpos -415
+  ypos 624
+ }
+push $N49598400
+ Dot {
+  name Dot1
+  xpos -507
+  ypos 555
+ }
+set N495d9800 [stack 0]
+ ColorCorrect {
+  gain 15
+  name ColorCorrect1
+  xpos -653
+  ypos 627
+ }
+push $N495d9800
+ Merge2 {
+  inputs 2
+  operation copy
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  mix 0
+  name Merge1
+  xpos -541
+  ypos 700
+ }
+ Switch {
+  inputs 3
+  which {{parent.setMode}}
+  name Switch1
+  xpos -415
+  ypos 803
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "\[python \{nuke.toNode(\"Read1\").metadata()\[\"input/timecode\"]\}] "
+  old_message {{48 57 58 48 49 58 49 57 58 48 57 32}
+    }
+  old_expression_markers {{0 10}
+    }
+  box {0 1051 529 1152}
+  transforms {{0 2}
+    }
+  cursor_position 61
+  scale {1 1}
+  center {1024 576}
+  cursor_initialised true
+  initial_cursor_position {{0 1152}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 1024 576 0 0 1 1 0 0 0 0}
+    }
+  name Text1
+  xpos -415
+  ypos 862
+  disable {{parent.tc!=1}}
+ }
+set N495d8800 [stack 0]
+ Output {
+  name Output1
+  xpos -420
+  ypos 1587
+ }
+push $N49598400
+ Remove {
+  name Remove1
+  xpos -332
+  ypos 597
+ }
+push $N495d8800
+ Viewer {
+  frame_range 1001-1528
+  name Viewer1
+  xpos -229
+  ypos 334
+ }
+end_group

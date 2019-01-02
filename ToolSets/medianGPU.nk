@@ -1,0 +1,76 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push $cut_paste_input
+Group {
+ name medianGPU
+ tile_color 0x421010ff
+ selected true
+ xpos 123
+ ypos 420
+ addUserKnob {20 User l medianGPU}
+ addUserKnob {7 threshold R 0 0.01}
+ threshold 0.00168
+ addUserKnob {26 ""}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 32
+  ypos -442
+ }
+set N3a92400 [stack 0]
+ Dot {
+  name Dot1
+  xpos -99
+  ypos -438
+ }
+ BlinkScript {
+  ProgramGroup 1
+  KernelDescription "1 \"Median5x5Kernel\" iterate componentWise 531b6be6f791b8b83e92cc6474e2f2cdcd4974e549f6e5c6a6576b9cc2f40ab7 2 \"imageIn\" Read Ranged2D \"imageOut\" Write Point 0"
+  kernelSource "kernel Median5x5Kernel : public ImageComputationKernel<eComponentWise>\n\{\n  Image<eRead, eAccessRanged2D, eEdgeClamped> imageIn; \n  Image<eWrite, eAccessPoint> imageOut;          \n\n  void init()\n  \{\n    imageIn.setRange(-2, -2, 2, 2);\n  \}\n\n  void process(int2 pos)\n  \{\n    float vals\[25];\n\n    for (int j = -2, index = 0; j <= 2; j++) \{\n      for (int i = -2; i <= 2; i++, index++) \{\n        vals\[index] = imageIn(i, j);\n      \}\n    \}\n   \n    //The median function takes an array of floating-point values and an array length.\n    imageOut() = median(vals, 25);\n    \n  \}\n\};"
+  rebuild ""
+  name median
+  xpos -133
+  ypos -387
+ }
+set N3a93000 [stack 0]
+ Viewer {
+  frame 1043
+  frame_range 1000-1092
+  name Viewer1
+  xpos -338
+  ypos -273
+ }
+push $N3a92400
+push $N3a93000
+ Dot {
+  name Dot2
+  xpos -99
+  ypos -310
+ }
+ MergeExpression {
+  inputs 2
+  temp_name0 red
+  temp_expr0 "abs(Ar-Br) >= threshold ? 1 : 0"
+  temp_name1 green
+  temp_expr1 "abs(Ag-Bg) >= threshold ? 1 : 0"
+  temp_name2 blue
+  temp_expr2 "abs(Ab-Bb) >= threshold ? 1 : 0"
+  temp_name3 mask
+  temp_expr3 max(red,green,blue)
+  expr0 "mask == 1 ? Ar : Br"
+  expr1 "mask == 1 ? Ag : Bg"
+  expr2 "mask == 1 ? Ab : Bb"
+  expr3 mask
+  name MergeExpression1
+  xpos 32
+  ypos -314
+ }
+push $N3a93000
+ Output {
+  name Output1
+  xpos 32
+  ypos -245
+ }
+end_group

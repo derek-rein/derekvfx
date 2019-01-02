@@ -1,0 +1,125 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push $cut_paste_input
+Group {
+ name chromaticAberration
+ tile_color 0x421010ff
+ selected true
+ xpos -1916
+ ypos 714
+ addUserKnob {20 User l chromaticArberation}
+ addUserKnob {7 scale R -1 1}
+ scale -0.52
+ addUserKnob {6 invert -STARTLINE}
+ invert true
+ addUserKnob {7 pixelAspect l aspect R -2 2}
+ pixelAspect 1
+ addUserKnob {41 mix T Copy1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "chromaticAberration v1.2"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos 466
+  ypos -534
+  number 1
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos 341
+  ypos -862
+ }
+set Nc5c89800 [stack 0]
+ TransformMasked {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  scale {{((parent.scale*(invert*2-1))/100)+1} {(((parent.scale*(invert*2-1))/100)*pixelAspect+1)}}
+  center {{input.width/2} {input.height/2}}
+  black_outside false
+  name Transform1
+  xpos 132
+  ypos -764
+ }
+push $Nc5c89800
+ TransformMasked {
+  channels {-rgba.red -rgba.green rgba.blue none}
+  scale {{((parent.scale*-1*(invert*2-1))/100)+1} {((parent.scale*-1*(invert*2-1))/100)*pixelAspect+1}}
+  center {{input.width/2} {input.height/2}}
+  black_outside false
+  name Transform3
+  xpos 242
+  ypos -764
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  green black
+  alpha black
+  name ShuffleCopy1
+  xpos 242
+  ypos -691
+ }
+push $Nc5c89800
+ GodRays {
+  channels alpha
+  scale {{parent.Transform1.scale} {parent.Transform1.scale}}
+  center {{parent.Transform1.center} {parent.Transform1.center}}
+  name GodRays2
+  xpos -88
+  ypos -764
+ }
+push $Nc5c89800
+ GodRays {
+  channels alpha
+  scale {{parent.Transform3.scale} {parent.Transform3.scale}}
+  center {{parent.Transform3.center} {parent.Transform3.center}}
+  name GodRays1
+  xpos 22
+  ypos -764
+ }
+ Merge2 {
+  inputs 2
+  operation average
+  name Merge3
+  xpos 22
+  ypos -674
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  green black
+  blue blue
+  alpha alpha2
+  name ShuffleCopy3
+  xpos 242
+  ypos -585
+ }
+push $Nc5c89800
+ Copy {
+  inputs 2+1
+  from0 rgba.red
+  to0 rgba.red
+  from1 rgba.blue
+  to1 rgba.blue
+  bbox B
+  name Copy1
+  xpos 341
+  ypos -547
+ }
+set N5c65c800 [stack 0]
+ Viewer {
+  frame_range 1001-1134
+  input_process false
+  name Viewer1
+  xpos 866
+  ypos -231
+ }
+push $N5c65c800
+ Output {
+  name Output1
+  xpos 341
+  ypos -478
+ }
+end_group

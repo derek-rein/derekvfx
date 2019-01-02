@@ -1,0 +1,159 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push $cut_paste_input
+Group {
+ name clarity
+ tile_color 0x421010ff
+ selected true
+ xpos -2240
+ ypos 814
+ addUserKnob {20 User l clarity}
+ addUserKnob {7 cc l clarity R -1 1}
+ addUserKnob {6 log -STARTLINE}
+ addUserKnob {41 which l mix T Dissolve1.which}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "clarity v1.1"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos 37
+  ypos 138
+  number 1
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos -114
+  ypos -386
+ }
+set N5906b400 [stack 0]
+ Colorspace {
+  colorspace_out Cineon
+  name Colorspace1
+  xpos -312
+  ypos -386
+  disable {{"parent.log != 1"}}
+ }
+ Dot {
+  name Dot1
+  xpos -278
+  ypos -337
+ }
+set N5906bc00 [stack 0]
+ Blur {
+  size {{1*cc*10}}
+  mix 0.5
+  name Blur1
+  xpos -894
+  ypos -245
+ }
+push $N5906bc00
+ Blur {
+  size {{2*cc*10}}
+  mix 0.5
+  name Blur2
+  xpos -794
+  ypos -245
+ }
+push $N5906bc00
+ Blur {
+  size {{4*cc*10}}
+  mix 0.5
+  name Blur3
+  xpos -694
+  ypos -245
+ }
+push 0
+push $N5906bc00
+ Blur {
+  size {{8*cc*10}}
+  mix 0.5
+  name Blur4
+  xpos -594
+  ypos -245
+ }
+push $N5906bc00
+ Blur {
+  size {{16*cc*10}}
+  mix 0.5
+  name Blur5
+  xpos -494
+  ypos -245
+ }
+ Blend {
+  inputs 5+1
+  weight0 3.48
+  weight1 2.72
+  weight2 2.04
+  weight3 1.57
+  weight4 0.99
+  name Blend1
+  xpos -494
+  ypos -175
+ }
+set N5914e400 [stack 0]
+ Dot {
+  name Dot2
+  xpos -460
+  ypos 80
+ }
+push $N5906bc00
+push $N5914e400
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge3
+  xpos -407
+  ypos -94
+ }
+push $N5906bc00
+ Merge2 {
+  inputs 2
+  operation multiply
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge2
+  xpos -312
+  ypos -10
+ }
+ Switch {
+  inputs 2
+  which {{"cc < 0 "}}
+  name Switch1
+  xpos -312
+  ypos 76
+ }
+set N59524c00 [stack 0]
+ Colorspace {
+  colorspace_in Cineon
+  name Colorspace2
+  xpos -312
+  ypos 138
+  disable {{"parent.log != 1"}}
+ }
+push $N5906b400
+ Dissolve {
+  inputs 2+1
+  which 1
+  name Dissolve1
+  xpos -114
+  ypos 132
+ }
+ Output {
+  name Output1
+  xpos -114
+  ypos 265
+ }
+push $N59524c00
+ Viewer {
+  frame_range 1001-1001
+  colour_sample_bbox {0.6162109375 0.0556640625 0.6171875 0.056640625}
+  samplepoints {{-0.380859375 0.224609375}
+    }
+  input_process false
+  name Viewer1
+  xpos 534
+  ypos 819
+ }
+end_group

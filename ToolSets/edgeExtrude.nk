@@ -1,0 +1,304 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push 0
+push $cut_paste_input
+Group {
+ inputs 2
+ name edgeExtrude
+ tile_color 0x421010ff
+ selected true
+ xpos 480
+ ypos 114
+ addUserKnob {20 User l edgeExtrude}
+ addUserKnob {41 from0 l "mask channel" T Copy1.from0}
+ addUserKnob {7 erodeMask l "erode mask" R 0 100}
+ erodeMask 10
+ addUserKnob {6 invertMask -STARTLINE}
+ addUserKnob {41 size T master.size}
+ addUserKnob {52 group T "import nuke\nknobChanged \"\\n\\ng = nuke.thisNode()\\nk = nuke.thisKnob()\\n\\nif k.name() in \\\[\\\"frames\\\",\\\"method\\\"]:\\n    \\n    i = nuke.toNode(\\\"img\\\")\\n    i2 = nuke.toNode(\\\"mask\\\")\\n    o = nuke.toNode(\\\"Output1\\\")\\n    c = nuke.toNode(\\\"Copy1\\\")\\n\\n    if k.name() == \\\"frames\\\":\\n    \\n        defaultNodes = \\\[i,i2,o,c]\\n        for n in nuke.allNodes():\\n           if n not in defaultNodes:\\n               nuke.delete(n)\\n        \\n        fvalue = g\\\['frames'].value()\\n        step = 1\\n        if fvalue < 0:\\n           step = -1\\n          \\n        for f in range(0,int(fvalue)+step,step):\\n           t = nuke.nodes.TimeOffset()\\n           t\\\['time_offset'].setValue(-f)\\n           t.setInput(0,i)\\n        \\n           if f == 0 :\\n               lastnode = t\\n        \\n           else :\\n               slice = nuke.nodes.Grade()\\n               slice\\\['channels'].setValue(\\\"alpha\\\")\\n               slice\\\['blackpoint'].setValue((1/(fvalue+1))*abs(f))\\n               slice\\\['whitepoint'].setValue((1/(fvalue+1))*(abs(f)+1))\\n               slice.setInput(0,c)\\n               exp = nuke.nodes.Expression()\\n               if g\\\['method'].value() == \\\"average\\\":\\n                   exp\\\['expr3'].setValue('a>1?1:a')\\n               else:\\n                   exp\\\['expr3'].setValue('a>0?1:0')\\n               exp.setInput(0,slice)\\n               km = nuke.nodes.Keymix()\\n               km.setInput(1,t)\\n               km.setInput(0,lastnode)\\n               km.setInput(2,exp)\\n               lastnode = km\\n        \\n        sw = nuke.nodes.Switch()\\n        sw.setInput(0,i)\\n        sw.setInput(1,lastnode)\\n        sw\\\['which'].setExpression('parent.maskChannel!=0')\\n        o.setInput(0,sw)\\n            \\n        for n in nuke.allNodes():\\n           nuke.autoplace(n)\\n\\n    elif k.name() == \\\"method\\\":\\n\\n        for e in nuke.allNodes('Expression'):\\n               if g\\\['method'].value() == \\\"average\\\":\\n                   e\\\['expr3'].setValue('a>1?1:a')\\n               else:\\n                   e\\\['expr3'].setValue('a>0?1:0')\\n\\n\"" +STARTLINE}
+ addUserKnob {41 quality -STARTLINE T master.quality}
+ addUserKnob {6 log -STARTLINE}
+ log true
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "Edge Extrude v1.2"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos -137
+  ypos -799
+  number 1
+ }
+set Na4475400 [stack 0]
+push $Na4475400
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -137
+  ypos -751
+  disable {{"\[exists parent.input1] == 0"}}
+ }
+set N492aa800 [stack 0]
+push $N492aa800
+ Dot {
+  name Dot2
+  xpos -208
+  ypos -741
+ }
+ Invert {
+  channels alpha
+  name Invert1
+  xpos -242
+  ypos -696
+ }
+ Dot {
+  name Dot4
+  xpos -208
+  ypos -623
+ }
+ Switch {
+  inputs 2
+  which {{invertMask}}
+  name Switch1
+  xpos -137
+  ypos -627
+ }
+ Dilate {
+  channels alpha
+  size {{abs(erodeMask)*-1+-1}}
+  name Dilate1
+  xpos -137
+  ypos -575
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos 27
+  ypos -729
+ }
+ Colorspace {
+  colorspace_out Cineon
+  name Colorspace1
+  xpos 27
+  ypos -626
+  disable {{"parent.log != 1"}}
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  bbox B
+  name Merge1
+  xpos 27
+  ypos -501
+ }
+ Dot {
+  name Dot3
+  xpos 61
+  ypos -428
+ }
+set Nc32cdc00 [stack 0]
+ Dot {
+  name Dot1
+  xpos 370
+  ypos -428
+ }
+ Blur {
+  channels rgba
+  size {{parent.master.size/32}}
+  filter box
+  quality {{parent.master.quality}}
+  name Blur5
+  label "\[value size] px"
+  xpos 336
+  ypos -380
+ }
+set Nb0597800 [stack 0]
+ Unpremult {
+  name Unpremult5
+  xpos 336
+  ypos -342
+ }
+ Expression {
+  expr3 "a != 0"
+  name Expression1
+  xpos 336
+  ypos -316
+ }
+ Blur {
+  channels rgba
+  size {{parent.master.size/16}}
+  filter box
+  quality {{parent.master.quality}}
+  name Blur13
+  label "\[value size] px"
+  xpos 343
+  ypos -293
+ }
+set Nb0596000 [stack 0]
+ Unpremult {
+  name Unpremult13
+  xpos 336
+  ypos -255
+ }
+ Expression {
+  expr3 "a != 0"
+  name Expression13
+  xpos 336
+  ypos -229
+ }
+ Blur {
+  channels rgba
+  size {{parent.master.size/8}}
+  filter box
+  quality {{parent.master.quality}}
+  name Blur15
+  label "\[value size] px"
+  xpos 336
+  ypos -203
+ }
+set Nc1a1f400 [stack 0]
+ Unpremult {
+  name Unpremult15
+  xpos 336
+  ypos -165
+ }
+ Expression {
+  expr3 "a != 0"
+  name Expression15
+  xpos 336
+  ypos -139
+ }
+ Blur {
+  channels rgba
+  size {{parent.master.size/4}}
+  quality {{parent.master.quality}}
+  name Blur16
+  label "\[value size] px"
+  xpos 336
+  ypos -113
+ }
+set Nc1a1f000 [stack 0]
+ Unpremult {
+  name Unpremult16
+  xpos 336
+  ypos -75
+ }
+ Expression {
+  expr3 "a != 0"
+  name Expression16
+  xpos 336
+  ypos -49
+ }
+ Blur {
+  channels rgba
+  size {{parent.master.size/2}}
+  quality {{parent.master.quality}}
+  name Blur17
+  label "\[value size] px"
+  xpos 336
+  ypos -19
+ }
+set Na4475000 [stack 0]
+ Unpremult {
+  name Unpremult17
+  xpos 336
+  ypos 19
+ }
+ Expression {
+  expr3 "a != 0"
+  name Expression17
+  xpos 336
+  ypos 45
+ }
+ Blur {
+  channels rgba
+  size {{parent.master.size}}
+  quality {{parent.master.quality}}
+  name Blur18
+  label "\[value size] px"
+  xpos 336
+  ypos 71
+ }
+set Na4475c00 [stack 0]
+ Unpremult {
+  name Unpremult18
+  xpos 336
+  ypos 116
+ }
+ Expression {
+  expr3 "a != 0"
+  name Expression18
+  xpos 336
+  ypos 131
+ }
+ Blur {
+  channels rgba
+  size {{parent.master.size*2}}
+  quality {{parent.master.quality}}
+  name Blur19
+  label "\[value size] px"
+  xpos 336
+  ypos 157
+ }
+ Unpremult {
+  name Unpremult6
+  xpos 336
+  ypos 195
+ }
+ Expression {
+  expr3 "a != 0"
+  name Expression6
+  xpos 336
+  ypos 221
+ }
+push $Na4475c00
+push $Na4475000
+push $Nc1a1f000
+push $Nc1a1f400
+push $Nb0596000
+push 0
+push $Nb0597800
+push $Nc32cdc00
+ Merge2 {
+  inputs 8+1
+  operation under
+  bbox B
+  invert_mask true
+  name Merge4
+  xpos 27
+  ypos 221
+ }
+ Colorspace {
+  colorspace_in Cineon
+  name Colorspace2
+  xpos 27
+  ypos 293
+  disable {{"parent.log != 1"}}
+ }
+ Output {
+  name Output1
+  xpos 27
+  ypos 356
+ }
+push $Nc32cdc00
+ Blur {
+  channels rgba
+  size 20
+  name master
+  label "\[value size] px"
+  xpos 154
+  ypos -384
+  hide_input true
+ }
+push $Nb0597800
+ Viewer {
+  frame_range 100-100
+  colour_sample_bbox {-0.15625 0.2568359375 -0.1552734375 0.2578125}
+  name Viewer1
+  xpos 1872
+  ypos 1458
+ }
+end_group

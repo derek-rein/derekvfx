@@ -1,0 +1,261 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push $cut_paste_input
+Group {
+name swissKeys
+tile_color 0x421010ff
+selected true
+xpos 74
+ypos 14481
+addUserKnob {20 positionSelector}
+addUserKnob {41 in l "input layer" T Shuffle1.in}
+addUserKnob {41 to0 l "output channel" T Copy1.to0}
+addUserKnob {41 selection T sphere.selection}
+addUserKnob {6 logTransform l log -STARTLINE}
+addUserKnob {4 type M {position color CIE-LCH}}
+addUserKnob {4 shape -STARTLINE M {sphere cube "" "" ""}}
+addUserKnob {7 start l blackpoint}
+addUserKnob {7 end l whitepoint}
+end 1
+addUserKnob {7 xScale R -1 1}
+addUserKnob {7 yScale R -1 1}
+addUserKnob {7 zScale R -1 1}
+addUserKnob {6 invert +STARTLINE}
+addUserKnob {7 gamma_2 l gamma R 0.2 2}
+gamma_2 1
+addUserKnob {26 ""}
+addUserKnob {26 lbl l "" +STARTLINE T "swissKeys v1.91"}
+addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+Viewer {
+inputs 0
+frame_range 1001-1001
+colour_sample_bbox {-0.181250006 0.07291666418 -0.1802083403 0.07395832986}
+samplepoints {{-0.7458333373 -0.3479166627}
+  }
+input_process false
+name Viewer1
+xpos 879
+ypos 851
+}
+Input {
+inputs 0
+name Input
+xpos 445
+ypos 66
+}
+Dot {
+name Dot2
+xpos 479
+ypos 153
+}
+set Ne49ad400 [stack 0]
+Shuffle {
+name Shuffle1
+xpos 232
+ypos 149
+}
+Dot {
+name Dot3
+xpos 266
+ypos 243
+}
+set Ne49acc00 [stack 0]
+Dot {
+name Dot4
+xpos 156
+ypos 243
+}
+set Ne49ac800 [stack 0]
+Dot {
+name Dot5
+xpos -15
+ypos 243
+}
+Colorspace {
+colorspace_out CIE-LCH
+name Colorspace2
+xpos -49
+ypos 310
+}
+set Nc935400 [stack 0]
+Colorspace {
+colorspace_out Cineon
+name Colorspace5
+xpos -121
+ypos 355
+disable {{"parent.logTransform != 1"}}
+}
+set Ceb81d400 [stack 0]
+push $Nc935400
+ShuffleCopy {
+inputs 2
+red blue2
+blue red
+alpha alpha2
+name ShuffleCopy1
+xpos -49
+ypos 418
+}
+Dot {
+name Dot6
+xpos -15
+ypos 484
+}
+push $Ne49ac800
+Colorspace {
+colorspace_out HSV
+name Colorspace1
+xpos 122
+ypos 314
+}
+set N8c020800 [stack 0]
+clone $Ceb81d400 {
+xpos 45
+ypos 356
+selected false
+}
+push $N8c020800
+Copy {
+inputs 2
+from0 rgba.blue
+to0 rgba.blue
+name Copy2
+xpos 122
+ypos 400
+}
+push $Ne49acc00
+clone $Ceb81d400 {
+xpos 232
+ypos 358
+selected false
+}
+Switch {
+inputs 3
+which {{parent.type}}
+name Switch1
+xpos 232
+ypos 480
+}
+Dot {
+name Dot7
+xpos 266
+ypos 575
+}
+set Ne49adc00 [stack 0]
+Dot {
+name Dot9
+xpos 129
+ypos 575
+}
+set N92add400 [stack 0]
+Dot {
+name Dot8
+xpos -13
+ypos 575
+}
+Expression {
+temp_name1 rader
+temp_expr1 "sqrt(input.width**2 + input.height**2)"
+temp_name2 sph
+temp_expr2 "sqrt( (r-selection.r)**2 + (g-selection.g)**2 + (b-selection.b)**2 )"
+temp_name3 cube
+temp_expr3 (1-abs((selection.r-r)*(selection.g-g)*(selection.b-b))/rader)
+expr0 cube
+expr1 selection.r
+expr3 1-(sph/rader)
+name Expression2
+xpos -47
+ypos 659
+addUserKnob {20 User}
+addUserKnob {18 selection}
+selection {{swissKeys.sphere.selection.r} {swissKeys.sphere.selection.g} {swissKeys.sphere.selection.b}}
+addUserKnob {6 selection_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+}
+Dot {
+name Dot10
+xpos -13
+ypos 743
+}
+push $N92add400
+Expression {
+temp_name2 cub
+temp_expr2 max(abs(selection.r-r),abs(selection.g-g),abs(selection.b-b))
+expr3 smoothstep(start,end,1-cub)
+name cube
+xpos 95
+ypos 672
+addUserKnob {20 User}
+addUserKnob {18 selection}
+selection {{sphere.selection.r} {sphere.selection.g} {sphere.selection.b}}
+addUserKnob {6 selection_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+}
+push $Ne49adc00
+Expression {
+temp_name1 rader
+temp_expr1 "sqrt(input.width**2 + input.height**2)"
+temp_name2 sph
+temp_expr2 "sqrt( (r/x2-selection.r/x2)**2 + (g/y2-selection.g/y2)**2 + (b/z2-selection.b/z2)**2 )"
+expr3 smoothstep(start,end,1-sph)
+name sphere
+xpos 232
+ypos 606
+addUserKnob {20 User}
+addUserKnob {7 x2}
+x2 {{(1/(1-((lerp(-1,0,1,1,xScale))))-1)/2}}
+addUserKnob {7 y2}
+y2 {{(1/(1-((lerp(-1,0,1,1,yScale))))-1)/2}}
+addUserKnob {7 z2}
+z2 {{(1/(1-((lerp(-1,0,1,1,zScale))))-1)/2}}
+addUserKnob {7 xx}
+xx {{lerp(-1,0,1,2,xScale)}}
+addUserKnob {7 yy}
+yy {{lerp(-1,0,1,2,yScale)}}
+addUserKnob {7 zz}
+zz {{lerp(-1,0,1,2,zScale)}}
+addUserKnob {18 selection}
+selection {0 0 0}
+addUserKnob {6 selection_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+}
+Switch {
+inputs 3
+which {{parent.shape}}
+name Switch2
+xpos 232
+ypos 739
+}
+Invert {
+channels alpha
+name Invert1
+xpos 232
+ypos 857
+disable {{"parent.invert == 0"}}
+}
+Gamma {
+channels alpha
+value {{parent.gamma_2}}
+name Gamma1
+xpos 232
+ypos 949
+}
+Dot {
+name Dot1
+xpos 266
+ypos 1045
+}
+push $Ne49ad400
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+bbox B
+name Copy1
+xpos 445
+ypos 1035
+}
+Output {
+name Output1
+xpos 445
+ypos 1176
+}
+end_group

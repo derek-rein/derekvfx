@@ -1,0 +1,66 @@
+set cut_paste_input [stack 0]
+version 9.0 v7
+push $cut_paste_input
+Group {
+ name lumaKeyer
+ tile_color 0x421010ff
+ selected true
+ xpos 2
+ ypos -111
+ addUserKnob {20 User l lumaKeyer}
+ addUserKnob {7 black}
+ addUserKnob {7 white}
+ white 0.96
+ addUserKnob {6 invert +STARTLINE}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 29
+  ypos -241
+ }
+set N3b4f800 [stack 0]
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace1
+  xpos -45
+  ypos -179
+ }
+ Expression {
+  expr3 smoothstep(parent.black,parent.white,b)
+  name Expression1
+  xpos -45
+  ypos -132
+ }
+ Expression {
+  expr3 1-a
+  name Expression2
+  xpos -45
+  ypos -106
+  disable {{"parent.invert == 0"}}
+ }
+set Na158c000 [stack 0]
+push $N3b4f800
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 57
+  ypos -79
+ }
+ Output {
+  name Output1
+  xpos 63
+  ypos -8
+ }
+push $Na158c000
+ Viewer {
+  frame_range 1-100
+  name Viewer1
+  xpos -176
+  ypos -62
+ }
+end_group
