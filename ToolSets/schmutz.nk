@@ -1,18 +1,18 @@
 set cut_paste_input [stack 0]
-version 9.0 v7
+version 11.1 v3
 push $cut_paste_input
 Group {
  name waterSchmutz
  tile_color 0x421010ff
  selected true
- xpos -58
- ypos -281
+ xpos 8204
+ ypos 1091
  addUserKnob {20 User l waterSchmutz}
  addUserKnob {41 cube l boundaries T Cube1.cube}
- addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 ""}
  addUserKnob {41 translate T Cube1.translate}
  addUserKnob {41 rotate T Cube1.rotate}
- addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 ""}
  addUserKnob {6 spriteView +STARTLINE}
  addUserKnob {6 customSpriteSwitch l "custom sprite" -STARTLINE}
  addUserKnob {41 start_frame l "start at" T ParticleEmitter3.start_frame}
@@ -212,7 +212,7 @@ Group {
   xpos -714
   ypos 319
  }
-set N4e1a0c00 [stack 0]
+set Nc6486a80 [stack 0]
  Dot {
   name Dot1
   xpos -422
@@ -230,7 +230,7 @@ set N4e1a0c00 [stack 0]
   ypos 802
   number 1
  }
-push $N4e1a0c00
+push $Nc6486a80
  BlendMat {
   operation plus
   surfaceblend modulate
@@ -242,10 +242,9 @@ push 0
 push 0
  ParticleEmitter {
   inputs 3
-  start_frame 1001
   emit_from faces
   rate {{"frame-start_frame > 0 & frame-start_frame < 2 ? ((Cube1.volume/1000000)*particleDensity) : 0"}}
-  lifetime 1.#INF
+  lifetime inf
   velocity 0
   size 1
   size_variation 4
