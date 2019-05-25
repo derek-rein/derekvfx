@@ -1,0 +1,527 @@
+set cut_paste_input [stack 0]
+version 10.5 v6
+push $cut_paste_input
+Group {
+ name Ultimerge4
+ tile_color 0x421010ff
+ selected true
+ xpos 4542
+ ypos 14794
+ addUserKnob {20 User l Ultimerge}
+ addUserKnob {26 blendEdges l "Blend Edges"}
+ addUserKnob {41 size T Blur1.size}
+ addUserKnob {41 mix_1 l mix T matchEdges.mix}
+ addUserKnob {26 color l "Bleed Color"}
+ addUserKnob {41 size_1 l size T Group2.size}
+ addUserKnob {7 color_amount l amount}
+ color_amount 1
+ addUserKnob {26 wa l "Wrap All"}
+ addUserKnob {41 size_2 l size T Group1.size}
+ addUserKnob {41 mix_2 l mix T wrap.mix}
+ addUserKnob {26 ""}
+ addUserKnob {6 effectOnly l "effect only" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" t "v1.0 Jan 23, 2019 - Created\nv1.1 Jan 23. 2019 - Fixed Channels\nv1.2 Jan 24. 2019 - Added log, regular over\nv1.3 Mar 12, 2019 - Added Merge Options\nv1.4 Mar 14, 2019 - Removed Merging, only affects fg" +STARTLINE T "Ultimerge v1.3"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name FG
+  xpos 148
+  ypos -505
+ }
+ AddChannels {
+  channels alpha
+  name AddChannels1
+  xpos 148
+  ypos -337
+ }
+ Dot {
+  name Dot6
+  note_font_size 40
+  xpos 182
+  ypos -219
+ }
+set Nf7fda130 [stack 0]
+ Dot {
+  name Dot10
+  note_font_size 40
+  xpos 182
+  ypos -47
+ }
+set N6936dfb0 [stack 0]
+ Unpremult {
+  name Unpremult1
+  xpos 148
+  ypos 84
+ }
+set N8af29cb0 [stack 0]
+ Dot {
+  name Dot9
+  note_font_size 40
+  xpos 391
+  ypos 88
+ }
+ Dot {
+  name Dot14
+  note_font_size 40
+  xpos 391
+  ypos 980
+ }
+set N29afc2c0 [stack 0]
+ Input {
+  inputs 0
+  name mask
+  xpos 23
+  ypos 1018
+  number 2
+ }
+push $Nf7fda130
+ Invert {
+  name Invert1
+  xpos -382
+  ypos -229
+ }
+ Input {
+  inputs 0
+  name BG
+  xpos -183
+  ypos -413
+  number 1
+ }
+ Shuffle {
+  alpha white
+  name Shuffle1
+  label "\[value in]"
+  xpos -183
+  ypos -125
+ }
+set N6063d770 [stack 0]
+ Colorspace {
+  colorspace_out AlexaV3LogC
+  name Colorspace3
+  xpos -312
+  ypos -119
+ }
+ set C98d24ec0 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -382
+  ypos -65
+ }
+ Premult {
+  name Premult2
+  xpos -382
+  ypos 31
+ }
+ Dot {
+  name Dot5
+  note_font_size 40
+  xpos -348
+  ypos 103
+ }
+set Nd1da5b80 [stack 0]
+ Dot {
+  name Dot4
+  note_font_size 40
+  xpos -533
+  ypos 103
+ }
+ Group {
+  name Group1
+  xpos -567
+  ypos 300
+  addUserKnob {20 User}
+  addUserKnob {41 size T Blur2.size}
+ }
+  Input {
+   inputs 0
+   name Input1
+   xpos -796
+   ypos -148
+  }
+  Dot {
+   name Dot2
+   note_font_size 40
+   xpos -762
+   ypos -61
+  }
+set N86ebd10 [stack 0]
+  Blur {
+   channels rgba
+   size {{parent.Blur2.size*16}}
+   name Blur6
+   xpos -796
+   ypos 50
+  }
+push $N86ebd10
+  Blur {
+   channels rgba
+   size {{parent.Blur2.size*8}}
+   name Blur5
+   xpos -900
+   ypos 49
+  }
+push $N86ebd10
+  Blur {
+   channels rgba
+   size {{parent.Blur2.size*4}}
+   name Blur4
+   xpos -1010
+   ypos 42
+  }
+push 0
+push $N86ebd10
+  Blur {
+   channels rgba
+   size {{parent.Blur2.size*2}}
+   name Blur3
+   xpos -1092
+   ypos 46
+  }
+push $N86ebd10
+push $N86ebd10
+  Blur {
+   inputs 1+1
+   channels rgba
+   size 5.3
+   name Blur2
+   xpos -1179
+   ypos 49
+  }
+  Merge2 {
+   inputs 5+1
+   operation under
+   bbox B
+   name Merge2
+   xpos -796
+   ypos 195
+  }
+  Output {
+   name Output1
+   xpos -796
+   ypos 258
+  }
+ end_group
+ Dot {
+  name Dot2
+  note_font_size 40
+  xpos -533
+  ypos 928
+ }
+push $Nd1da5b80
+ Group {
+  name Group2
+  xpos -382
+  ypos 298
+  addUserKnob {20 User}
+  addUserKnob {41 size T Blur2.size}
+ }
+  Input {
+   inputs 0
+   name Input1
+   xpos -796
+   ypos -148
+  }
+  Dot {
+   name Dot2
+   note_font_size 40
+   xpos -762
+   ypos -61
+  }
+set Naf7f4480 [stack 0]
+  Blur {
+   channels rgba
+   size {{parent.Blur2.size*16}}
+   name Blur6
+   xpos -796
+   ypos 50
+  }
+push $Naf7f4480
+  Blur {
+   channels rgba
+   size {{parent.Blur2.size*8}}
+   name Blur5
+   xpos -900
+   ypos 49
+  }
+push $Naf7f4480
+  Blur {
+   channels rgba
+   size {{parent.Blur2.size*4}}
+   name Blur4
+   xpos -1010
+   ypos 42
+  }
+push 0
+push $Naf7f4480
+  Blur {
+   channels rgba
+   size {{parent.Blur2.size*2}}
+   name Blur3
+   xpos -1092
+   ypos 46
+  }
+push $Naf7f4480
+push $Naf7f4480
+  Blur {
+   inputs 1+1
+   channels rgba
+   size 4
+   name Blur2
+   xpos -1179
+   ypos 49
+  }
+  Merge2 {
+   inputs 5+1
+   operation under
+   bbox B
+   name Merge2
+   xpos -796
+   ypos 195
+  }
+  Output {
+   name Output1
+   xpos -796
+   ypos 258
+  }
+ end_group
+ Clamp {
+  channels rgba
+  minimum 0.001
+  maximum 100
+  name Clamp1
+  xpos -382
+  ypos 486
+ }
+ Expression {
+  expr0 (1/(r*.3+g*.59+b*.11))*r
+  expr1 (1/(r*.3+g*.59+b*.11))*g
+  expr2 (1/(r*.3+g*.59+b*.11))*b
+  name Expression2
+  xpos -382
+  ypos 616
+ }
+set Nc6138430 [stack 0]
+ Dot {
+  name Dot3
+  note_font_size 40
+  xpos -348
+  ypos 785
+ }
+push $Nc6138430
+push $N6936dfb0
+ Dot {
+  name Dot11
+  note_font_size 40
+  xpos 45
+  ypos -47
+ }
+set Nd6ba8670 [stack 0]
+push $N6063d770
+ Merge2 {
+  inputs 2
+  operation stencil
+  bbox B
+  name Merge3
+  xpos -183
+  ypos -51
+ }
+ Colorspace {
+  colorspace_out AlexaV3LogC
+  name Colorspace1
+  xpos -183
+  ypos 52
+ }
+ set Ceececc90 [stack 0]
+ Blur {
+  channels rgba
+  size 100
+  name Blur1
+  label "\[value size] px"
+  xpos -183
+  ypos 78
+ }
+ set C10d22bd0 [stack 0]
+ Colorspace {
+  colorspace_in AlexaV3LogC
+  name Colorspace2
+  xpos -183
+  ypos 116
+ }
+ set C10d23610 [stack 0]
+ Unpremult {
+  name Unpremult2
+  xpos -183
+  ypos 159
+ }
+set Nf9cbcf30 [stack 0]
+ Expression {
+  expr3 4*(1-a)*a
+  name Expression1
+  label "\[knob expr3]"
+  xpos -183
+  ypos 254
+ }
+ Dot {
+  name Dot8
+  note_font_size 40
+  xpos -149
+  ypos 333
+ }
+push $Nf9cbcf30
+push $Nd6ba8670
+clone $Ceececc90 {
+  xpos 11
+  ypos 47
+  selected false
+ }
+clone $C10d22bd0 {
+  xpos 11
+  ypos 73
+  selected false
+ }
+clone $C10d23610 {
+  xpos 11
+  ypos 111
+  selected false
+ }
+ Unpremult {
+  name Unpremult3
+  xpos 11
+  ypos 164
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  bbox B
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge4
+  xpos 11
+  ypos 215
+ }
+push $N8af29cb0
+ Merge2 {
+  inputs 2+1
+  operation multiply
+  bbox B
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  mix 0.304
+  name matchEdges
+  xpos 148
+  ypos 329
+ }
+clone $C98d24ec0 {
+  xpos 148
+  ypos 389
+  selected false
+ }
+ Dot {
+  name Dot7
+  note_font_size 40
+  xpos 182
+  ypos 442
+ }
+set N14d7f890 [stack 0]
+ Dot {
+  name Dot12
+  note_font_size 40
+  xpos 59
+  ypos 442
+ }
+ Saturation {
+  saturation {{-parent.color_amount+1}}
+  name Saturation1
+  xpos 25
+  ypos 543
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  bbox B
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  mix {{parent.color_amount}}
+  name Merge6
+  xpos 25
+  ypos 616
+ }
+push $N14d7f890
+ Keymix {
+  inputs 3
+  channels rgb
+  bbox B
+  name bleedColor
+  xpos 148
+  ypos 781
+ }
+ Merge2 {
+  inputs 2
+  bbox B
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  mix 0.274
+  name wrap
+  xpos 148
+  ypos 924
+ }
+ Colorspace {
+  colorspace_in AlexaV3LogC
+  name Colorspace5
+  xpos 148
+  ypos 966
+ }
+push $N29afc2c0
+ Dot {
+  name Dot13
+  note_font_size 40
+  xpos 292
+  ypos 980
+ }
+ Dissolve {
+  inputs 2+1
+  channels rgb
+  which 1
+  name Dissolve1
+  label "\[value which]"
+  selected true
+  xpos 148
+  ypos 1103
+ }
+set N29f4f160 [stack 0]
+ Merge2 {
+  inputs 2
+  operation from
+  bbox B
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge1
+  xpos 357
+  ypos 1109
+ }
+ Dot {
+  name Dot1
+  note_font_size 40
+  xpos 391
+  ypos 1190
+ }
+push $N29f4f160
+ Switch {
+  inputs 2
+  which {{effectOnly}}
+  name Switch1
+  label "\[value which]"
+  xpos 148
+  ypos 1180
+ }
+ Premult {
+  name Premult3
+  xpos 148
+  ypos 1264
+ }
+ Output {
+  name Output1
+  xpos 148
+  ypos 1343
+ }
+end_group
