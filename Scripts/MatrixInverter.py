@@ -33,8 +33,7 @@ class DerekVFXMatrixInverterPanel(nukescripts.PythonPanel):
     def __init__(self):
         nukescripts.PythonPanel.__init__(self, '{0} v{1}'.format(self.data["scriptName"], self.data["scriptVersion"]))
         self.knob_first_frame = nuke.Int_Knob("ff", "first frame")
-        self.knob_last_frame = nuke.In
- t_Knob("lf", "last frame")
+        self.knob_last_frame = nuke.Int_Knob("lf", "last frame")
         self.checkbox_TRS = nuke.Boolean_Knob('trs_mode', "Set TRS Keys", True)
         self.checkbox_TRS.setFlag(nuke.STARTLINE)
         self.div1 = nuke.Text_Knob("divider1", "")
@@ -56,11 +55,10 @@ class DerekVFXMatrixInverterPanel(nukescripts.PythonPanel):
                 self.invertMatrix(self.checkbox_TRS.value())
                 self.hide()
             except Exception as e:
-                print e
+                print(e)
                 self.hide()
 
-    def
-  invertMatrix(self, mode):  # Get the selected node.
+    def invertMatrix(self, mode):  # Get the selected node.
         try:
             source_axis = nuke.selectedNode()
         except ValueError:
@@ -83,8 +81,7 @@ class DerekVFXMatrixInverterPanel(nukescripts.PythonPanel):
             # destination_axis['rotate'].clearAnimated()
             # destination_axis['scaling'].clearAnimated()
             destination_axis['translate'].setAnimated()
-            destination_axis['rota
- te'].setAnimated()
+            destination_axis['rotate'].setAnimated()
             destination_axis['scaling'].setAnimated()
         else:
             destination_axis['useMatrix'].setValue(True)
@@ -106,8 +103,7 @@ class DerekVFXMatrixInverterPanel(nukescripts.PythonPanel):
                 matrix = m.Matrix4()
                 matrix.makeIdentity()  # probably don't need this
                 for k, v in enumerate(source_axis_values):
-                    matrix[k] = v  # this is the only way to set values on nuke m
- atrix 4 object
+                    matrix[k] = v  # this is the only way to set values on nuke matrix 4 object
 
                 matrix = matrix.inverse()
 
@@ -128,8 +124,7 @@ class DerekVFXMatrixInverterPanel(nukescripts.PythonPanel):
                     rotate = (math.degrees(rotateRad[0]), math.degrees(rotateRad[1]), math.degrees(rotateRad[2]))
 
                     destination_axis['translate'].setValueAt(mTranslate[12], frame, 0)
-                    destination_axis['translate'].setValueAt(mTranslate[13], fram
- e, 1)
+                    destination_axis['translate'].setValueAt(mTranslate[13], frame, 1)
                     destination_axis['translate'].setValueAt(mTranslate[14], frame, 2)
                     destination_axis['rotate'].setValueAt(rotate[0], frame, 0)
                     destination_axis['rotate'].setValueAt(rotate[1], frame, 1)
@@ -146,8 +141,7 @@ class DerekVFXMatrixInverterPanel(nukescripts.PythonPanel):
                         value = matrix[index]  # iterating directly on the matrix causes indexing errors
                         destination_axis['matrix'].setValueAt(value, frame, index)
 
-                task.setP
- rogress(((frame-first)/(last-first))*100)
+                task.setProgress(((frame-first)/(last-first))*100)
 
         threading.Thread(None, setKeys).start()
 

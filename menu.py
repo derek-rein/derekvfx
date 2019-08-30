@@ -20,8 +20,7 @@ nuke.knobDefault("Gamma.channels", "rgba")
 nuke.knobDefault("Colorspace.label", "[value colorspace_in] - [value colorspace_out]")
 nuke.knobDefault("Colorspace.colorspace_out", "AlexaV3LogC")
 nuke.knobDefault("Multiply.label", "[value value]")
-nuke.knobDefault("Saturation.label", "[value saturatio
-n]")
+nuke.knobDefault("Saturation.label", "[value saturation]")
 nuke.knobDefault("Saturation.saturation", "0")
 # CONVOLUTIONS
 nuke.knobDefault("Denoise2.useGPUIfAvailable", "1")
@@ -62,11 +61,7 @@ nuke.knobDefault("Mirror2.flop", "1")
 # 3D
 nuke.knobDefault("ScanlineRender.antialiasing", "3")
 nuke.knobDefault("ScanlineRender.label", "[value samples]")
-nuke.knobDefault("ScanlineRender.shutteroffse
-t
-", "
-centered
-")
+nuke.knobDefault("ScanlineRender.shutteroffset", "centered")
 # MISC
 nuke.knobDefault("Expression.label", "[knob expr3]")
 nuke.knobDefault("Viewer.freezeGuiWhenPlayBack", "1")
@@ -84,8 +79,7 @@ nuke.menu("Nuke").addCommand('Scripts/Align', 'align.aligner()', "shift+alt+a")
 nuke.menu("Nuke").addCommand('Scripts/Reveal File', 'sb_revealInFileBrowser.sb_revealInFileBrowser()')
 nuke.menu("Nuke").addCommand('Scripts/Convert Corner Pin', 'sb_convertCornerPin.main()')
 nuke.menu("Nuke").addCommand('Scripts/Matrix Inverter', 'matrixInverter.main()')
-nuke.
-    menu("Nuke").addCommand('Scripts/Mirror Nodes', 'mirrorNodes.main()')
+nuke.menu("Nuke").addCommand('Scripts/Mirror Nodes', 'mirrorNodes.main()')
 nuke.menu("Nuke").addCommand('Scripts/Delete Viewers', 'sb_deleteViewers.sb_deleteViewers()')
 nuke.menu("Nuke").addCommand('Scripts/PlateLink', 'Links.plate_link()', "shift+alt+v")
 nuke.menu("Nuke").addCommand('Scripts/DeepLink', 'Links.deep_link()', "shift+alt+d")
