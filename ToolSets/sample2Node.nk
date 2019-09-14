@@ -1,0 +1,50 @@
+version 10.5 v6
+push $cut_paste_input
+Group {
+ name sample2Node
+ tile_color 0x421010ff
+ selected true
+ xpos 1287
+ ypos -3853
+ addUserKnob {20 User l sample2Node}
+ addUserKnob {41 in l channel T Shuffle1.in}
+ addUserKnob {41 pick l sample T NoOp1.pick}
+ addUserKnob {22 Card T "import nuke\n\nvalue = nuke.thisNode().knob('pick').getValue()\n\nnuke.root().begin()\n\nnode = nuke.createNode('Card2')\n\nnode\['translate'].setValue(value)" +STARTLINE}
+ addUserKnob {22 Card3D -STARTLINE T "import nuke\n\nvalue = nuke.thisNode().knob('pick').getValue()\n\nnuke.root().begin()\n\nnode = nuke.createNode('Card3D')\n\nnode\['translate'].setValue(value)"}
+ addUserKnob {22 Axis -STARTLINE T "import nuke\n\nvalue = nuke.thisNode().knob('pick').getValue()\n\nnuke.root().begin()\n\nnode = nuke.createNode('Axis2')\n\nnode\['translate'].setValue(value)"}
+ addUserKnob {22 Light -STARTLINE T "import nuke\n\nvalue = nuke.thisNode().knob('pick').getValue()\n\nnuke.root().begin()\n\nnode = nuke.createNode('Light2')\n\nnode\['translate'].setValue(value)"}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "Sample2Node v1.0"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 447
+  ypos 61
+ }
+set N19bf0080 [stack 0]
+ Output {
+  name Output1
+  xpos 447
+  ypos 1055
+ }
+push $N19bf0080
+ Shuffle {
+  in P_lig
+  name Shuffle1
+  label "\[value in]"
+  xpos 272
+  ypos 219
+ }
+ NoOp {
+  name NoOp1
+  xpos 272
+  ypos 282
+  hide_input true
+  addUserKnob {20 User}
+  addUserKnob {18 pick}
+  pick {43.7382431 12.38535595 -108.212326}
+  addUserKnob {6 pick_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ }
+end_group

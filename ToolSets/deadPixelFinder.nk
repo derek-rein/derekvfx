@@ -1,0 +1,93 @@
+version 10.5 v6
+push $cut_paste_input
+Group {
+ name deadPixelFinder
+ tile_color 0x421010ff
+ selected true
+ xpos 1424
+ ypos -4091
+ addUserKnob {20 User l deadPixelFinder}
+ addUserKnob {41 framesbehind l "Frames to look at" T TimeEcho1.framesbehind}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" t "May 15, 2019 - v1.1 Refined" +STARTLINE T "Dead Pixel Finder v1.1"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 447
+  ypos 61
+ }
+ Invert {
+  name Invert3
+  xpos 447
+  ypos 432
+ }
+ TimeEcho {
+  framesbehind 60
+  name TimeEcho1
+  selected true
+  xpos 447
+  ypos 495
+ }
+ Invert {
+  name Invert4
+  xpos 447
+  ypos 565
+ }
+ Dot {
+  name Dot170
+  note_font_size 40
+  xpos 481
+  ypos 667
+ }
+set Ncb726000 [stack 0]
+ Colorspace {
+  colorspace_out Cineon
+  name Colorspace1
+  xpos 656
+  ypos 663
+ }
+ Blur {
+  channels rgba
+  size 0.67
+  name Blur18
+  label "\[value size] px"
+  xpos 656
+  ypos 733
+ }
+push $Ncb726000
+ Colorspace {
+  colorspace_out Cineon
+  name Colorspace2
+  xpos 447
+  ypos 727
+ }
+ Merge2 {
+  inputs 2
+  operation difference
+  bbox B
+  name Merge83
+  xpos 447
+  ypos 846
+ }
+ Grade {
+  whitepoint 0.0002
+  gamma 0.455
+  name Grade20
+  xpos 447
+  ypos 872
+ }
+ FrameHold {
+  first_frame {{last_frame}}
+  name FrameHold1
+  xpos 447
+  ypos 932
+ }
+set N74c41f70 [stack 0]
+ Output {
+  name Output1
+  xpos 447
+  ypos 1055
+ }
+end_group

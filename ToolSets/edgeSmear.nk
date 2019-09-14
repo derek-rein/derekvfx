@@ -1,0 +1,136 @@
+version 10.5 v6
+push $cut_paste_input
+Group {
+ name edgeSmear
+ tile_color 0x421010ff
+ selected true
+ xpos 1326
+ ypos -4055
+ addUserKnob {20 User l edgeSmear}
+ addUserKnob {7 gamma R 0 2}
+ gamma 0.99
+ addUserKnob {41 size T Blur1.size}
+ addUserKnob {41 size_1 l erode T Dilate1.size}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "EdgeSmear v1.0"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 447
+  ypos 61
+ }
+set N22b8aec0 [stack 0]
+ Dot {
+  name Dot2
+  note_font_size 40
+  xpos 717
+  ypos 65
+ }
+push $N22b8aec0
+ Dot {
+  name Dot1
+  note_font_size 40
+  xpos 481
+  ypos 261
+ }
+ AddChannels {
+  inputs 0
+  channels alpha
+  name AddChannels1
+  xpos 683
+  ypos 95
+ }
+set N8b8ffa50 [stack 0]
+ Gamma {
+  channels alpha
+  value {{parent.gamma}}
+  name Gamma1
+  xpos 683
+  ypos 168
+ }
+ Dilate {
+  channels rgba
+  name Dilate1
+  label "\[value size] px"
+  xpos 683
+  ypos 206
+ }
+push $N8b8ffa50
+ Multiply {
+  value 0
+  name Multiply1
+  xpos 583
+  ypos 146
+ }
+ Expression {
+  expr0 "(x+.5) / input.width"
+  expr1 "(y+.5) / input.height"
+  name Expression1
+  xpos 583
+  ypos 212
+ }
+set N1a1cfb60 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 683
+  ypos 254
+ }
+ Premult {
+  name Premult1
+  xpos 683
+  ypos 317
+ }
+ Blur {
+  channels rgba
+  size 8.4
+  name Blur1
+  label "\[value size] px"
+  xpos 683
+  ypos 354
+ }
+ Unpremult {
+  name Unpremult1
+  xpos 683
+  ypos 440
+ }
+ Expression {
+  expr3 "(r+g+b) != 0"
+  name Expression2
+  xpos 683
+  ypos 466
+ }
+push $N1a1cfb60
+ Merge2 {
+  inputs 2
+  bbox B
+  name Merge1
+  xpos 583
+  ypos 522
+ }
+ Dot {
+  name Dot3
+  note_font_size 40
+  xpos 617
+  ypos 598
+ }
+push 0
+ STMap {
+  inputs 2
+  channels rgb
+  uv rgb
+  name STMap1
+  xpos 447
+  ypos 594
+ }
+set N1dda5500 [stack 0]
+ Output {
+  name Output1
+  xpos 447
+  ypos 668
+ }
+end_group

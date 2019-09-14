@@ -1,0 +1,79 @@
+version 10.5 v6
+push $cut_paste_input
+Group {
+ name ps_highPass
+ tile_color 0x421010ff
+ selected true
+ xpos 1442
+ ypos -4313
+ addUserKnob {20 User l template}
+ addUserKnob {41 size T Blur4.size}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "Template v1.0"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 447
+  ypos 61
+ }
+ Clamp {
+  name Clamp2
+  xpos 447
+  ypos 243
+ }
+ Colorspace {
+  colorspace_out sRGB
+  name Colorspace2
+  label "\[value colorspace_in] - \[value colorspace_out]"
+  xpos 447
+  ypos 281
+ }
+set N1bf82e00 [stack 0]
+ Blur {
+  channels rgba
+  size 20.6
+  name Blur4
+  label "\[value size] px"
+  xpos 355
+  ypos 340
+ }
+push $N1bf82e00
+ Merge2 {
+  inputs 2
+  operation from
+  bbox B
+  name Merge11
+  xpos 447
+  ypos 385
+ }
+ Grade {
+  add 0.5
+  name Grade2
+  xpos 447
+  ypos 411
+ }
+ Colorspace {
+  colorspace_in sRGB
+  name Colorspace1
+  label "\[value colorspace_in] - \[value colorspace_out]"
+  xpos 447
+  ypos 437
+ }
+set N1c18b8b0 [stack 0]
+ Output {
+  name Output1
+  xpos 447
+  ypos 1055
+ }
+push $N1c18b8b0
+ Viewer {
+  frame_range 1001-1416
+  viewerProcess "Rodeo look (Rec709)"
+  name Viewer1
+  selected true
+  xpos 637
+  ypos 302
+ }
+end_group

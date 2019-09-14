@@ -1,0 +1,72 @@
+version 10.5 v6
+push $cut_paste_input
+Group {
+ name radialDistort
+ tile_color 0x421010ff
+ selected true
+ xpos 1295
+ ypos -3928
+ addUserKnob {20 User l radialDistort}
+ addUserKnob {7 rotation R -360 360}
+ addUserKnob {7 gamma R 0 4}
+ gamma 1.68
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "RadialDistort v1.0"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 447
+  ypos 60
+ }
+set N8ab9ae50 [stack 0]
+ Multiply {
+  value 0
+  name Multiply1
+  label "\[value value]"
+  xpos 107
+  ypos 286
+ }
+ Expression {
+  temp_name0 radial
+  temp_expr0 "((atan(x - center.x, y - center.y) +radians(rotation) ) + pi()) / pi()/2"
+  temp_name1 offset
+  temp_expr1 "(radians(rotation) *-1 ) /pi()/2"
+  expr0 radial
+  expr1 "sqrt(((x-center.x)**2) + ((y-center.y)**2))/diag"
+  expr2 offset
+  expr3 0
+  name Expression3
+  label "\[knob expr3]"
+  xpos 107
+  ypos 336
+  addUserKnob {20 User}
+  addUserKnob {7 diag}
+  diag {{(sqrt(width**2+height**2)/2)}}
+  addUserKnob {12 center}
+  center {978 404}
+ }
+set N8ab848f0 [stack 0]
+ Gamma {
+  channels {-rgba.red rgba.green -rgba.blue none}
+  value {{gamma}}
+  name Gamma1
+  xpos 107
+  ypos 444
+ }
+push $N8ab9ae50
+ STMap {
+  inputs 2
+  channels rgba
+  uv rgb
+  name STMap3
+  xpos 447
+  ypos 574
+ }
+ Output {
+  name Output1
+  xpos 456
+  ypos 1028
+ }
+end_group

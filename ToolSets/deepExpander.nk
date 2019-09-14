@@ -1,0 +1,37 @@
+version 10.5 v6
+push $cut_paste_input
+Group {
+ name deepExpander
+ tile_color 0x421010ff
+ selected true
+ xpos 1315
+ ypos -4115
+ addUserKnob {20 User l deepExpander}
+ addUserKnob {41 expand T DeepExpression1.expand}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" t "May 14, 2019 - Created" +STARTLINE T "Deep Expander v1.0"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 447
+  ypos 61
+ }
+ DeepExpression {
+  chans1 deep
+  deep.front "deep.front - \[value expand]"
+  deep.back "deep.back + \[value expand]"
+  name DeepExpression1
+  xpos 447
+  ypos 342
+  addUserKnob {20 User}
+  addUserKnob {7 expand R 0 100}
+  expand 70.8
+ }
+ Output {
+  name Output1
+  xpos 447
+  ypos 1055
+ }
+end_group

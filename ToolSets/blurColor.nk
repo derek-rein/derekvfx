@@ -1,0 +1,74 @@
+version 10.5 v6
+push $cut_paste_input
+Group {
+ name blurColor
+ tile_color 0x421010ff
+ selected true
+ xpos 1385
+ ypos -4220
+ addUserKnob {20 User l blurColor}
+ addUserKnob {41 size T Blur1.size}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "Blur Color v1.0"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 447
+  ypos 61
+ }
+ Colorspace {
+  colorspace_out AlexaV3LogC
+  name Colorspace1
+  label "\[value colorspace_in] - \[value colorspace_out]"
+  xpos 447
+  ypos 171
+ }
+ Colorspace {
+  colorspace_out CIE-LCH
+  name Colorspace3
+  label "\[value colorspace_in] - \[value colorspace_out]"
+  xpos 441
+  ypos 243
+ }
+set Nfc93820 [stack 0]
+push $Nfc93820
+ Blur {
+  channels rgba
+  name Blur1
+  label "\[value size] px"
+  xpos 335
+  ypos 301
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.red
+  name Copy1
+  xpos 441
+  ypos 339
+ }
+ Colorspace {
+  colorspace_in CIE-LCH
+  name Colorspace4
+  label "\[value colorspace_in] - \[value colorspace_out]"
+  xpos 447
+  ypos 385
+ }
+ Colorspace {
+  colorspace_in AlexaV3LogC
+  name Colorspace2
+  label "\[value colorspace_in] - \[value colorspace_out]"
+  xpos 447
+  ypos 472
+ }
+set N17b32900 [stack 0]
+push $N17b32900
+
+ Output {
+  name Output1
+  xpos 447
+  ypos 1055
+ }
+end_group

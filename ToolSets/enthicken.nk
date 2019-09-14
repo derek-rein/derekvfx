@@ -1,0 +1,60 @@
+version 10.5 v6
+push $cut_paste_input
+Group {
+ name enthicken
+ knobChanged "import nuke\nimport nukescripts\n\nMIN_ITERATIONS = 1\nMAX_ITERATIONS = 10\nn=nuke.thisNode() \nk=nuke.thisKnob()\n\ninput = nuke.toNode('Input')\nmergeNodes = \[i for i in nuke.allNodes() if i.Class() == 'Merge2']\niterations = int(n\['iterations'].getValue())\n\ndef update():\n    iterations = int(n\['iterations'].getValue())\n    for m in mergeNodes:\n        nuke.delete(m)\n    prev = None\n    for x in range(iterations):\n        merge = nuke.createNode('Merge2', inpanel=False)\n        setPos(merge, 0, (x+1)*40)\n        if prev is None:\n            merge.setInput(0, input)\n            merge.setInput(1, input)\n        else:\n            merge.setInput(0, prev)\n            merge.setInput(1, prev)\n        prev = merge\n        \n    nuke.toNode('Output1').setInput(0, prev)\n\ndef setPos(n, x=0, y=0):\n    ox, oy = input.xpos(), input.ypos()\n    n.setXpos(x + ox)\n    n.setYpos(y + oy)  \n\nif k.name() == 'iterations':\n    if iterations < MIN_ITERATIONS:\n
+     n\['iterations'].setValue(MIN_ITERATIONS)\n    elif iterations > MAX_ITERATIONS:\n        n\['iterations'].setValue(MAX_ITERATIONS)\n    elif MIN_ITERATIONS <= iterations <= MAX_ITERATIONS:\n        update()\n        \nelif k.name() == 'increase':\n    zz = iterations + 1\n    if MIN_ITERATIONS <= zz <= MAX_ITERATIONS:\n        n.knob('iterations').setValue(zz)\n        update()\n\nelif k.name() == 'decrease':\n    zz = iterations - 1\n    if MIN_ITERATIONS <= zz <= MAX_ITERATIONS:\n        n.knob('iterations').setValue(zz)\n        update()\n"
+ tile_color 0x421010ff
+ selected true
+ xpos 1396
+ ypos -4003
+ addUserKnob {20 User l enthicken}
+ addUserKnob {3 iterations}
+ iterations 3
+ addUserKnob {22 increase +STARTLINE}
+ addUserKnob {22 decrease -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "Enthicken v1.1"}
+ addUserKnob {22 btn l DerekVFX.ca t "July 22, 2019 - Created 1.0\nJuly 22, 2019 - Added buttons 1.1" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wai
+ t)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 262
+  ypos -690
+ }
+set N748abc60 [stack 0]
+push $N748abc60
+ Merge2 {
+  inputs 2
+  bbox B
+  name Merge1
+  xpos 262
+  ypos -650
+ }
+set N748b0550 [stack 0]
+push $N748b0550
+ Merge2 {
+  inputs 2
+  bbox B
+  name Merge2
+  xpos 262
+  ypos -610
+ }
+set N748bfd40 [stack 0]
+push $N748bfd40
+ Merge2 {
+  inputs 2
+  bbox B
+  name Merge3
+  selected true
+  xpos 262
+  ypos -570
+ }
+ Output {
+  name Output1
+  xpos 264
+  ypos 366
+ }
+end_group
