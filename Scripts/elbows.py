@@ -22,9 +22,7 @@ def getSize(node):
 
 
 def checkUnder(src, dst):
-    """
-    True if source is within 1/2 the max of both src and dst widths on x axis
-    """
+    # True if source is within 1/2 the max of both src and dst widths on x axis
     m = getPos(src)[0] + getSize(src)[0]
     d = getPos(dst)[0] + getSize(dst)[0]
     threshold = max(getSize(src)[0], getSize(dst)[0])  # threshold is max of half widths
@@ -32,9 +30,7 @@ def checkUnder(src, dst):
 
 
 def align(dot, dst, mer):
-    """
-    Aligns dots in a parallel way
-    """
+    # Aligns dots in a parallel way
     size_dot_x, size_dot_y = getSize(dot)
     x = getPos(dst)[0] + getSize(dst)[0] - size_dot_x
     y = getPos(mer)[1] + getSize(mer)[1] - size_dot_y
@@ -43,9 +39,7 @@ def align(dot, dst, mer):
 
 
 def align_overhead(dot, dep, node):  # src = dep
-    """
-    Create and align dot overhead
-    """
+    # Create and align dot overhead
     size_dot_x, size_dot_y = getSize(dot)
     x = getPos(node)[0] + getSize(node)[0] - size_dot_x
     y = getPos(dep)[1] + getSize(dep)[1] - size_dot_y
@@ -55,9 +49,9 @@ def align_overhead(dot, dep, node):  # src = dep
 
 def elbows(node):
     if len(node.dependencies(nuke.INPUTS)) == 1:
-        """
-        The node has a single input, so do an overhead elbow
-        """
+
+        # The node has a single input, so do an overhead elbow
+
         dep = node.input(0)
         if dep is None:
             return  # It's not connected to anything, exit
@@ -82,9 +76,9 @@ def elbows(node):
             return [dot, dot2]
 
     elif len(node.dependencies(nuke.INPUTS)) > 1:
-        """
-        The node has multiple inputs, create parallel elbows
-        """
+
+        # The node has multiple inputs, create parallel elbows
+
         if node.Class() in ('ContactSheet', 'Switch', 'Merge2',
                             'Merge', 'Blend', 'Dissolve', 'Keymix',
                             'Copy', 'AddMix', 'CopyBBox', 'ChannelMerge'):
@@ -114,15 +108,11 @@ def elbows(node):
 def main():
     nodes = nuke.selectedNodes()
     if len(nodes) == 1:
-        """
-        A single node selection assumes an elbow joint on non mask inputs.
-        """
+        # A single node selection assumes an elbow joint on non mask inputs.
         elbows(nodes[0])
 
     elif len(nodes) > 1:
-        """
-        If multiple nodes are selected, it assumes we want to add them together.
-        """
+        # If multiple nodes are selected, it assumes we want to add them together.
         # empty lists are false, checking to see if these nodes are not already connected
         if all(not n.dependent(nuke.INPUTS) for n in nodes):
             m = nuke.createNode('Merge2')
