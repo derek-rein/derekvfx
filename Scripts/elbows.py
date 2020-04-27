@@ -1,5 +1,8 @@
 import nuke
 
+# ADD THE FOLLOWING TO menu.py
+#import elbows
+#nuke.menu("Nuke").addCommand('Scripts/Elbows', 'elbows.main()', "shift+alt+e")
 
 def nodeHasMask(node):
     return node.knobs().has_key('maskChannelMask')
