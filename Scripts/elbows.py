@@ -102,7 +102,7 @@ def elbows(node):
                         dot.setSelected(False)
                 if child is not None:
                     child.setInput(0, node)
-                return dots
+            return dots
 
 
 def main():
