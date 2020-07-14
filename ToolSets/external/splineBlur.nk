@@ -1,0 +1,550 @@
+set cut_paste_input [stack 0]
+version 12.1 v4
+BackdropNode {
+ inputs 0
+ name BackdropNode4
+ tile_color 0x388e8e00
+ label Spline
+ note_font_size 42
+ selected true
+ xpos -511
+ ypos -174
+ bdwidth 323
+ bdheight 176
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode5
+ tile_color 0x388e8e00
+ label "Effect Control"
+ note_font_size 42
+ selected true
+ xpos -511
+ ypos 6
+ bdwidth 323
+ bdheight 176
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode6
+ tile_color 0x388e8e00
+ label Spline
+ note_font_size 42
+ selected true
+ xpos -57
+ ypos -186
+ bdwidth 323
+ bdheight 176
+}
+BackdropNode {
+ inputs 0
+ name BackdropNode8
+ tile_color 0x388e8e00
+ label "Effect Control"
+ note_font_size 42
+ selected true
+ xpos -59
+ ypos 7
+ bdwidth 323
+ bdheight 176
+}
+StickyNote {
+ inputs 0
+ name StickyNote2
+ tile_color 0xff
+ label "Example 02:\nConstraint"
+ note_font "Verdana Bold"
+ note_font_size 30
+ selected true
+ xpos 11
+ ypos -436
+}
+StickyNote {
+ inputs 0
+ name StickyNote1
+ tile_color 0xff
+ label "Example 01:\nPIN"
+ note_font "Verdana Bold"
+ note_font_size 30
+ selected true
+ xpos -431
+ ypos -437
+}
+push $cut_paste_input
+Noise {
+ type turbulence
+ center {960 540}
+ name Noise2
+ selected true
+ xpos 81
+ ypos -327
+}
+Expression {
+ channel0 {forward.u -forward.v}
+ expr0 x
+ channel1 {-forward.u forward.v}
+ expr1 y
+ channel2 {backward.u -backward.v}
+ expr2 x
+ channel3 {-backward.u backward.v}
+ expr3 y
+ name Expression4
+ selected true
+ xpos 81
+ ypos -109
+}
+SplineWarp3 {
+ channels forward
+ colorOverlay {0 0 0 0}
+ curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 2097664}
+    {t x44800000 x43d58000}
+    {a pt1x 0 pt1y 0 pt2x 0 pt2y 0 pt3x 0 pt3y 0 pt4x 0 pt4y 0 ptex00 0 ptex01 0 ptex02 0 ptex03 0 ptex10 0 ptex11 0 ptex12 0 ptex13 0 ptex20 0 ptex21 0 ptex22 0 ptex23 0 ptex30 0 ptex31 0 ptex32 0 ptex33 0 ptof1x 0 ptof1y 0 ptof2x 0 ptof2y 0 ptof3x 0 ptof3y 0 ptof4x 0 ptof4y 0 pterr 0 ptrefset 0 ptmot x40800000 ptref 0}
+    {cubiccurve Bezier2 0 bezier
+     {cc
+      {f 8224}
+      {px x43aa8000
+       {0 0}
+       {xc1833300 x43c03333}
+       {0 0}
+       {0 0}
+       {x440d8000 x43c2ffff}
+       {0 0}
+       {0 0}
+       {x448ec000 x43b70000}
+       {0 0}
+       {0 0}
+       {x44cc8001 x43bffffe}
+       {0 0}
+       {0 0}
+       {x44f4b998 x43c33332}
+       {0 0}}}
+     {tx x43aa8000 0}
+     {a ro 0 go 0 bo 0 ao 0 mbo 0 mb 1 mbs x3f000000 mbsot 0 mbso 0 fo 1 fx 0 fy 0 ff 1 ft 0 osw x41200000 osf 0 str 1 ltn x43aa8000 ltm x43aa8000 pt 0 ab 1 hard_boundary 1 boundary 1}}
+    {cubiccurve Bezier3 0 bezier
+     {cc
+      {f 8224}
+      {px x43aa8000
+       {0 0}
+       {x42d40000 x43db0000}
+       {0 0}
+       {0 0}
+       {x4410241d x43e854ac}
+       {0 0}
+       {0 0}
+       {x4490c2dc x442007de}
+       {0 0}
+       {0 0}
+       {x44ca4b16 x43de866e}
+       {0 0}
+       {0 0}
+       {x44e94000 x43ce0000}
+       {0 0}}}
+     {tx x43aa8000 0}
+     {a ro 0 go 0 bo 0 ao 0 mbo 0 mb 1 mbs x3f000000 mbsot 0 mbso 0 fo 1 fx 0 fy 0 ff 1 ft 0 osw x41200000 osf 0 str 1 ltn x43aa8000 ltm x43aa8000 pt 0 ab 1}}
+    {cubiccurve Bezier1 512 bezier
+     {cc
+      {f 8224}
+      {px x43aa8000
+       {0 0}
+       {x42d40000 x43db0000}
+       {0 0}
+       {0 0}
+       {x440d8000 x43d90000}
+       {0 0}
+       {0 0}
+       {x448ec000 x43c90000}
+       {0 0}
+       {0 0}
+       {x44cb8000 x43c80000}
+       {0 0}
+       {0 0}
+       {x44e94000 x43ce0000}
+       {0 0}}}
+     {tx x43aa8000 x4484b333 x43d0999a}
+     {a ro 0 go 0 bo 0 ao 0 mbo 0 mb 1 mbs x3f000000 mbsot 0 mbso 0 fo 1 fx 0 fy 0 ff 1 ft 0 osw x41200000 osf 0 str 1 ltn x43aa8000 ltm x43aa8000 pt 0 ab 1}}}}
+  {edge Bezier1 Bezier3
+   {cp x40800000 x40800000 0 0 0
+    {{{{x43aa8000 0}}
+     {{x43aa8000 0}}}
+     {{{x43aa8000 x3faaaaab}}
+     {{x43aa8000 x3faaaaab}}}
+     {{{x43aa8000 x402aaaab}}
+     {{x43aa8000 x402aaaab}}}
+     {{{x43aa8000 x40800000}}
+     {{x43aa8000 x40800000}}}}}
+   {a}}}}
+ toolbar_preview_mode "persistent preview"
+ name SplineWarp3_3
+ selected true
+ xpos 81
+ ypos -83
+}
+Expression {
+ channel0 {forward.u -forward.v none -backward.v}
+ expr0 backward.u-forward.u
+ channel1 {-forward.u forward.v none -backward.v}
+ expr1 backward.v-forward.v
+ channel2 {-rgba.red -rgba.green -rgba.blue none}
+ channel3 {none none none -rgba.alpha}
+ name Expression3
+ selected true
+ xpos 81
+ ypos -45
+}
+Group {
+ name SplineBlurEffect1
+ selected true
+ xpos 81
+ ypos 101
+ addUserKnob {20 User}
+ addUserKnob {6 EnableEffect l "Enable Effect" +STARTLINE}
+ EnableEffect true
+ addUserKnob {7 Amount}
+ Amount 0.845
+ addUserKnob {7 Chromatic R -0.5 0.5}
+ Chromatic -0.142
+}
+ Input {
+  inputs 0
+  name Input1
+  selected true
+  xpos 422
+  ypos -81
+ }
+ VectorBlur {
+  channels {-rgba.red -rgba.green rgba.blue none}
+  uv motion
+  scale {{parent.Amount}}
+  offset {{-0.5-parent.Chromatic}}
+  name VectorBlur4
+  xpos 425
+  ypos 149
+  disable {{1-parent.EnableEffect}}
+ }
+ VectorBlur {
+  channels {-rgba.red rgba.green -rgba.blue none}
+  uv motion
+  scale {{parent.Amount}}
+  name VectorBlur5
+  xpos 425
+  ypos 175
+  disable {{1-parent.EnableEffect}}
+ }
+ VectorBlur {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  uv motion
+  scale {{parent.Amount}}
+  offset {{-0.5+parent.Chromatic}}
+  name VectorBlur6
+  xpos 425
+  ypos 201
+  disable {{1-parent.EnableEffect}}
+ }
+ Output {
+  name Output1
+  xpos 425
+  ypos 301
+ }
+end_group
+push $cut_paste_input
+Noise {
+ type turbulence
+ center {960 540}
+ name Noise3
+ selected true
+ xpos -374
+ ypos -306
+}
+Expression {
+ channel0 {forward.u -forward.v}
+ expr0 x
+ channel1 {-forward.u forward.v}
+ expr1 y
+ channel2 {backward.u -backward.v}
+ expr2 x
+ channel3 {-backward.u backward.v}
+ expr3 y
+ name Expression2
+ selected true
+ xpos -374
+ ypos -138
+}
+SplineWarp3 {
+ channels forward
+ colorOverlay {0 0 0 0}
+ curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 2097664}
+    {t x44800000 x43d58000}
+    {a pt1x 0 pt1y 0 pt2x 0 pt2y 0 pt3x 0 pt3y 0 pt4x 0 pt4y 0 ptex00 0 ptex01 0 ptex02 0 ptex03 0 ptex10 0 ptex11 0 ptex12 0 ptex13 0 ptex20 0 ptex21 0 ptex22 0 ptex23 0 ptex30 0 ptex31 0 ptex32 0 ptex33 0 ptof1x 0 ptof1y 0 ptof2x 0 ptof2y 0 ptof3x 0 ptof3y 0 ptof4x 0 ptof4y 0 pterr 0 ptrefset 0 ptmot x40800000 ptref 0}
+    {cubiccurve Pin10 262656 bezier
+     {cc
+      {f 8224}
+      {px x43aa8000
+       {0 0}
+       {x43e00000 x436a0000}
+       {0 0}}}
+     {tx x43aa8000 x43e00000 x436a0000}
+     {a ro 0 go 0 bo 0 ao 0 mbo 0 mb 1 mbs x3f000000 mbsot 0 mbso 0 fo 1 fx 0 fy 0 ff 1 ft 0 osw x41200000 osf 0 str 1 ltn x43aa8000 ltm x43aa8000 pt 0 ab 1}}
+    {cubiccurve Pin9 262656 bezier
+     {cc
+      {f 8224}
+      {px x43aa8000
+       {0 0}
+       {x43e00000 x436a0000}
+       {0 0}}}
+     {tx x43aa8000 x43e00000 x436a0000}
+     {a ro 0 go 0 bo 0 ao 0 mbo 0 mb 1 mbs x3f000000 mbsot 0 mbso 0 fo 1 fx 0 fy 0 ff 1 ft 0 osw x41200000 osf 0 str 1 ltn x43aa8000 ltm x43aa8000 pt 0 ab 1}}
+    {cubiccurve Pin8 262656 bezier
+     {cc
+      {f 8224}
+      {px x43aa8000
+       {0 0}
+       {x44974000 x43240000}
+       {0 0}}}
+     {tx x43aa8000 x44974000 x43240000}
+     {a ro 0 go 0 bo 0 ao 0 mbo 0 mb 1 mbs x3f000000 mbsot 0 mbso 0 fo 1 fx 0 fy 0 ff 1 ft 0 osw x41200000 osf 0 str 1 ltn x43aa8000 ltm x43aa8000 pt 0 ab 1}}
+    {cubiccurve Pin7 262656 bezier
+     {cc
+      {f 8224}
+      {px x43aa8000
+       {0 0}
+       {x44974000 x43240000}
+       {0 0}}}
+     {tx x43aa8000 x44974000 x43240000}
+     {a ro 0 go 0 bo 0 ao 0 mbo 0 mb 1 mbs x3f000000 mbsot 0 mbso 0 fo 1 fx 0 fy 0 ff 1 ft 0 osw x41200000 osf 0 str 1 ltn x43aa8000 ltm x43aa8000 pt 0 ab 1}}
+    {cubiccurve Pin6 262656 bezier
+     {cc
+      {f 8224}
+      {px
+       {x43aa8000 x44856000}
+       {{0}
+     {0}}
+       {{x449cc000 x44a8f333}
+     {x443e8000 x445e1999}}
+       {{0}
+     {0}}}}
+     {tx x43aa8000 x449cc000 x443e8000}
+     {a ro 0 go 0 bo 0 ao 0 mbo 0 mb 1 mbs x3f000000 mbsot 0 mbso 0 fo 1 fx 0 fy 0 ff 1 ft 0 osw x41200000 osf 0 str 1 ltn x43aa8000 ltm x43aa8000 pt 0 ab 1}}
+    {cubiccurve Pin5 262656 bezier
+     {cc
+      {f 8224}
+      {px
+       {x43aa8000 x44856000}
+       {{0}
+     {0}}
+       {{{x449cc000 0 1 xbe1bb746 1}
+      {x44945998 xbe1bb746 1 0 1}}
+     {{x443e8000 0 1 xbdcf9efc 1}
+      {x443a7fff xbdcf9efc 1 0 1}}}
+       {{0}
+     {0}}}}
+     {tx x43aa8000 x449cc000 x443e8000}
+     {a ro 0 go 0 bo 0 ao 0 mbo 0 mb 1 mbs x3f000000 mbsot 0 mbso 0 fo 1 fx 0 fy 0 ff 1 ft 0 osw x41200000 osf 0 str 1 ltn x43aa8000 ltm x43aa8000 pt 0 ab 1}}
+    {cubiccurve Pin4 262656 bezier
+     {cc
+      {f 8224}
+      {px
+       {x43aa8000 x44856000}
+       {{0}
+     {0}}
+       {{x43e00000 x43ae6668}
+     {x44418000 x4421e666}}
+       {{0}
+     {0}}}}
+     {tx x43aa8000 x43e00000 x44418000}
+     {a ro 0 go 0 bo 0 ao 0 mbo 0 mb 1 mbs x3f000000 mbsot 0 mbso 0 fo 1 fx 0 fy 0 ff 1 ft 0 osw x41200000 osf 0 str 1 ltn x43aa8000 ltm x43aa8000 pt 0 ab 1}}
+    {cubiccurve Pin3 262656 bezier
+     {cc
+      {f 8224}
+      {px
+       {x43aa8000 x44856000}
+       {{0}
+     {0}}
+       {{x43e00000 x43866668}
+     {x44418000 x44644ccd}}
+       {{0}
+     {0}}}}
+     {tx x43aa8000 x43e00000 x44418000}
+     {a ro 0 go 0 bo 0 ao 0 mbo 0 mb 1 mbs x3f000000 mbsot 0 mbso 0 fo 1 fx 0 fy 0 ff 1 ft 0 osw x41200000 osf 0 str 1 ltn x43aa8000 ltm x43aa8000 pt 0 ab 1}}
+    {cubiccurve Pin2 262656 bezier
+     {cc
+      {f 8224}
+      {px
+       {x43aa8000 x44856000}
+       {{0}
+     {0}}
+       {{x441f0000 x4426999a}
+     {x43f70000 x43f7cccd}}
+       {{0}
+     {0}}}}
+     {tx x43aa8000 x441f0000 x43f70000}
+     {a ro 0 go 0 bo 0 ao 0 mbo 0 mb 1 mbs x3f000000 mbsot 0 mbso 0 fo 1 fx 0 fy 0 ff 1 ft 0 osw x41200000 osf 0 str 1 ltn x43aa8000 ltm x43aa8000 pt 0 ab 1}}
+    {cubiccurve Pin1 262656 bezier
+     {cc
+      {f 8224}
+      {px
+       {x43aa8000 x44856000}
+       {{0}
+     {0}}
+       {{{x44854665 0 1 x3e9bb73b 1}
+      {x447cf333 x3e9bb73b 1 0 1}}
+     {{x43eb4ccd 0 1 x3b106eb9 1}
+      {x43ef4ccf x3b106eb9 1 0 1}}}
+       {{0}
+     {0}}}}
+     {tx x43aa8000 x441f0000 x43f70000}
+     {a ro 0 go 0 bo 0 ao 0 mbo 0 mb 1 mbs x3f000000 mbsot 0 mbso 0 fo 1 fx 0 fy 0 ff 1 ft 0 osw x41200000 osf 0 str 1 ltn x43aa8000 ltm x43aa8000 pt 0 ab 1}}}}
+  {edge Pin10 Pin9
+   {cp 0 0 0 0 0
+    {{{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}}   cache
+    {{xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}}}
+   {a}}
+  {edge Pin8 Pin7
+   {cp 0 0 0 0 0
+    {{{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}}   cache
+    {{xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}}}
+   {a}}
+  {edge Pin6 Pin5
+   {cp 0 0 0 0 0
+    {{{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}}   cache
+    {{xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}}}
+   {a}}
+  {edge Pin4 Pin3
+   {cp 0 0 0 0 0
+    {{{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+      {{x43aa8000 x3f000000}}}}   cache
+    {{xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}}}
+   {a}}
+  {edge Pin2 Pin1
+   {cp 0 0 0 0 0
+    {{{{x43aa8000 x3f000000}}
+     {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+     {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+     {{x43aa8000 x3f000000}}}
+     {{{x43aa8000 x3f000000}}
+     {{x43aa8000 x3f000000}}}}   cache
+    {{xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}
+     {xff7fffff x7f7fffff x7f7fffff}}}
+   {a}}}}
+ toolbar_preview_mode "persistent preview"
+ name SplineWarp3_2
+ selected true
+ xpos -374
+ ypos -85
+}
+Expression {
+ channel0 {forward.u -forward.v none -backward.v}
+ expr0 backward.u-forward.u
+ channel1 {-forward.u forward.v none -backward.v}
+ expr1 backward.v-forward.v
+ channel2 {-rgba.red -rgba.green -rgba.blue none}
+ channel3 {none none none -rgba.alpha}
+ name Expression1
+ selected true
+ xpos -374
+ ypos -26
+}
+Group {
+ name SplineBlurEffect
+ selected true
+ xpos -374
+ ypos 104
+ addUserKnob {20 User}
+ addUserKnob {6 EnableEffect l "Enable Effect" +STARTLINE}
+ EnableEffect true
+ addUserKnob {7 Amount}
+ Amount 0.332
+ addUserKnob {7 Chromatic R -0.5 0.5}
+}
+ Input {
+  inputs 0
+  name Input1
+  selected true
+  xpos 422
+  ypos -81
+ }
+ VectorBlur {
+  channels {-rgba.red -rgba.green rgba.blue none}
+  uv motion
+  scale {{parent.Amount}}
+  offset {{-0.5-parent.Chromatic}}
+  name VectorBlur4
+  xpos 425
+  ypos 149
+  disable {{1-parent.EnableEffect}}
+ }
+ VectorBlur {
+  channels {-rgba.red rgba.green -rgba.blue none}
+  uv motion
+  scale {{parent.Amount}}
+  name VectorBlur5
+  xpos 425
+  ypos 175
+  disable {{1-parent.EnableEffect}}
+ }
+ VectorBlur {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  uv motion
+  scale {{parent.Amount}}
+  offset {{-0.5+parent.Chromatic}}
+  name VectorBlur6
+  xpos 425
+  ypos 201
+  disable {{1-parent.EnableEffect}}
+ }
+ Output {
+  name Output1
+  xpos 425
+  ypos 301
+ }
+end_group

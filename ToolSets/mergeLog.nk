@@ -1,12 +1,14 @@
-version 10.5 v6
+set cut_paste_input [stack 0]
+version 12.1 v4
 push $cut_paste_input
+push 0
 Group {
  inputs 2
  name mergeLog
  tile_color 0x421010ff
  selected true
- xpos 1402
- ypos -3893
+ xpos -1115
+ ypos 517
  addUserKnob {20 User l mergeLog}
  addUserKnob {41 output T Merge1.output}
  addUserKnob {41 also_merge l "also merge" T Merge1.also_merge}
@@ -28,14 +30,14 @@ Group {
   xpos 142
   ypos 116
  }
-set N6ab87260 [stack 0]
+set Ndabec00 [stack 0]
  Input {
   inputs 0
   name B
   xpos 447
   ypos 61
  }
-set N6ab68f90 [stack 0]
+set Ndabe800 [stack 0]
  Merge2 {
   inputs 2
   operation matte
@@ -44,8 +46,8 @@ set N6ab68f90 [stack 0]
   xpos 619
   ypos 325
  }
- set C6ab8aa10 [stack 0]
-push $N6ab87260
+ set Cdabe400 [stack 0]
+push $Ndabec00
  Colorspace {
   colorspace_out AlexaV3LogC
   name Colorspace1
@@ -53,14 +55,14 @@ push $N6ab87260
   xpos 142
   ypos 212
  }
- set C6ab94dd0 [stack 0]
-push $N6ab68f90
-clone $C6ab94dd0 {
+ set Cdabe000 [stack 0]
+push $Ndabe800
+clone $Cdabe000 {
   xpos 447
   ypos 155
   selected false
  }
-clone $C6ab8aa10 {
+clone $Cdabe400 {
   inputs 2
   xpos 447
   ypos 312
@@ -73,7 +75,6 @@ clone $C6ab8aa10 {
   xpos 447
   ypos 377
  }
-set N2c9ef360 [stack 0]
  Switch {
   inputs 2
   which {{regularover}}

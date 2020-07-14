@@ -1,11 +1,12 @@
-version 10.5 v6
+set cut_paste_input [stack 0]
+version 12.1 v4
 push $cut_paste_input
 Group {
  name grainCheck
  tile_color 0x421010ff
  selected true
- xpos 1480
- ypos -3948
+ xpos -1110
+ ypos 410
  addUserKnob {20 User l template}
  addUserKnob {26 ""}
  addUserKnob {26 lbl l "" +STARTLINE T "Template v1.0"}
@@ -23,11 +24,11 @@ Group {
   xpos 633
   ypos 251
  }
-set N1b4ee890 [stack 0]
+set Nda88c00 [stack 0]
  Colorspace {
   colorspace_out Cineon
   name Colorspace1
-  label "[value colorspace_in] -> \[value colorspace_out]"
+  label "value colorspace_in] -> \[value colorspace_out]"
   xpos 808
   ypos 253
  }
@@ -39,11 +40,11 @@ set N1b4ee890 [stack 0]
   xpos 808
   ypos 315
  }
-push $N1b4ee890
+push $Nda88c00
  Colorspace {
   colorspace_out Cineon
   name Colorspace3
-  label "[value colorspace_in] -> \[value colorspace_out]"
+  label "value colorspace_in] -> \[value colorspace_out]"
   xpos 682
   ypos 299
  }

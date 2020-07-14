@@ -1,11 +1,12 @@
-version 10.5 v6
+set cut_paste_input [stack 0]
+version 12.1 v4
 push $cut_paste_input
 Group {
  name edgeSmear
  tile_color 0x421010ff
  selected true
- xpos 1326
- ypos -4055
+ xpos -1101
+ ypos 149
  addUserKnob {20 User l edgeSmear}
  addUserKnob {7 gamma R 0 2}
  gamma 0.99
@@ -21,28 +22,20 @@ Group {
   xpos 447
   ypos 61
  }
-set N22b8aec0 [stack 0]
+set Nd7fe000 [stack 0]
  Dot {
   name Dot2
   note_font_size 40
   xpos 717
   ypos 65
  }
-push $N22b8aec0
- Dot {
-  name Dot1
-  note_font_size 40
-  xpos 481
-  ypos 261
- }
  AddChannels {
-  inputs 0
   channels alpha
   name AddChannels1
   xpos 683
   ypos 95
  }
-set N8b8ffa50 [stack 0]
+set Nd831800 [stack 0]
  Gamma {
   channels alpha
   value {{parent.gamma}}
@@ -57,7 +50,7 @@ set N8b8ffa50 [stack 0]
   xpos 683
   ypos 206
  }
-push $N8b8ffa50
+push $Nd831800
  Multiply {
   value 0
   name Multiply1
@@ -71,7 +64,7 @@ push $N8b8ffa50
   xpos 583
   ypos 212
  }
-set N1a1cfb60 [stack 0]
+set Nd830800 [stack 0]
  Copy {
   inputs 2
   from0 rgba.alpha
@@ -104,7 +97,7 @@ set N1a1cfb60 [stack 0]
   xpos 683
   ypos 466
  }
-push $N1a1cfb60
+push $Nd830800
  Merge2 {
   inputs 2
   bbox B
@@ -118,7 +111,13 @@ push $N1a1cfb60
   xpos 617
   ypos 598
  }
-push 0
+push $Nd7fe000
+ Dot {
+  name Dot1
+  note_font_size 40
+  xpos 481
+  ypos 261
+ }
  STMap {
   inputs 2
   channels rgb
@@ -127,7 +126,6 @@ push 0
   xpos 447
   ypos 594
  }
-set N1dda5500 [stack 0]
  Output {
   name Output1
   xpos 447

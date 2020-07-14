@@ -1,11 +1,12 @@
-version 10.5 v6
+set cut_paste_input [stack 0]
+version 12.1 v4
 push $cut_paste_input
 Group {
  name ps_highPass
  tile_color 0x421010ff
  selected true
- xpos 1442
- ypos -4313
+ xpos -1058
+ ypos -141
  addUserKnob {20 User l template}
  addUserKnob {41 size T Blur4.size}
  addUserKnob {26 ""}
@@ -30,7 +31,7 @@ Group {
   xpos 447
   ypos 281
  }
-set N1bf82e00 [stack 0]
+set Nd6f1000 [stack 0]
  Blur {
   channels rgba
   size 20.6
@@ -39,7 +40,7 @@ set N1bf82e00 [stack 0]
   xpos 355
   ypos 340
  }
-push $N1bf82e00
+push $Nd6f1000
  Merge2 {
   inputs 2
   operation from
@@ -61,19 +62,9 @@ push $N1bf82e00
   xpos 447
   ypos 437
  }
-set N1c18b8b0 [stack 0]
  Output {
   name Output1
   xpos 447
   ypos 1055
- }
-push $N1c18b8b0
- Viewer {
-  frame_range 1001-1416
-  viewerProcess "Rodeo look (Rec709)"
-  name Viewer1
-  selected true
-  xpos 637
-  ypos 302
  }
 end_group

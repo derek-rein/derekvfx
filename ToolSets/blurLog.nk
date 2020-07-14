@@ -2,71 +2,51 @@ set cut_paste_input [stack 0]
 version 12.1 v4
 push $cut_paste_input
 Group {
- name radialDistort
+ name blurLog
  tile_color 0x421010ff
+ label "\[value size] px"
  selected true
- xpos -1126
- ypos 716
- addUserKnob {20 User l radialDistort}
- addUserKnob {7 rotation R -360 360}
- addUserKnob {7 gamma R 0 4}
- gamma 1.68
+ xpos -1075
+ ypos -15
+ addUserKnob {20 User l blurLog}
+ addUserKnob {41 channels T Blur1.channels}
+ addUserKnob {41 size T Blur1.size}
+ addUserKnob {41 filter T Blur1.filter}
+ addUserKnob {41 quality l "" -STARTLINE T Blur1.quality}
+ addUserKnob {41 crop l "crop to format" -STARTLINE T Blur1.crop}
+ addUserKnob {41 mix T Blur1.mix}
  addUserKnob {26 ""}
- addUserKnob {26 lbl l "" +STARTLINE T "RadialDistort v1.0"}
+ addUserKnob {26 lbl l "" +STARTLINE T "Blur Log v1.0"}
  addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
 }
  Input {
   inputs 0
   name Input
   xpos 447
-  ypos 60
+  ypos 59
  }
-set Nd732000 [stack 0]
- Multiply {
-  value 0
-  name Multiply1
-  label "\[value value]"
-  xpos 107
-  ypos 286
- }
- Expression {
-  temp_name0 radial
-  temp_expr0 "((atan(x - center.x, y - center.y) +radians(rotation) ) + pi()) / pi()/2"
-  temp_name1 offset
-  temp_expr1 "(radians(rotation) *-1 ) /pi()/2"
-  expr0 radial
-  expr1 "sqrt(((x-center.x)**2) + ((y-center.y)**2))/diag"
-  expr2 offset
-  expr3 0
-  name Expression3
-  label "\[knob expr3]"
-  xpos 107
-  ypos 336
-  addUserKnob {20 User}
-  addUserKnob {7 diag}
-  diag {{(sqrt(width**2+height**2)/2)}}
-  addUserKnob {12 center}
-  center {978 404}
- }
- Gamma {
-  channels {-rgba.red rgba.green -rgba.blue none}
-  value {{gamma}}
-  name Gamma1
-  xpos 107
-  ypos 444
- }
-push $Nd732000
- STMap {
-  inputs 2
-  channels rgba
-  uv rgb
-  name STMap3
+ Colorspace {
+  colorspace_out AlexaV3LogC
+  name Colorspace1
   xpos 447
-  ypos 574
+  ypos 203
+ }
+ Blur {
+  channels rgba
+  name Blur1
+  label "\[value size] px"
+  xpos 447
+  ypos 296
+ }
+ Colorspace {
+  colorspace_in AlexaV3LogC
+  name Colorspace2
+  xpos 447
+  ypos 353
  }
  Output {
   name Output1
-  xpos 456
-  ypos 1028
+  xpos 447
+  ypos 1055
  }
 end_group

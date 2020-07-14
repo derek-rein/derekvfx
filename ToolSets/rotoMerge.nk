@@ -2,71 +2,74 @@ set cut_paste_input [stack 0]
 version 12.1 v4
 push $cut_paste_input
 Group {
- name radialDistort
+ name rotoMerge
  tile_color 0x421010ff
  selected true
- xpos -1126
- ypos 716
- addUserKnob {20 User l radialDistort}
- addUserKnob {7 rotation R -360 360}
- addUserKnob {7 gamma R 0 4}
- gamma 1.68
+ xpos -1129
+ ypos 968
+ addUserKnob {20 User l rotoMerge}
+ addUserKnob {4 output l ouput M {Alpha RGBA "" ""}}
+ addUserKnob {6 red +STARTLINE}
+ addUserKnob {6 green +STARTLINE}
+ green true
+ addUserKnob {6 blue +STARTLINE}
+ blue true
+ addUserKnob {6 alpha +STARTLINE}
  addUserKnob {26 ""}
- addUserKnob {26 lbl l "" +STARTLINE T "RadialDistort v1.0"}
+ addUserKnob {26 lbl l "" +STARTLINE T "RotoMerge v1.0"}
  addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
 }
+ ChannelMerge {
+  inputs 0
+  name ChannelMerge1
+  xpos 254
+  ypos 309
+ }
  Input {
   inputs 0
   name Input
   xpos 447
-  ypos 60
+  ypos 61
  }
-set Nd732000 [stack 0]
- Multiply {
-  value 0
-  name Multiply1
-  label "\[value value]"
-  xpos 107
-  ypos 286
+set Ndf52000 [stack 0]
+ Expression {
+  expr0 "r * parent.red"
+  expr1 "g * parent.green"
+  expr2 "b * parent.blue"
+  expr3 "a * parent.alpha"
+  name Expression2
+  xpos 555
+  ypos 173
  }
  Expression {
-  temp_name0 radial
-  temp_expr0 "((atan(x - center.x, y - center.y) +radians(rotation) ) + pi()) / pi()/2"
-  temp_name1 offset
-  temp_expr1 "(radians(rotation) *-1 ) /pi()/2"
-  expr0 radial
-  expr1 "sqrt(((x-center.x)**2) + ((y-center.y)**2))/diag"
-  expr2 offset
-  expr3 0
-  name Expression3
-  label "\[knob expr3]"
-  xpos 107
-  ypos 336
-  addUserKnob {20 User}
-  addUserKnob {7 diag}
-  diag {{(sqrt(width**2+height**2)/2)}}
-  addUserKnob {12 center}
-  center {978 404}
+  temp_name0 rg
+  temp_expr0 "(r+g) - r*g"
+  temp_name1 ba
+  temp_expr1 "(b+a) - b*a"
+  temp_name2 out
+  temp_expr2 "(rg+ba) - rg*ba"
+  expr0 out
+  expr1 out
+  expr2 out
+  expr3 out
+  name Expression1
+  xpos 555
+  ypos 237
  }
- Gamma {
-  channels {-rgba.red rgba.green -rgba.blue none}
-  value {{gamma}}
-  name Gamma1
-  xpos 107
-  ypos 444
- }
-push $Nd732000
- STMap {
+push $Ndf52000
+ MergeExpression {
   inputs 2
-  channels rgba
-  uv rgb
-  name STMap3
+  expr0 "parent.output ? Aa : Br"
+  expr1 "parent.output  ? Aa : Bg"
+  expr2 "parent.output  ? Aa : Bb"
+  expr3 Aa
+  name MergeExpression1
   xpos 447
-  ypos 574
+  ypos 314
  }
  Output {
   name Output1
-  xpos 456
-  ypos 1028
+  xpos 447
+  ypos 1055
  }
 end_group

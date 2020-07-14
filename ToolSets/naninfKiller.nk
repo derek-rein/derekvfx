@@ -1,0 +1,151 @@
+set cut_paste_input [stack 0]
+version 12.1 v4
+push $cut_paste_input
+Group {
+ name naninfKiller
+ tile_color 0x421010ff
+ selected true
+ xpos -1173
+ ypos 1371
+ addUserKnob {20 User l nanKiller}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "Nan Inf Killer v1.0"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 447
+  ypos -18
+ }
+set Ndc44400 [stack 0]
+ Expression {
+  expr0 "isinf(r) || isnan(r)"
+  expr1 "isinf(g) || isnan(g)"
+  expr2 "isinf(b) || isnan(b)"
+  expr3 "isinf(a) || isnan(a)"
+  name Expression10
+  label "\[knob expr3]"
+  xpos 370
+  ypos 260
+ }
+ Expression {
+  expr3 max(r,g,b,a)
+  name Expression11
+  label "\[knob expr3]"
+  xpos 370
+  ypos 370
+ }
+set Ndc75c00 [stack 0]
+ Dot {
+  name Dot2
+  note_font_size 40
+  xpos 404
+  ypos 637
+ }
+push $Ndc75c00
+push $Ndc44400
+ Dot {
+  name Dot1
+  note_font_size 40
+  xpos 241
+  ypos 212
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 mask.a
+  name Copy1
+  xpos 207
+  ypos 370
+ }
+ Expression {
+  temp_name0 m
+  temp_expr0 mask.a
+  expr0 "m ? 0 : r"
+  expr1 "m ? 0 : g"
+  expr2 "m ? 0 : b"
+  expr3 "m ? 0 : a"
+  name Expression1
+  label "\[knob expr3]"
+  xpos 207
+  ypos 460
+ }
+set Ndc74c00 [stack 0]
+ Dot {
+  name Dot5
+  note_font_size 40
+  xpos 92
+  ypos 470
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle1
+  label "\[value in]"
+  xpos 58
+  ypos 552
+ }
+ MarkerRemoval {
+  mode radial
+  ctrlMask mask.a
+  name MarkerRemoval1
+  xpos 58
+  ypos 594
+ }
+ Dot {
+  name Dot4
+  note_font_size 40
+  xpos 92
+  ypos 663
+ }
+push $Ndc74c00
+ MarkerRemoval {
+  mode radial
+  ctrlMask mask.a
+  name MarkerRemoval2
+  xpos 207
+  ypos 542
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.alpha
+  name Copy2
+  xpos 207
+  ypos 653
+ }
+ Dot {
+  name Dot3
+  note_font_size 40
+  xpos 241
+  ypos 733
+ }
+push $Ndc44400
+ Merge2 {
+  inputs 2
+  operation copy
+  bbox B
+  name Merge1
+  xpos 447
+  ypos 729
+ }
+set Ndca0c00 [stack 0]
+ Output {
+  name Output1
+  xpos 447
+  ypos 804
+ }
+push $Ndca0c00
+ Viewer {
+  frame_range 1017-1092
+  colour_sample_bbox {0.8005697727 0.1044634357 0.8015194535 0.1054131091}
+  input_process false
+  gl_lighting true
+  name Viewer1
+  selected true
+  xpos 823
+  ypos 1061
+ }
+end_group

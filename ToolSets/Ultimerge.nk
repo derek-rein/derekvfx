@@ -1,12 +1,12 @@
 set cut_paste_input [stack 0]
-version 10.5 v6
+version 12.1 v4
 push $cut_paste_input
 Group {
- name Ultimerge4
+ name Ultimerge
  tile_color 0x421010ff
  selected true
- xpos 4542
- ypos 14794
+ xpos -1140
+ ypos 1066
  addUserKnob {20 User l Ultimerge}
  addUserKnob {26 blendEdges l "Blend Edges"}
  addUserKnob {41 size T Blur1.size}
@@ -42,20 +42,20 @@ Group {
   xpos 182
   ypos -219
  }
-set Nf7fda130 [stack 0]
+set Ndda2800 [stack 0]
  Dot {
   name Dot10
   note_font_size 40
   xpos 182
   ypos -47
  }
-set N6936dfb0 [stack 0]
+set Ndda2400 [stack 0]
  Unpremult {
   name Unpremult1
   xpos 148
   ypos 84
  }
-set N8af29cb0 [stack 0]
+set Ndda2000 [stack 0]
  Dot {
   name Dot9
   note_font_size 40
@@ -68,7 +68,7 @@ set N8af29cb0 [stack 0]
   xpos 391
   ypos 980
  }
-set N29afc2c0 [stack 0]
+set Nddcf800 [stack 0]
  Input {
   inputs 0
   name mask
@@ -76,7 +76,7 @@ set N29afc2c0 [stack 0]
   ypos 1018
   number 2
  }
-push $Nf7fda130
+push $Ndda2800
  Invert {
   name Invert1
   xpos -382
@@ -96,14 +96,14 @@ push $Nf7fda130
   xpos -183
   ypos -125
  }
-set N6063d770 [stack 0]
+set Nddce800 [stack 0]
  Colorspace {
   colorspace_out AlexaV3LogC
   name Colorspace3
   xpos -312
   ypos -119
  }
- set C98d24ec0 [stack 0]
+ set Cddce400 [stack 0]
  Copy {
   inputs 2
   from0 rgba.alpha
@@ -123,7 +123,7 @@ set N6063d770 [stack 0]
   xpos -348
   ypos 103
  }
-set Nd1da5b80 [stack 0]
+set Nddf3800 [stack 0]
  Dot {
   name Dot4
   note_font_size 40
@@ -149,7 +149,7 @@ set Nd1da5b80 [stack 0]
    xpos -762
    ypos -61
   }
-set N86ebd10 [stack 0]
+set Nddf2c00 [stack 0]
   Blur {
    channels rgba
    size {{parent.Blur2.size*16}}
@@ -157,7 +157,7 @@ set N86ebd10 [stack 0]
    xpos -796
    ypos 50
   }
-push $N86ebd10
+push $Nddf2c00
   Blur {
    channels rgba
    size {{parent.Blur2.size*8}}
@@ -165,7 +165,7 @@ push $N86ebd10
    xpos -900
    ypos 49
   }
-push $N86ebd10
+push $Nddf2c00
   Blur {
    channels rgba
    size {{parent.Blur2.size*4}}
@@ -174,7 +174,7 @@ push $N86ebd10
    ypos 42
   }
 push 0
-push $N86ebd10
+push $Nddf2c00
   Blur {
    channels rgba
    size {{parent.Blur2.size*2}}
@@ -182,8 +182,8 @@ push $N86ebd10
    xpos -1092
    ypos 46
   }
-push $N86ebd10
-push $N86ebd10
+push $Nddf2c00
+push $Nddf2c00
   Blur {
    inputs 1+1
    channels rgba
@@ -212,7 +212,7 @@ push $N86ebd10
   xpos -533
   ypos 928
  }
-push $Nd1da5b80
+push $Nddf3800
  Group {
   name Group2
   xpos -382
@@ -232,7 +232,7 @@ push $Nd1da5b80
    xpos -762
    ypos -61
   }
-set Naf7f4480 [stack 0]
+set Nde1e400 [stack 0]
   Blur {
    channels rgba
    size {{parent.Blur2.size*16}}
@@ -240,7 +240,7 @@ set Naf7f4480 [stack 0]
    xpos -796
    ypos 50
   }
-push $Naf7f4480
+push $Nde1e400
   Blur {
    channels rgba
    size {{parent.Blur2.size*8}}
@@ -248,7 +248,7 @@ push $Naf7f4480
    xpos -900
    ypos 49
   }
-push $Naf7f4480
+push $Nde1e400
   Blur {
    channels rgba
    size {{parent.Blur2.size*4}}
@@ -257,7 +257,7 @@ push $Naf7f4480
    ypos 42
   }
 push 0
-push $Naf7f4480
+push $Nde1e400
   Blur {
    channels rgba
    size {{parent.Blur2.size*2}}
@@ -265,8 +265,8 @@ push $Naf7f4480
    xpos -1092
    ypos 46
   }
-push $Naf7f4480
-push $Naf7f4480
+push $Nde1e400
+push $Nde1e400
   Blur {
    inputs 1+1
    channels rgba
@@ -305,23 +305,23 @@ push $Naf7f4480
   xpos -382
   ypos 616
  }
-set Nc6138430 [stack 0]
+set Nde4e000 [stack 0]
  Dot {
   name Dot3
   note_font_size 40
   xpos -348
   ypos 785
  }
-push $Nc6138430
-push $N6936dfb0
+push $Nde4e000
+push $Ndda2400
  Dot {
   name Dot11
   note_font_size 40
   xpos 45
   ypos -47
  }
-set Nd6ba8670 [stack 0]
-push $N6063d770
+set Ndeb9800 [stack 0]
+push $Nddce800
  Merge2 {
   inputs 2
   operation stencil
@@ -336,7 +336,7 @@ push $N6063d770
   xpos -183
   ypos 52
  }
- set Ceececc90 [stack 0]
+ set Cdeb9000 [stack 0]
  Blur {
   channels rgba
   size 100
@@ -345,20 +345,20 @@ push $N6063d770
   xpos -183
   ypos 78
  }
- set C10d22bd0 [stack 0]
+ set Cdeb8c00 [stack 0]
  Colorspace {
   colorspace_in AlexaV3LogC
   name Colorspace2
   xpos -183
   ypos 116
  }
- set C10d23610 [stack 0]
+ set Cdeb8800 [stack 0]
  Unpremult {
   name Unpremult2
   xpos -183
   ypos 159
  }
-set Nf9cbcf30 [stack 0]
+set Ndeb8400 [stack 0]
  Expression {
   expr3 4*(1-a)*a
   name Expression1
@@ -372,19 +372,19 @@ set Nf9cbcf30 [stack 0]
   xpos -149
   ypos 333
  }
-push $Nf9cbcf30
-push $Nd6ba8670
-clone $Ceececc90 {
+push $Ndeb8400
+push $Ndeb9800
+clone $Cdeb9000 {
   xpos 11
   ypos 47
   selected false
  }
-clone $C10d22bd0 {
+clone $Cdeb8c00 {
   xpos 11
   ypos 73
   selected false
  }
-clone $C10d23610 {
+clone $Cdeb8800 {
   xpos 11
   ypos 111
   selected false
@@ -403,7 +403,7 @@ clone $C10d23610 {
   xpos 11
   ypos 215
  }
-push $N8af29cb0
+push $Ndda2000
  Merge2 {
   inputs 2+1
   operation multiply
@@ -414,10 +414,10 @@ push $N8af29cb0
   xpos 148
   ypos 329
  }
-clone $C98d24ec0 {
+clone $Cddce400 {
   xpos 148
   ypos 389
-  selected false
+  selected true
  }
  Dot {
   name Dot7
@@ -425,7 +425,7 @@ clone $C98d24ec0 {
   xpos 182
   ypos 442
  }
-set N14d7f890 [stack 0]
+set Ndf27c00 [stack 0]
  Dot {
   name Dot12
   note_font_size 40
@@ -448,7 +448,7 @@ set N14d7f890 [stack 0]
   xpos 25
   ypos 616
  }
-push $N14d7f890
+push $Ndf27c00
  Keymix {
   inputs 3
   channels rgb
@@ -472,7 +472,7 @@ push $N14d7f890
   xpos 148
   ypos 966
  }
-push $N29afc2c0
+push $Nddcf800
  Dot {
   name Dot13
   note_font_size 40
@@ -485,11 +485,10 @@ push $N29afc2c0
   which 1
   name Dissolve1
   label "\[value which]"
-  selected true
   xpos 148
   ypos 1103
  }
-set N29f4f160 [stack 0]
+set Ndf53c00 [stack 0]
  Merge2 {
   inputs 2
   operation from
@@ -505,7 +504,7 @@ set N29f4f160 [stack 0]
   xpos 391
   ypos 1190
  }
-push $N29f4f160
+push $Ndf53c00
  Switch {
   inputs 2
   which {{effectOnly}}

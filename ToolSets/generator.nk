@@ -1,0 +1,374 @@
+set cut_paste_input [stack 0]
+version 12.1 v4
+Group {
+ inputs 0
+ name generator
+ tile_color 0x421010ff
+ selected true
+ xpos -1126
+ ypos 667
+ addUserKnob {20 User l generator}
+ addUserKnob {41 format T Constant1.format}
+ addUserKnob {4 mode M {dot hline vline radial circle vignette ""}}
+ mode radial
+ addUserKnob {12 pos l position}
+ pos {966 468}
+ addUserKnob {22 center -STARTLINE T "f = nuke.root().format()\nnuke.thisNode().knob('pos').setValue((f.width()/2, f.height()/2))"}
+ addUserKnob {26 ""}
+ addUserKnob {6 color_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {41 outgray l hue T HueShift1.outgray}
+ addUserKnob {7 div R 0.0001 1}
+ div 1
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" t "October 17, 2019 - Created\nOctober 22, 2019 - Add extra features\nOctober 23, 2019 - Renamed Generator from DotGen" +STARTLINE T "Generator v1.1"}
+ addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+ Constant {
+  inputs 0
+  name Constant1
+  xpos 447
+  ypos -58
+ }
+ Dot {
+  name Dot9
+  note_font_size 40
+  xpos 481
+  ypos 59
+ }
+set Nd920c00 [stack 0]
+ Dot {
+  name Dot2
+  note_font_size 40
+  xpos 77
+  ypos 59
+ }
+set Nd920800 [stack 0]
+ Dot {
+  name Dot3
+  note_font_size 40
+  xpos -123
+  ypos 59
+ }
+set Nd920400 [stack 0]
+ Dot {
+  name Dot4
+  note_font_size 40
+  xpos -323
+  ypos 59
+ }
+set Nd920000 [stack 0]
+ Dot {
+  name Dot5
+  note_font_size 40
+  xpos -523
+  ypos 59
+ }
+ Dot {
+  name Dot8
+  note_font_size 40
+  xpos -523
+  ypos 470
+ }
+push $Nd920000
+ Expression {
+  temp_name0 zz
+  temp_expr0 "sqrt((x-pos.x)**2 + (y-pos.y)**2)"
+  temp_name1 remap
+  temp_expr1 1/(((zz/diag)**2)+1)
+  temp_name3 out
+  temp_expr3 remap
+  expr0 out
+  expr1 out
+  expr2 out
+  name Expression4
+  label "\[knob expr3]"
+  xpos -357
+  ypos 207
+  addUserKnob {20 User}
+  addUserKnob {7 diag}
+  diag {{"sqrt(width**2 + height**2)"}}
+ }
+ Dot {
+  name Dot7
+  note_font_size 40
+  xpos -323
+  ypos 470
+ }
+push $Nd920400
+ Dot {
+  name Dot6
+  note_font_size 40
+  xpos -123
+  ypos 470
+ }
+push $Nd920800
+ Expression {
+  temp_name0 zz
+  temp_expr0 "sqrt((x-pos.x)**2 + (y-pos.y)**2)"
+  temp_name3 out
+  temp_expr3 zz/diag
+  expr0 out
+  expr1 out
+  expr2 out
+  name Expression3
+  label "\[knob expr3]"
+  xpos 43
+  ypos 183
+  addUserKnob {20 User}
+  addUserKnob {7 diag}
+  diag {{"sqrt(width**2 + height**2)"}}
+ }
+ Dot {
+  name Dot1
+  note_font_size 40
+  xpos 77
+  ypos 470
+ }
+push $Nd920c00
+ Expression {
+  temp_name0 dot
+  temp_expr0 "x == int(pos.x)"
+  temp_name1 out
+  temp_expr1 dot/div
+  expr0 out
+  expr1 out
+  expr2 out
+  expr3 dot
+  name Expression6
+  label "\[knob temp_expr0]"
+  xpos 177
+  ypos 132
+ }
+push $Nd920c00
+ Expression {
+  temp_name0 dot
+  temp_expr0 "y == int(pos.y)"
+  temp_name1 out
+  temp_expr1 dot/div
+  expr0 out
+  expr1 out
+  expr2 out
+  expr3 dot
+  name Expression5
+  label "\[knob temp_expr0]"
+  xpos 317
+  ypos 130
+ }
+push $Nd920c00
+ Expression {
+  temp_name0 dot
+  temp_expr0 "x == int(pos.x) && y == int(pos.y)"
+  temp_name1 out
+  temp_expr1 dot/div
+  expr0 out
+  expr1 out
+  expr2 out
+  expr3 dot
+  name Expression2
+  label "\[knob temp_expr0]"
+  xpos 447
+  ypos 130
+ }
+ Switch {
+  inputs 3
+  which {{mode}}
+  name Switch2
+  label "\[value which]"
+  xpos 447
+  ypos 221
+ }
+ HueShift {
+  outgray 0.288
+  name HueShift1
+  xpos 447
+  ypos 271
+ }
+ Expression {
+  expr0 r/div
+  expr1 g/div
+  expr2 b/div
+  name Expression1
+  label "\[knob expr3]"
+  xpos 447
+  ypos 316
+ }
+set Nd974c00 [stack 0]
+ Dot {
+  name Dot11
+  note_font_size 40
+  xpos 328
+  ypos 389
+ }
+push $Nd974c00
+ Dot {
+  name Dot10
+  note_font_size 40
+  xpos 419
+  ypos 389
+ }
+push $Nd974c00
+ Switch {
+  inputs 7
+  which {{mode}}
+  name Switch1
+  label "\[value which]"
+  xpos 447
+  ypos 460
+ }
+ Output {
+  name Output1
+  xpos 447
+  ypos 1055
+ }
+ Group {
+  inputs 0
+  name vignette
+  tile_color 0x421010ff
+  xpos 911
+  ypos 122
+  addUserKnob {20 User l vignette}
+  addUserKnob {4 priority M {"highlight priority" "color priority" "" "" ""}}
+  addUserKnob {7 amount R -1 1}
+  amount -0.4
+  addUserKnob {7 midpoint R -1 1}
+  addUserKnob {7 roundness R -1 1}
+  addUserKnob {7 feather}
+  feather 0.2
+  addUserKnob {7 highlights l "highlight recovery"}
+  highlights 0.2
+  addUserKnob {26 ""}
+  addUserKnob {26 lbl l "" +STARTLINE T "Vignette v1.3"}
+  addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name Input
+   xpos 447
+   ypos 61
+  }
+set Nd9a3800 [stack 0]
+push $Nd9a3800
+  Dot {
+   name Dot4
+   xpos 239
+   ypos 178
+  }
+set Nd9a3400 [stack 0]
+  Dot {
+   name Dot5
+   xpos -13
+   ypos 178
+  }
+set Nd9a3000 [stack 0]
+  Colorspace {
+   colorspace_out Cineon
+   name Colorspace1
+   xpos -170
+   ypos 239
+  }
+  Expression {
+   temp_name0 avg
+   temp_expr0 (r+g+b)/3
+   expr3 smoothstep(1/avg,0,pow(highlights,2.4))
+   name Expression2
+   xpos -170
+   ypos 305
+  }
+push $Nd9a3000
+  Expression {
+   temp_name0 radial
+   temp_expr0 "sqrt((x*round-(w*round)/2)**2 + ((y/round)/pax-((h/round)/pax)/2)**2)/diagonal"
+   temp_name1 remap
+   temp_expr1 lerp(clamp(smoothstep(mp,1,radial)),clamp(lerp(0,1-mp,radial)),feather)
+   temp_name2 profile
+   temp_expr2 1/(((remap)**2)+1)
+   temp_name3 o
+   temp_expr3 lerp(profile,profile*-1+2,(amount*2+1)/2)
+   expr0 o
+   expr1 o
+   expr2 o
+   expr3 remap
+   name Expression1
+   xpos -47
+   ypos 283
+   addUserKnob {20 User}
+   addUserKnob {7 round l roundness}
+   round {{lerp(-1,.9,1,1.1,roundness)}}
+   addUserKnob {7 mp}
+   mp {{lerp(-1,0,1,1,midpoint)}}
+   addUserKnob {7 le l "long edge"}
+   le {{"(w >= h ? w : h)"}}
+   addUserKnob {7 diagonal R 0 4000}
+   diagonal {{(sqrt(w**2+h**2)/2)}}
+   addUserKnob {7 aspect R 0.5 2.5}
+   aspect {{input.width/input.height}}
+   addUserKnob {7 w R 0 4000}
+   w {{input.width}}
+   addUserKnob {7 h R 0 4000}
+   h {{input.height}}
+   addUserKnob {7 pax R 0 2}
+   pax {{input.pixel_aspect}}
+  }
+push $Nd9a3400
+  Merge2 {
+   inputs 2+1
+   operation multiply
+   output {rgba.red rgba.green rgba.blue -rgba.alpha}
+   name Merge1
+   xpos -47
+   ypos 416
+  }
+set Nd9a2000 [stack 0]
+  Colorspace {
+   colorspace_out CIE-LCH
+   name Colorspace2
+   xpos 94
+   ypos 590
+  }
+  set Cd9dbc00 [stack 0]
+push $Nd9a3400
+clone $Cd9dbc00 {
+   xpos 205
+   ypos 589
+   selected false
+  }
+  Copy {
+   inputs 2
+   from0 rgba.red
+   to0 rgba.red
+   name Copy1
+   xpos 205
+   ypos 666
+  }
+  Colorspace {
+   colorspace_in CIE-LCH
+   name Colorspace3
+   xpos 205
+   ypos 725
+  }
+push $Nd9a2000
+  Dot {
+   name Dot1
+   xpos -13
+   ypos 913
+  }
+  Switch {
+   inputs 2
+   which {{priority}}
+   name Switch1
+   xpos 205
+   ypos 909
+  }
+  CopyBBox {
+   inputs 2
+   name CopyBBox1
+   xpos 447
+   ypos 997
+  }
+  Output {
+   name Output1
+   xpos 447
+   ypos 1055
+  }
+ end_group
+end_group
