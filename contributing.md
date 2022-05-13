@@ -13,7 +13,7 @@ This repo is using github to host code, to track issues and feature requests, as
 ## Any contributions you make will be under the MIT Software License
 In short, when you submit code changes, your submissions are understood to be under the same [MIT License](http://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
 
-## Report bugs using Github's [issues](https://github.com/briandk/transcriptase-atom/issues)
+## Report bugs using Github's [issues](https://github.com/DerekRein/derekvfx/issues)
 Use GitHub issues to track public bugs. Report a bug by [opening a new issue](); it's that easy!
 
 **Great Bug Reports** tend to have:

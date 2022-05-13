@@ -1,8 +1,6 @@
 # DerekVFX Nuke Tools
 
-Nuke settings and toolsets 
-
-
+Nuke settings and toolsets. This repo is designed to get a stock nuke installation up to speed
 
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 
@@ -22,6 +20,12 @@ Clone the entire repository into your `~/.nuke` folder. Or copy out specific ite
 
 ```
 git clone https://github.com/DerekRein/derekvfx ~/.nuke
+```
+
+## Updating
+
+```
+git pull origin main
 ```
     
 ## Contributing
