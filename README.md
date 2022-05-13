@@ -1,6 +1,6 @@
 # DerekVFX Nuke Tools
 
-Nuke settings and toolsets
+Nuke settings and toolsets 
 
 
 
@@ -12,7 +12,7 @@ Nuke settings and toolsets
 
 - Node Presets
 - Toolsets
-- Node Presets
+- Python Scripts
 - Sensible Node Defaults
 
 
