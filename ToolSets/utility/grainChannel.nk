@@ -1,0 +1,92 @@
+set cut_paste_input [stack 0]
+version 12.1 v5
+push 0
+push $cut_paste_input
+Group {
+ inputs 2
+ name grainChannel
+ selected true
+ xpos -737
+ ypos -4476
+}
+ Input {
+  inputs 0
+  name denoise
+  xpos -694
+  ypos -387
+  number 1
+ }
+ Remove {
+  operation keep
+  channels rgba
+  name Remove1
+  xpos -694
+  ypos -361
+ }
+set N11dc5f60 [stack 0]
+add_layer {plate_denoise plate_denoise.red plate_denoise.green plate_denoise.blue plate_denoise.alpha}
+ Shuffle {
+  out plate_denoise
+  name Shuffle2
+  xpos -694
+  ypos -213
+ }
+push $N11dc5f60
+ Input {
+  inputs 0
+  name plate
+  xpos -524
+  ypos -392
+ }
+set N1276e860 [stack 0]
+ Merge2 {
+  inputs 2
+  operation from
+  name Merge1
+  xpos -629
+  ypos -306
+ }
+add_layer {grain grain.red grain.green grain.blue grain.alpha}
+ Shuffle {
+  out grain
+  name Shuffle3
+  xpos -629
+  ypos -262
+ }
+push $N1276e860
+ Copy {
+  inputs 2
+  channels grain
+  name Copy1
+  xpos -524
+  ypos -245
+ }
+add_layer {plate_original plate_original.red plate_original.green plate_original.blue plate_original.alpha}
+ Shuffle {
+  green2 black
+  out plate_original
+  name Shuffle1
+  xpos -524
+  ypos -182
+ }
+ Merge2 {
+  inputs 2
+  operation copy
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  also_merge all
+  name Merge2
+  xpos -524
+  ypos -113
+ }
+ Shuffle {
+  alpha black
+  name Shuffle4
+  xpos -524
+  ypos -87
+ }
+ Output {
+  name Output1
+  xpos -524
+  ypos -37
+ }
+end_group
