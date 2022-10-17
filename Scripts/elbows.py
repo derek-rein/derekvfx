@@ -1,8 +1,21 @@
+# -*- coding: utf-8 -*-
+"""
+Nuke Elbows
+
+This script create right angle 'elbows' with the dot node.
+
+Installation: 
+Add the following to menu.py
+
+$ import elbows
+$ nuke.menu("Nuke").addCommand('Scripts/Elbows', 'elbows.main()', "shift+alt+e")
+
+"""
+
+
 import nuke
 
-# ADD THE FOLLOWING TO menu.py
-#import elbows
-#nuke.menu("Nuke").addCommand('Scripts/Elbows', 'elbows.main()', "shift+alt+e")
+
 
 def nodeHasMask(node):
     return node.knobs().has_key('maskChannelMask')

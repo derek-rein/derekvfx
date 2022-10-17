@@ -1,6 +1,7 @@
 #default settings
 import nuke
 
+
 # TIME
 nuke.knobDefault("FrameRange.label", "[value knob.first_frame] - [value knob.last_frame]")
 nuke.knobDefault("TimeBlur.shutteroffset", "centered")
