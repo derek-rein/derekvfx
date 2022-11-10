@@ -32,9 +32,7 @@ git pull origin main
 
 Contributions are always welcome!
 
-See `contributing.md` for ways to get started.
-
-Please adhere to this project's `code of conduct`.
+Hit <kbd>.</kbd> on your keyboard to open up VSCode in your browser to make changes and contributions.
 
 
 ## Authors
