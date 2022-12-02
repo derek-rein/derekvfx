@@ -16,10 +16,13 @@ Nuke settings and toolsets. This repo is designed to get a stock nuke installati
 
 ## Installation
 
-Clone the entire repository into your `~/.nuke` folder. Or copy out specific items that you want.
+Clone the entire repository into your `~/.nuke` folder.
 
 ```
-git clone https://github.com/DerekRein/derekvfx ~/.nuke
+cd ~./nuke
+git init
+git remote add origin https://github.com/derek-rein/derekvfx.git
+git pull origin main
 ```
 
 ## Updating
