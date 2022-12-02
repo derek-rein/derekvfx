@@ -1,1 +1,13 @@
 .idea
+
+*.pyc
+*.dat
+*.ini
+**/__pycache__
+
+Workspaces/**/*
+
+recent_files
+preferences*.nk
+FileChooser_Favorites.pref
+ScriptEditorHistory.xml
