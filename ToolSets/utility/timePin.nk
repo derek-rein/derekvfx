@@ -1,0 +1,40 @@
+set cut_paste_input [stack 0]
+version 13.2 v4
+push $cut_paste_input
+Group {
+ name timePin
+ tile_color 0x421010ff
+ selected true
+ xpos -237
+ ypos -175
+ addUserKnob {20 User l timePin}
+ addUserKnob {3 frame_from l from}
+ frame_from 19
+ addUserKnob {22 set_current_to l "Current Frame" -STARTLINE T "nuke.thisNode()\['frame_from'].setValue(nuke.frame())"}
+ addUserKnob {3 frame_to l to t "nuke.thisNode()\['frame_to'].setValue(nuke.frame())"}
+ frame_to 30
+ addUserKnob {22 set_current_from l "Current Frame" -STARTLINE T "nuke.thisNode()\['frame_to'].setValue(nuke.frame())"}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 label_1 l "" +STARTLINE T "Time Pin v1.0"}
+ addUserKnob {22 website l DerekVFX.ca +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -218
+  ypos -215
+ }
+ TimeOffset {
+  time_offset {{"frame_to - frame_from "}}
+  time ""
+  name TimeOffset1
+  selected true
+  xpos -218
+  ypos -191
+ }
+ Output {
+  name Output1
+  xpos -184
+  ypos -75
+ }
+end_group
