@@ -2,10 +2,6 @@
 
 Nuke settings and toolsets. This repo is designed to get a stock nuke installation up to speed
 
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
-
-
-
 ## Features
 
 - Node Presets
