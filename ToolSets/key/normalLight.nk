@@ -1,0 +1,67 @@
+set cut_paste_input [stack 0]
+version 12.1 v5
+push $cut_paste_input
+Group {
+name normalLight
+tile_color 0x421010ff
+selected true
+xpos -14855
+ypos 33563
+addUserKnob {20 User l normalLight}
+addUserKnob {41 in l "normal layer" T Shuffle18.in}
+addUserKnob {41 rotate T Axis1.rotate}
+addUserKnob {26 ""}
+addUserKnob {26 lbl l "" +STARTLINE T "Normal Light v1.0"}
+addUserKnob {22 btn l DerekVFX.ca T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.derekvfx.ca/')" +STARTLINE}
+}
+Axis2 {
+inputs 0
+rotate {0 229 0}
+name Axis1
+xpos 612
+ypos 316
+}
+Input {
+inputs 0
+name Input
+xpos 447
+ypos 61
+}
+Shuffle {
+name Shuffle18
+label "\[value in]"
+selected true
+xpos 447
+ypos 328
+}
+ColorMatrix {
+matrix {
+    {{parent.Axis1.world_matrix} {parent.Axis1.world_matrix} {parent.Axis1.world_matrix}}
+    {{parent.Axis1.world_matrix} {parent.Axis1.world_matrix} {parent.Axis1.world_matrix}}
+    {{parent.Axis1.world_matrix} {parent.Axis1.world_matrix} {parent.Axis1.world_matrix}}
+  }
+name ColorMatrix1
+xpos 447
+ypos 403
+}
+Shuffle {
+green red
+blue red
+alpha red
+name Shuffle1
+label "\[value in]"
+xpos 447
+ypos 429
+}
+Clamp {
+channels rgb
+name Clamp1
+xpos 447
+ypos 479
+}
+Output {
+name Output1
+xpos 447
+ypos 1055
+}
+end_group
