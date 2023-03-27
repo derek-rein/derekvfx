@@ -2,6 +2,11 @@
 
 Nuke settings and toolsets. This repo is designed to get a stock nuke installation up to speed
 
+![GitHub](https://img.shields.io/github/license/derek-rein/derekvfx)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/derek-rein/derekvfx)
+![GitHub last commit](https://img.shields.io/github/last-commit/derek-rein/derekvfx)
+![GitHub Repo stars](https://img.shields.io/github/stars/derek-rein/derekvfx?style=social)
+
 ## Features
 
 - Node Presets
