@@ -1,2 +1,3 @@
 # Node defaults for Nuke
-import defaults
+from user_defaults import nodeDefaultsStartup
+nodeDefaultsStartup()
