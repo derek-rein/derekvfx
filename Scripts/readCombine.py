@@ -2,7 +2,7 @@ import nuke
 import re
 from collections import OrderedDict
 
-def multi_channel_combine():
+def multi_read_combine():
     images = nuke.selectedNodes('Read')
     if len(images) < 2:
         nuke.message("Please select at least 2 Read Nodes")
