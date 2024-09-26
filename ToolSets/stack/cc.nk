@@ -1,0 +1,44 @@
+set cut_paste_input [stack 0]
+version 13.0 v1
+push $cut_paste_input
+Dot {
+name Dot38
+selected true
+xpos -1784
+ypos 4311
+}
+set Ncf0f5600 [stack 0]
+Dot {
+name Dot40
+selected true
+xpos -2066
+ypos 4311
+}
+Dot {
+name Dot41
+selected true
+xpos -2067
+ypos 4369
+}
+Dot {
+name Dot42
+selected true
+xpos -1933
+ypos 4369
+}
+Dot {
+name Dot43
+selected true
+xpos -1933
+ypos 4564
+}
+push $Ncf0f5600
+Keymix {
+inputs 2
+channels rgba
+bbox B
+name Keymix2
+selected true
+xpos -1818
+ypos 4560
+}
