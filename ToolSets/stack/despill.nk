@@ -1,0 +1,161 @@
+set cut_paste_input [stack 0]
+version 13.0 v1
+push $cut_paste_input
+Dot {
+ name Dot24
+ selected true
+ xpos 7716
+ ypos -4862
+}
+set N51135600 [stack 0]
+Dot {
+ name Dot25
+ selected true
+ xpos 7384
+ ypos -4862
+}
+add_layer {plate_denoise plate_denoise.red plate_denoise.green plate_denoise.blue plate_denoise.alpha}
+Shuffle {
+ in plate_denoise
+ alpha white
+ name ShuffleOld2
+ label "\[value in]"
+ selected true
+ xpos 7350
+ ypos -4820
+}
+set N51134800 [stack 0]
+OFXuk.co.thefoundry.keylight.keylight_v201 {
+ show "Final Result"
+ unPreMultiply false
+ screenColour {0.0280456543 0.03671264648 0.267578125}
+ screenGain 1
+ screenBalance 0.95
+ alphaBias {0.5 0.5 0.5}
+ despillBias {0.5 0.5 0.5}
+ gangBiases true
+ preBlur 0
+ "Screen Matte" 0
+ screenClipMin 0
+ screenClipMax 1
+ screenClipRollback 0
+ screenGrowShrink 0
+ screenSoftness 0
+ screenDespotBlack 0
+ screenDespotWhite 0
+ screenReplaceMethod "Soft Colour"
+ screenReplaceColour {0.5 0.5 0.5}
+ Tuning 0
+ midPoint 0.5
+ lowGain 1
+ midGain 1
+ highGain 1
+ "Inside Mask" 1
+ sourceAlphaHandling "Add To Inside Mask"
+ insideReplaceMethod "Soft Colour"
+ insideReplaceColour {0.5 0.5 0.5}
+ Crops 0
+ SourceXMethod Colour
+ SourceYMethod Colour
+ SourceEdgeColour 0
+ SourceCropL 0
+ SourceCropR 1
+ SourceCropB 0
+ SourceCropT 1
+ balanceSet false
+ insideComponent None
+ outsideComponent None
+ cacheBreaker true
+ name Keylight3
+ selected true
+ xpos 7177
+ ypos -4733
+}
+push $N51134800
+Group {
+ inputs 2
+ name mergeAlt
+ tile_color 0x421010ff
+ selected true
+ xpos 7350
+ ypos -4689
+ addUserKnob {20 mergeAlt}
+ addUserKnob {4 operation l "" +STARTLINE M {color}}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 lbl l "" +STARTLINE T "Merge Alt v1.0"}
+ addUserKnob {22 btn l DerekVFX.ca T "nuke.tcl('start', 'https://derekvfx.ca')" +STARTLINE}
+}
+ Dot {
+  inputs 0
+  name Dot4
+  xpos 1008
+  ypos -747
+ }
+ Input {
+  inputs 0
+  name B
+  xpos 725
+  ypos -573
+ }
+ Colorspace {
+  colorspace_out CIE-LCH
+  name Colorspace8
+  xpos 725
+  ypos -369
+ }
+ Input {
+  inputs 0
+  name A
+  xpos 488
+  ypos -575
+  number 1
+ }
+ Colorspace {
+  colorspace_out CIE-LCH
+  name Colorspace9
+  xpos 488
+  ypos -373
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  name ShuffleCopy3
+  xpos 725
+  ypos -309
+ }
+ Colorspace {
+  colorspace_in CIE-LCH
+  name Colorspace10
+  xpos 725
+  ypos -270
+ }
+ Output {
+  name Output1
+  xpos 725
+  ypos -110
+ }
+end_group
+add_layer {plate_despill plate_despill.red plate_despill.green plate_despill.blue plate_despill.alpha}
+Shuffle {
+ out plate_despill
+ name ShuffleOld3
+ label "\[value in]"
+ selected true
+ xpos 7350
+ ypos -4572
+}
+Dot {
+ name Dot26
+ selected true
+ xpos 7384
+ ypos -4478
+}
+push $N51135600
+Copy {
+ inputs 2
+ channels plate_despill
+ name Copy4
+ selected true
+ xpos 7682
+ ypos -4494
+}

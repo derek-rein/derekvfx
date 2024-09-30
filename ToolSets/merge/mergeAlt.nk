@@ -1,0 +1,67 @@
+set cut_paste_input [stack 0]
+version 13.0 v1
+push $cut_paste_input
+push 0
+Group {
+ inputs 2
+ name mergeAlt
+ tile_color 0x421010ff
+ selected true
+ xpos 7350
+ ypos -4689
+ addUserKnob {20 mergeAlt}
+ addUserKnob {4 operation l "" +STARTLINE M {color}}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 lbl l "" +STARTLINE T "Merge Alt v1.0"}
+ addUserKnob {22 btn l DerekVFX.ca T "nuke.tcl('start', 'https://derekvfx.ca')" +STARTLINE}
+}
+ Dot {
+  inputs 0
+  name Dot4
+  xpos 1008
+  ypos -747
+ }
+ Input {
+  inputs 0
+  name B
+  xpos 725
+  ypos -573
+ }
+ Colorspace {
+  colorspace_out CIE-LCH
+  name Colorspace8
+  xpos 725
+  ypos -369
+ }
+ Input {
+  inputs 0
+  name A
+  xpos 488
+  ypos -575
+  number 1
+ }
+ Colorspace {
+  colorspace_out CIE-LCH
+  name Colorspace9
+  xpos 488
+  ypos -373
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  name ShuffleCopy3
+  xpos 725
+  ypos -309
+ }
+ Colorspace {
+  colorspace_in CIE-LCH
+  name Colorspace10
+  xpos 725
+  ypos -270
+ }
+ Output {
+  name Output1
+  xpos 725
+  ypos -110
+ }
+end_group
