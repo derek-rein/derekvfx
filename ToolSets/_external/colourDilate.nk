@@ -1,516 +1,502 @@
 set cut_paste_input [stack 0]
-version 9.0 v5
-push $cut_paste_input
+version 13.0 v1
 push $cut_paste_input
 Group {
-inputs 2
-name ColourDilate5
-selected true
-xpos -1589
-ypos 1882
-addUserKnob {20 User l fColourDilate}
-addUserKnob {14 blurGrain l "Blur Grain" t "Preblur the image to\nsmooth out grain if necessary" R 0 100}
-addUserKnob {14 growTexture l "Grow Texture" t "Expands the texture\nout from pure white pixels in the matte.  Values can go above 100." R 0 100}
-growTexture 67
-addUserKnob {14 shrinkMatte l "Shrink Matte" t "Adjusts the point\nfrom which the texture grows.  Values are not constrained to +-20." R -20 20}
-shrinkMatte 3
-addUserKnob {7 alphaToWhite l "Alpha To White" t "Lifts the alpha to\nwhite" R 0 0.99999}
-addUserKnob {4 quality l Quality M {fast better best "" ""}}
-quality best
-addUserKnob {26 "" -STARTLINE T "             "}
-addUserKnob {6 invertMatte l "Invert Matte" -STARTLINE}
-invertMatte true
-}
-Input {
-inputs 0
-name Mask
-xpos 1025
-ypos 42
-number 1
-}
-Dot {
-name Dot1
-xpos 1059
-ypos 177
-}
-set N3d5d0800 [stack 0]
-Dot {
-name Dot2
-xpos 949
-ypos 177
-}
-Invert {
-channels rgba
-name Invert1
-xpos 915
-ypos 211
-}
-push $N3d5d0800
-Switch {
-inputs 2
-which {{invertMatte i}}
-name Switch1
-xpos 1025
-ypos 211
-}
-Grade {
-channels alpha
-whitepoint {{1-alphaToWhite i}}
-white_clamp true
-name Grade1
-xpos 1025
-ypos 258
-}
-FilterErode {
-channels rgba
-size {{-shrinkMatte.w} {-shrinkMatte.h}}
-name FilterErode1
-xpos 1025
-ypos 321
-}
-Grade {
-channels alpha
-whitepoint 0.99
-black_clamp false
-white_clamp true
-name Grade6
-xpos 1025
-ypos 368
-}
-set N3d5a2c00 [stack 0]
-Dot {
-name Dot4
-xpos 1059
-ypos 932
-}
-push $N3d5a2c00
-Input {
-inputs 0
-name RGB
-xpos -317
-ypos 108
-}
-Shuffle {
-alpha white
-name Shuffle1
-xpos -317
-ypos 279
-}
-Blur {
-channels rgba
-size {{blurGrain.w i} {blurGrain.h i}}
-maskChannelMask -rgba.alpha
-name Blur1
-xpos -317
-ypos 376
-}
-set N3d5b5c00 [stack 0]
-Merge2 {
-inputs 2
-operation stencil
-name Merge1
-xpos -135
-ypos 376
-}
-Dot {
-name Dot3
-xpos -101
-ypos 423
-}
-set N3d5b5400 [stack 0]
-Blur {
-channels rgba
-size {{growTexture.w i} {growTexture.h i}}
-maskChannelMask -rgba.alpha
-name Blur2
-xpos -135
-ypos 457
-}
-set N3d5b5000 [stack 0]
-Unpremult {
-name Unpremult1
-xpos -135
-ypos 504
-}
-set N3d5a4c00 [stack 0]
-Expression {
-expr3 a==0?0:1
-name Expression2
-xpos -135
-ypos 551
-}
-Dot {
-name Dot17
-xpos -101
-ypos 756
-}
-set N3d5a4000 [stack 0]
-Dot {
-name Dot15
-xpos -101
-ypos 836
-}
-set N3d5a7c00 [stack 0]
-push $N3d5b5400
-Dot {
-name Dot6
-xpos 52
-ypos 423
-}
-set N3d5a7800 [stack 0]
-Blur {
-channels rgba
-size {{growTexture.w*.5 i x1 72.7} {growTexture.h*.5 i x1 64.662}}
-maskChannelMask -rgba.alpha
-name Blur3
-xpos 18
-ypos 457
-}
-Unpremult {
-name Unpremult2
-xpos 18
-ypos 504
-}
-set N3d5a7000 [stack 0]
-Expression {
-expr3 a==0?0:1
-name Expression1
-xpos 18
-ypos 551
-}
-set N3d5a6c00 [stack 0]
-FilterErode {
-channels alpha
-size {{parent.Blur3.size.w/2 i} {parent.Blur3.size.h/2 i}}
-filter quadratic
-name FilterErode4
-xpos 244
-ypos 543
-}
-Premult {
-name Premult6
-xpos 244
-ypos 606
-}
-Merge2 {
-inputs 2
-operation under
-name Merge5
-xpos 244
-ypos 830
-}
-push $N3d5a7800
-Dot {
-name Dot7
-xpos 416
-ypos 423
-}
-set N3d5a9400 [stack 0]
-Blur {
-channels rgba
-size {{growTexture.w*.25 i} {growTexture.h*.25 i}}
-maskChannelMask -rgba.alpha
-name Blur4
-xpos 382
-ypos 457
-}
-Unpremult {
-name Unpremult3
-xpos 382
-ypos 504
-}
-set N3d598c00 [stack 0]
-Expression {
-expr3 a==0?0:1
-name Expression3
-xpos 382
-ypos 551
-}
-set N3d598800 [stack 0]
-FilterErode {
-channels alpha
-size {{parent.Blur4.size.w/2 i} {parent.Blur4.size.h/2 i}}
-filter quadratic
-name FilterErode3
-xpos 583
-ypos 543
-}
-Premult {
-name Premult5
-xpos 583
-ypos 606
-}
-Merge2 {
-inputs 2
-operation under
-name Merge7
-xpos 583
-ypos 830
-}
-push $N3d5a9400
-Dot {
-name Dot8
-xpos 759
-ypos 423
-}
-Blur {
-channels rgba
-size {{growTexture.w*.125 i} {growTexture.h*.125 i}}
-maskChannelMask -rgba.alpha
-name Blur5
-xpos 725
-ypos 457
-}
-Unpremult {
-name Unpremult4
-xpos 725
-ypos 504
-}
-set N3d59a800 [stack 0]
-Expression {
-expr3 a==0?0:1
-name Expression4
-xpos 725
-ypos 551
-}
-set N3d59a400 [stack 0]
-FilterErode {
-channels alpha
-size {{parent.Blur5.size.w/2 i} {parent.Blur5.size.h/2 i}}
-filter quadratic
-name FilterErode2
-xpos 934
-ypos 543
-}
-Premult {
-name Premult1
-xpos 934
-ypos 606
-}
-Merge2 {
-inputs 2
-operation under
-name Merge9
-xpos 934
-ypos 830
-}
-Dot {
-name Dot18
-xpos 968
-ypos 877
-}
-push $N3d5a4000
-push $N3d5a7000
-Dot {
-name Dot9
-xpos -17
-ypos 510
-}
-Dot {
-name Dot10
-xpos -17
-ypos 646
-}
-push $N3d5a6c00
-Dot {
-name Dot20
-xpos 52
-ypos 598
-}
-set N3d59c000 [stack 0]
-Merge2 {
-inputs 2
-operation from
-Achannels alpha
-Bchannels alpha
-output alpha
-name Merge2
-xpos 18
-ypos 632
-}
-Grade {
-channels alpha
-gamma 0.005
-black_clamp false
-name Grade2
-xpos 18
-ypos 695
-}
-push $N3d59c000
-Dot {
-name Dot19
-xpos 162
-ypos 598
-}
-Merge2 {
-inputs 2
-operation stencil
-name Merge11
-xpos 128
-ypos 703
-}
-Merge2 {
-inputs 2
-operation under
-name Merge6
-xpos 128
-ypos 750
-}
-push $N3d598c00
-Dot {
-name Dot11
-xpos 347
-ypos 510
-}
-Dot {
-name Dot12
-xpos 347
-ypos 646
-}
-push $N3d598800
-Dot {
-name Dot21
-xpos 416
-ypos 598
-}
-set N3d59e000 [stack 0]
-Merge2 {
-inputs 2
-operation from
-Achannels alpha
-Bchannels alpha
-output alpha
-name Merge3
-xpos 382
-ypos 632
-}
-Grade {
-channels alpha
-gamma 0.005
-black_clamp false
-name Grade3
-xpos 382
-ypos 695
-}
-push $N3d59e000
-Dot {
-name Dot23
-xpos 526
-ypos 598
-}
-Merge2 {
-inputs 2
-operation stencil
-name Merge12
-xpos 492
-ypos 703
-}
-Merge2 {
-inputs 2
-operation under
-name Merge8
-xpos 492
-ypos 750
-}
-push $N3d59a800
-Dot {
-name Dot13
-xpos 690
-ypos 510
-}
-Dot {
-name Dot14
-xpos 690
-ypos 646
-}
-push $N3d59a400
-Dot {
-name Dot24
-xpos 759
-ypos 598
-}
-set N3d58e000 [stack 0]
-Merge2 {
-inputs 2
-operation from
-Achannels alpha
-Bchannels alpha
-output alpha
-name Merge4
-xpos 725
-ypos 632
-}
-Grade {
-channels alpha
-gamma 0.005
-black_clamp false
-name Grade4
-xpos 725
-ypos 695
-}
-push $N3d58e000
-Dot {
-name Dot25
-xpos 869
-ypos 598
-}
-Merge2 {
-inputs 2
-operation stencil
-name Merge13
-xpos 835
-ypos 703
-}
-Merge2 {
-inputs 2
-operation under
-name Merge10
-xpos 835
-ypos 750
-}
-Dot {
-name Dot22
-xpos 869
-ypos 797
-}
-Dot {
-name Dot16
-xpos -3
-ypos 797
-}
-push $N3d5a7c00
-Switch {
-inputs 3
-which {{quality}}
-name Switch2
-xpos -135
-ypos 871
-}
-push $N3d5b5c00
-Dot {
-name Dot5
-xpos -295
-ypos 932
-}
-Keymix {
-inputs 3
-name Keymix1
-xpos -135
-ypos 918
-}
-Output {
-name Output1
-xpos -135
-ypos 1032
-}
-push $N3d5b5000
-push $N3d5a4c00
-Viewer {
-inputs 2
-viewerProcess None
-input_process false
-name Viewer1
-xpos 282
-ypos 332
-}
+ name ColourDilate1
+ selected true
+ xpos 6536
+ ypos 4076
+ addUserKnob {20 User l fColourDilate}
+ addUserKnob {14 blurGrain l "Blur Grain" t "Preblur the image to\nsmooth out grain if necessary" R 0 100}
+ addUserKnob {14 growTexture l "Grow Texture" t "Expands the texture\nout from pure white pixels in the matte.  Values can go above 100." R 0 100}
+ growTexture 67
+ addUserKnob {14 shrinkMatte l "Shrink Matte" t "Adjusts the point\nfrom which the texture grows.  Values are not constrained to +-20." R -20 20}
+ shrinkMatte 3
+ addUserKnob {7 alphaToWhite l "Alpha To White" t "Lifts the alpha to\nwhite" R 0 0.99999}
+ addUserKnob {4 quality l Quality M {fast better best "" ""}}
+ quality best
+ addUserKnob {26 "" -STARTLINE T "             "}
+ addUserKnob {6 invertMatte l "Invert Matte" -STARTLINE}
+ invertMatte true
+}
+ Input {
+  inputs 0
+  name Mask
+  xpos 1025
+  ypos 42
+  number 1
+ }
+ Dot {
+  name Dot1
+  xpos 1059
+  ypos 177
+ }
+set N6b93b900 [stack 0]
+ Dot {
+  name Dot2
+  xpos 949
+  ypos 177
+ }
+ Invert {
+  channels rgba
+  name Invert1
+  xpos 915
+  ypos 211
+ }
+push $N6b93b900
+ Switch {
+  inputs 2
+  which {{invertMatte i}}
+  name Switch1
+  xpos 1025
+  ypos 211
+ }
+ Grade {
+  channels alpha
+  whitepoint {{1-alphaToWhite i}}
+  white_clamp true
+  name Grade1
+  xpos 1025
+  ypos 258
+ }
+ FilterErode {
+  channels rgba
+  size {{-shrinkMatte.w} {-shrinkMatte.h}}
+  name FilterErode1
+  xpos 1025
+  ypos 321
+ }
+ Grade {
+  channels alpha
+  whitepoint 0.99
+  black_clamp false
+  white_clamp true
+  name Grade6
+  xpos 1025
+  ypos 368
+ }
+set N8ecbb200 [stack 0]
+ Dot {
+  name Dot4
+  xpos 1059
+  ypos 932
+ }
+push $N8ecbb200
+ Input {
+  inputs 0
+  name RGB
+  xpos -317
+  ypos 108
+ }
+ Shuffle {
+  alpha white
+  name Shuffle1
+  xpos -317
+  ypos 279
+ }
+ Blur {
+  channels rgba
+  size {{blurGrain.w i} {blurGrain.h i}}
+  maskChannelMask -rgba.alpha
+  name Blur1
+  xpos -317
+  ypos 376
+ }
+set N6a946400 [stack 0]
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge1
+  xpos -135
+  ypos 376
+ }
+ Dot {
+  name Dot3
+  xpos -101
+  ypos 423
+ }
+set N6a945600 [stack 0]
+ Blur {
+  channels rgba
+  size {{growTexture.w i} {growTexture.h i}}
+  maskChannelMask -rgba.alpha
+  name Blur2
+  xpos -135
+  ypos 457
+ }
+ Unpremult {
+  name Unpremult1
+  xpos -135
+  ypos 504
+ }
+ Expression {
+  expr3 a==0?0:1
+  name Expression2
+  xpos -135
+  ypos 551
+ }
+ Dot {
+  name Dot17
+  xpos -101
+  ypos 756
+ }
+set N6a687900 [stack 0]
+ Dot {
+  name Dot15
+  xpos -101
+  ypos 836
+ }
+set N6a687200 [stack 0]
+push $N6a945600
+ Dot {
+  name Dot6
+  xpos 52
+  ypos 423
+ }
+set N6a686b00 [stack 0]
+ Blur {
+  channels rgba
+  size {{growTexture.w*.5 i x1 72.7} {growTexture.h*.5 i x1 64.662}}
+  maskChannelMask -rgba.alpha
+  name Blur3
+  xpos 18
+  ypos 457
+ }
+ Unpremult {
+  name Unpremult2
+  xpos 18
+  ypos 504
+ }
+set N6a685d00 [stack 0]
+ Expression {
+  expr3 a==0?0:1
+  name Expression1
+  xpos 18
+  ypos 551
+ }
+set N6a685600 [stack 0]
+ FilterErode {
+  channels alpha
+  size {{parent.Blur3.size.w/2 i} {parent.Blur3.size.h/2 i}}
+  filter quadratic
+  name FilterErode4
+  xpos 244
+  ypos 543
+ }
+ Premult {
+  name Premult6
+  xpos 244
+  ypos 606
+ }
+ Merge2 {
+  inputs 2
+  operation under
+  name Merge5
+  xpos 244
+  ypos 830
+ }
+push $N6a686b00
+ Dot {
+  name Dot7
+  xpos 416
+  ypos 423
+ }
+set N6cb53200 [stack 0]
+ Blur {
+  channels rgba
+  size {{growTexture.w*.25 i} {growTexture.h*.25 i}}
+  maskChannelMask -rgba.alpha
+  name Blur4
+  xpos 382
+  ypos 457
+ }
+ Unpremult {
+  name Unpremult3
+  xpos 382
+  ypos 504
+ }
+set N6cb52400 [stack 0]
+ Expression {
+  expr3 a==0?0:1
+  name Expression3
+  xpos 382
+  ypos 551
+ }
+set N6cb51d00 [stack 0]
+ FilterErode {
+  channels alpha
+  size {{parent.Blur4.size.w/2 i} {parent.Blur4.size.h/2 i}}
+  filter quadratic
+  name FilterErode3
+  xpos 583
+  ypos 543
+ }
+ Premult {
+  name Premult5
+  xpos 583
+  ypos 606
+ }
+ Merge2 {
+  inputs 2
+  operation under
+  name Merge7
+  xpos 583
+  ypos 830
+ }
+push $N6cb53200
+ Dot {
+  name Dot8
+  xpos 759
+  ypos 423
+ }
+ Blur {
+  channels rgba
+  size {{growTexture.w*.125 i} {growTexture.h*.125 i}}
+  maskChannelMask -rgba.alpha
+  name Blur5
+  xpos 725
+  ypos 457
+ }
+ Unpremult {
+  name Unpremult4
+  xpos 725
+  ypos 504
+ }
+set N837aeb00 [stack 0]
+ Expression {
+  expr3 a==0?0:1
+  name Expression4
+  xpos 725
+  ypos 551
+ }
+set N837ae400 [stack 0]
+ FilterErode {
+  channels alpha
+  size {{parent.Blur5.size.w/2 i} {parent.Blur5.size.h/2 i}}
+  filter quadratic
+  name FilterErode2
+  xpos 934
+  ypos 543
+ }
+ Premult {
+  name Premult1
+  xpos 934
+  ypos 606
+ }
+ Merge2 {
+  inputs 2
+  operation under
+  name Merge9
+  xpos 934
+  ypos 830
+ }
+ Dot {
+  name Dot18
+  xpos 968
+  ypos 877
+ }
+push $N6a687900
+push $N6a685d00
+ Dot {
+  name Dot9
+  xpos -17
+  ypos 510
+ }
+ Dot {
+  name Dot10
+  xpos -17
+  ypos 646
+ }
+push $N6a685600
+ Dot {
+  name Dot20
+  xpos 52
+  ypos 598
+ }
+set N69906b00 [stack 0]
+ Merge2 {
+  inputs 2
+  operation from
+  Achannels alpha
+  Bchannels alpha
+  output alpha
+  name Merge2
+  xpos 18
+  ypos 632
+ }
+ Grade {
+  channels alpha
+  gamma 0.005
+  black_clamp false
+  name Grade2
+  xpos 18
+  ypos 695
+ }
+push $N69906b00
+ Dot {
+  name Dot19
+  xpos 162
+  ypos 598
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge11
+  xpos 128
+  ypos 703
+ }
+ Merge2 {
+  inputs 2
+  operation under
+  name Merge6
+  xpos 128
+  ypos 750
+ }
+push $N6cb52400
+ Dot {
+  name Dot11
+  xpos 347
+  ypos 510
+ }
+ Dot {
+  name Dot12
+  xpos 347
+  ypos 646
+ }
+push $N6cb51d00
+ Dot {
+  name Dot21
+  xpos 416
+  ypos 598
+ }
+set N84cc8100 [stack 0]
+ Merge2 {
+  inputs 2
+  operation from
+  Achannels alpha
+  Bchannels alpha
+  output alpha
+  name Merge3
+  xpos 382
+  ypos 632
+ }
+ Grade {
+  channels alpha
+  gamma 0.005
+  black_clamp false
+  name Grade3
+  xpos 382
+  ypos 695
+ }
+push $N84cc8100
+ Dot {
+  name Dot23
+  xpos 526
+  ypos 598
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge12
+  xpos 492
+  ypos 703
+ }
+ Merge2 {
+  inputs 2
+  operation under
+  name Merge8
+  xpos 492
+  ypos 750
+ }
+push $N837aeb00
+ Dot {
+  name Dot13
+  xpos 690
+  ypos 510
+ }
+ Dot {
+  name Dot14
+  xpos 690
+  ypos 646
+ }
+push $N837ae400
+ Dot {
+  name Dot24
+  xpos 759
+  ypos 598
+ }
+set N1a301600 [stack 0]
+ Merge2 {
+  inputs 2
+  operation from
+  Achannels alpha
+  Bchannels alpha
+  output alpha
+  name Merge4
+  xpos 725
+  ypos 632
+ }
+ Grade {
+  channels alpha
+  gamma 0.005
+  black_clamp false
+  name Grade4
+  xpos 725
+  ypos 695
+ }
+push $N1a301600
+ Dot {
+  name Dot25
+  xpos 869
+  ypos 598
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge13
+  xpos 835
+  ypos 703
+ }
+ Merge2 {
+  inputs 2
+  operation under
+  name Merge10
+  xpos 835
+  ypos 750
+ }
+ Dot {
+  name Dot22
+  xpos 869
+  ypos 797
+ }
+ Dot {
+  name Dot16
+  xpos -3
+  ypos 797
+ }
+push $N6a687200
+ Switch {
+  inputs 3
+  which {{quality}}
+  name Switch2
+  xpos -135
+  ypos 871
+ }
+push $N6a946400
+ Dot {
+  name Dot5
+  xpos -295
+  ypos 932
+ }
+ Keymix {
+  inputs 3
+  name Keymix1
+  xpos -135
+  ypos 918
+ }
+ Output {
+  name Output1
+  xpos -135
+  ypos 1032
+ }
 end_group
