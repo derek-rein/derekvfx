@@ -1,0 +1,98 @@
+set cut_paste_input [stack 0]
+version 15.1 v3
+push 0
+push $cut_paste_input
+Group {
+ inputs 2
+ name WorldToCameraNormals4
+ tile_color 0x421010ff
+ selected true
+ xpos -2643
+ ypos 36
+ addUserKnob {20 User l worldToCameraNormals}
+ addUserKnob {26 info l "" +STARTLINE T "World to Camera Space Normal Transform"}
+ addUserKnob {41 in_1 l "Normal Map" T Shuffle1.in}
+ addUserKnob {6 outputPacked l "Output Packed Format (0-1 Range)" +STARTLINE}
+ outputPacked true
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {32 btn l DerekVFX.ca T "nuke.tcl('start', 'https://derekvfx.ca')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name normals
+  label "\[value number]"
+  xpos -150
+  ypos -57
+ }
+ Shuffle {
+  name Shuffle1
+  xpos -150
+  ypos 33
+ }
+set Nbd7a9800 [stack 0]
+ Expression {
+  temp_name0 length
+  temp_expr0 "sqrt(r*r + g*g + b*b)"
+  expr0 r/length
+  expr1 g/length
+  expr2 b/length
+  name Normalize
+  xpos -150
+  ypos 81
+ }
+ ColorMatrix {
+  matrix {
+      {{"\[value input1.world_matrix.0]"} {"\[value input1.world_matrix.1]"} {"\[value input1.world_matrix.2]"}}
+      {{"\[value input1.world_matrix.4]"} {"\[value input1.world_matrix.5]"} {"\[value input1.world_matrix.6]"}}
+      {{"\[value input1.world_matrix.8]"} {"\[value input1.world_matrix.9]"} {"\[value input1.world_matrix.10]"}}
+    }
+  invert true
+  name CameraTransform
+  xpos -150
+  ypos 129
+ }
+ Expression {
+  temp_name0 length
+  temp_expr0 "sqrt(r*r + g*g + b*b)"
+  expr0 r/length
+  expr1 g/length
+  expr2 b/length
+  name Normalize2
+  xpos -150
+  ypos 177
+ }
+ Expression {
+  expr0 "outputPacked ? r * 0.5 + 0.5 : r"
+  expr1 "outputPacked ? g * 0.5 + 0.5 : g"
+  expr2 "outputPacked ? b * 0.5 + 0.5 : b"
+  name PackNormals
+  xpos -150
+  ypos 201
+ }
+push $Nbd7a9800
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.red
+  from1 rgba.green
+  to1 rgba.green
+  from2 rgba.blue
+  to2 rgba.blue
+  name Copy1
+  xpos -150
+  ypos 225
+ }
+ Output {
+  name Output1
+  xpos -150
+  ypos 321
+ }
+ Input {
+  inputs 0
+  name camera
+  label "\[value number]"
+  xpos -40
+  ypos -57
+  number 1
+ }
+end_group
