@@ -3,24 +3,26 @@ version 15.1 v3
 push $cut_paste_input
 Group {
 name despillChannel
+tile_color 0x421010ff
 selected true
-xpos 35452
-ypos -2988
-addUserKnob {20 User}
+xpos 36163
+ypos -2950
+addUserKnob {20 User l "Despill Channel"}
 addUserKnob {41 screenColour l "Screen Colour" T Keylight1.screenColour}
+addUserKnob {26 "" +STARTLINE}
 }
 Input {
 inputs 0
-name Input1
+name Input
 xpos 198
-ypos 197
+ypos 196
 }
 Dot {
 name Dot42
 xpos 232
 ypos 237
 }
-set N6d0b3800 [stack 0]
+set Na5d64800 [stack 0]
 Dot {
 name Dot43
 xpos -100
@@ -35,7 +37,7 @@ label "\[value in]"
 xpos -134
 ypos 279
 }
-set N6d0e6000 [stack 0]
+set Na5d65000 [stack 0]
 OFXuk.co.thefoundry.keylight.keylight_v201 {
 show "Final Result"
 unPreMultiply false
@@ -81,13 +83,13 @@ name Keylight1
 xpos -310
 ypos 366
 }
-push $N6d0e6000
+push $Na5d65000
 Group {
 inputs 2
 name mergeAlt
 tile_color 0x421010ff
 xpos -134
-ypos 410
+ypos 430
 addUserKnob {20 mergeAlt}
 addUserKnob {4 operation l "" +STARTLINE M {color}}
 addUserKnob {26 ""}
@@ -157,7 +159,7 @@ name Dot44
 xpos -100
 ypos 621
 }
-push $N6d0b3800
+push $Na5d64800
 Copy {
 inputs 2
 channels plate_despill
