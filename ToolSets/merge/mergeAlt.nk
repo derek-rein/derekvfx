@@ -1,5 +1,5 @@
 set cut_paste_input [stack 0]
-version 13.0 v1
+version 13.2 v9
 push $cut_paste_input
 push 0
 Group {
@@ -7,61 +7,169 @@ Group {
  name mergeAlt
  tile_color 0x421010ff
  selected true
- xpos 7350
- ypos -4689
+ xpos -169
+ ypos -2
  addUserKnob {20 mergeAlt}
- addUserKnob {4 operation l "" +STARTLINE M {color}}
- addUserKnob {26 "" +STARTLINE}
- addUserKnob {26 lbl l "" +STARTLINE T "Merge Alt v1.0"}
+ addUserKnob {4 operation M {color luminance saturation hue ""}}
+ operation luminance
+ addUserKnob {4 bboxinput l "set bbox to" M {B A "" ""}}
+ addUserKnob {4 metainput l "metadata input" -STARTLINE M {B A "" "" "" "" ""}}
+ addUserKnob {41 which l mix T Dissolve1.which}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "Merge Alt v1.1"}
  addUserKnob {22 btn l DerekVFX.ca T "nuke.tcl('start', 'https://derekvfx.ca')" +STARTLINE}
 }
- Dot {
+ Input {
   inputs 0
-  name Dot4
-  xpos 1008
-  ypos -747
+  name A
+  xpos 93
+  ypos -575
+  number 1
  }
+set Ncbd6400 [stack 0]
  Input {
   inputs 0
   name B
   xpos 725
   ypos -573
  }
+set Ncbd7200 [stack 0]
+ Switch {
+  inputs 2
+  which {{bboxinput}}
+  name Switch3
+  xpos 1301
+  ypos -461
+ }
+push $Ncbd6400
+push $Ncbd7200
+ Switch {
+  inputs 2
+  which {{metainput}}
+  name Switch2
+  xpos 1094
+  ypos -474
+ }
+ Input {
+  inputs 0
+  name mask
+  xpos 386
+  ypos -161
+  number 2
+ }
+push $Ncbd7200
  Colorspace {
   colorspace_out CIE-LCH
   name Colorspace8
   xpos 725
-  ypos -369
+  ypos -461
  }
- Input {
-  inputs 0
-  name A
-  xpos 488
-  ypos -575
-  number 1
- }
+set Ncbd6b00 [stack 0]
+push $Ncbd6400
  Colorspace {
   colorspace_out CIE-LCH
   name Colorspace9
-  xpos 488
-  ypos -373
+  xpos 93
+  ypos -464
  }
+set Ncbd5d00 [stack 0]
+ ShuffleCopy {
+  inputs 2
+  red red
+  blue blue
+  name ShuffleCopy2
+  xpos 93
+  ypos -314
+ }
+ Colorspace {
+  colorspace_in CIE-LCH
+  name Colorspace3
+  xpos 93
+  ypos -263
+ }
+push $Ncbd6b00
+push $Ncbd5d00
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  name ShuffleCopy4
+  xpos 287
+  ypos -320
+ }
+ Colorspace {
+  colorspace_in CIE-LCH
+  name Colorspace2
+  xpos 287
+  ypos -269
+ }
+push $Ncbd6b00
+push $Ncbd5d00
+ ShuffleCopy {
+  inputs 2
+  green green
+  blue blue
+  name ShuffleCopy1
+  xpos 488
+  ypos -308
+ }
+ Colorspace {
+  colorspace_in CIE-LCH
+  name Colorspace1
+  xpos 488
+  ypos -257
+ }
+push $Ncbd6b00
+push $Ncbd5d00
  ShuffleCopy {
   inputs 2
   red red
   name ShuffleCopy3
   xpos 725
-  ypos -309
+  ypos -310
  }
  Colorspace {
   colorspace_in CIE-LCH
   name Colorspace10
   xpos 725
-  ypos -270
+  ypos -253
+ }
+ Switch {
+  inputs 4
+  which {{operation}}
+  name Switch1
+  xpos 725
+  ypos -199
+ }
+push $Ncbd7200
+ Dot {
+  name Dot1
+  xpos 906
+  ypos -321
+ }
+ Dissolve {
+  inputs 2+1
+  channels rgb
+  which 1
+  name Dissolve1
+  xpos 725
+  ypos -140
+ }
+ CopyMetaData {
+  inputs 2
+  name CopyMetaData1
+  xpos 725
+  ypos -13
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos 725
+  ypos 50
  }
  Output {
   name Output1
   xpos 725
-  ypos -110
+  ypos 113
  }
 end_group
