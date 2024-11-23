@@ -1,0 +1,52 @@
+set cut_paste_input [stack 0]
+version 13.1 v2
+push $cut_paste_input
+Group {
+name channelSTMap
+selected true
+xpos -2464
+ypos 9732
+}
+Input {
+inputs 0
+name Input
+selected true
+xpos -402
+ypos 250
+}
+Dot {
+name Dot57
+xpos -359
+ypos 295
+}
+set N598d3200 [stack 0]
+Expression {
+expr0 "(x + .5) / width"
+expr1 "(y + .5) / height"
+name Expression10
+label "\[knob expr3]"
+xpos -236
+ypos 337
+}
+add_layer {stmap stmap.red stmap.green stmap.blue stmap.alpha}
+Shuffle {
+out stmap
+name ShuffleOld42
+label "\[value in]"
+xpos -236
+ypos 363
+}
+push $N598d3200
+Copy {
+inputs 2
+channels stmap
+name Copy18
+xpos -393
+ypos 424
+}
+Output {
+name Output1
+xpos -393
+ypos 524
+}
+end_group
