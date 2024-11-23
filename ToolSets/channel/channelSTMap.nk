@@ -3,6 +3,7 @@ version 13.1 v2
 push $cut_paste_input
 Group {
 name channelSTMap
+tile_color 0x421010ff
 selected true
 xpos -2464
 ypos 9732

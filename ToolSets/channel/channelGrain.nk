@@ -4,7 +4,8 @@ push 0
 push $cut_paste_input
 Group {
  inputs 2
- name grainChannel
+ name channelGrain
+ tile_color 0x421010ff
  selected true
  xpos -737
  ypos -4476

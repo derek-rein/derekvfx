@@ -2,7 +2,7 @@ set cut_paste_input [stack 0]
 version 15.1 v3
 push $cut_paste_input
 Group {
-name despillChannel
+name channelDespill
 tile_color 0x421010ff
 selected true
 xpos 36163
