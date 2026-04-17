@@ -1,0 +1,63 @@
+set cut_paste_input [stack 0]
+version 13.0 v1
+push 0
+push 0
+push $cut_paste_input
+Group {
+ inputs 3
+ name ReconcileVertex
+ tile_color 0x7f3030ff
+ selected true
+ xpos 12819
+ ypos -4378
+ addUserKnob {20 ReconcileVertexTab l ReconcileVertex}
+ addUserKnob {26 hdr_capture l "" +STARTLINE T "<b>1. Capture Vertices</b>"}
+ addUserKnob {26 capture_help l "" +STARTLINE T "Select vertices on your ReadGeo mesh in the 3D viewer, then click Capture. Multiple vertices are averaged."}
+ addUserKnob {22 btn_capture l "Capture Selection" t "Read the current vertex selection from the 3D viewer and store the vertex indices." T "import nuke\n\ntry:\n    from nukescripts.snap3d import selectedVertexInfos\nexcept ImportError:\n    from nukescripts import snap3d\n    selectedVertexInfos = snap3d.selectedVertexInfos\n\nnode = nuke.thisNode()\ninfos = list(selectedVertexInfos(0.5))\nif not infos:\n    nuke.message(\"No vertices selected. Select vertices on your ReadGeo mesh in the 3D viewer first.\")\nelse:\n    pairs = \[\]\n    for v in infos:\n        pairs.append(\"{0}:{1}\".format(v.objnum, v.index))\n    idx_str = \", \".join(pairs)\n    node\[\"vertex_indices\"\].setValue(idx_str)\n    node\[\"status\"\].setValue(\"{0} vertices captured\".format(len(pairs)))\n" +STARTLINE}
+ addUserKnob {22 btn_clear_capture l Clear t "Clear captured vertex indices." -STARTLINE T "import nuke\nn = nuke.thisNode()\nn\[\"vertex_indices\"\].setValue(\"\")\nn\[\"status\"\].setValue(\"Cleared\")\n"}
+ addUserKnob {1 vertex_indices l "Vertex Indices" t "Captured vertex indices as objnum:index pairs. You can also type these manually."}
+ addUserKnob {26 ""}
+ addUserKnob {26 hdr_calc l "" +STARTLINE T "<b>2. Calculate</b>"}
+ addUserKnob {26 calc_help l "" +STARTLINE T "Connect Camera and BG image (frame range from img input). Outputs averaged 2D position."}
+ addUserKnob {22 btn_calculate l Calculate t "Project captured vertices through the camera, average their screen positions, and store as a single 2D animation curve." T "import nuke\nimport math\n\n\ndef _get_cam(node):\n    cam_input = node.input(1)\n    if not (cam_input and isinstance(cam_input, nuke.Node)):\n        return None\n    if \"Camera\" in cam_input.Class():\n        return cam_input\n    top = nuke.toNode(nuke.tcl(\"full_name \[topnode %s\]\" % cam_input.name()))\n    if top and \"Camera\" in top.Class():\n        return top\n    return None\n\n\ndef _cam_projection_matrix(cam, frame, fmt):\n    wm = nuke.math.Matrix4()\n    for i in range(16):\n        wm\[i\] = cam\[\"matrix\"\].getValueAt(frame, i)\n    wm.transpose()\n    camTransform = wm.inverse()\n\n    roll = float(cam\[\"winroll\"\].getValueAt(frame, 0))\n    sx = float(cam\[\"win_scale\"\].getValueAt(frame, 0))\n    sy = float(cam\[\"win_scale\"\].getValueAt(frame, 1))\n    tx = float(cam\[\"win_translate\"\].getValueAt(frame, 0))\n    ty = float(cam\[\"win_translate\"\].getValueAt(frame, 1))\n    m = nuke.math.Matrix4()\n    m.makeIdentity()\n    m.rotateZ(math.radians(roll))\n    m.scale(1.0 / sx, 1.0 / sy, 1.0)\n    m.translate(-tx, -ty, 0.0)\n\n    focal = float(cam\[\"focal\"\].getValueAt(frame))\n    hap = float(cam\[\"haperture\"\].getValueAt(frame))\n    near = float(cam\[\"near\"\].getValueAt(frame))\n    far = float(cam\[\"far\"\].getValueAt(frame))\n    proj_mode = int(cam\[\"projection_mode\"\].getValueAt(frame))\n    p = nuke.math.Matrix4()\n    p.projection(focal / hap, near, far, proj_mode == 0)\n\n    aspect = float(fmt.height()) / float(fmt.width())\n    t = nuke.math.Matrix4()\n    t.makeIdentity()\n    t.translate(1.0, 1.0 - (1.0 - aspect / float(fmt.pixelAspect())), 0.0)\n\n    x_sc = float(fmt.width()) / 2.0\n    y_sc = x_sc * fmt.pixelAspect()\n    s = nuke.math.Matrix4()\n    s.makeIdentity()\n    s.scale(x_sc, y_sc, 1.0)\n\n    return s * t * p * m * camTransform\n\n\ndef _project(cam_matrix, world_pos):\n    v4 = nuke.math.Vector4(world_pos.x, world_pos.y, world_pos.z, 1.0)\n    tp = cam_matrix * v4\n    try:\n        return (tp.x / tp.w, tp.y / tp.w)\n    except ZeroDivisionError:\n        return (0.0, 0.0)\n\n\ndef _get_frame_range(node):\n    bg = node.input(0)\n    if bg:\n        first = bg.firstFrame()\n        last = bg.lastFrame()\n        if first != last:\n            return nuke.FrameRange(\"{0}-{1}\".format(first, last))\n    return nuke.FrameRange(\"{0}-{1}\".format(nuke.root().firstFrame(), nuke.root().lastFrame()))\n\n\ndef _find_geo_knob():\n    if not nuke.activeViewer():\n        return None\n    viewer = nuke.activeViewer()\n    viewer_node = viewer.node()\n    if hasattr(viewer, \"getGeometryNodes\"):\n        for n in viewer.getGeometryNodes():\n            if \"geo_select\" in n.knobs():\n                return n\[\"geo_select\"\]\n    for n in nuke.allNodes(recurseGroups=True):\n        if \"geo_select\" in n.knobs():\n            return n\[\"geo_select\"\]\n    if \"geo\" in viewer_node.knobs():\n        k = viewer_node\[\"geo\"\]\n        if hasattr(k, \"getGeometry\"):\n            return k\n    return None\n\n\ndef calculate(node):\n    idx_str = node\[\"vertex_indices\"\].value().strip()\n    if not idx_str:\n        nuke.message(\"No vertices captured. Use Capture Selection first.\")\n        return\n\n    pairs = \[\]\n    for part in idx_str.split(\",\"):\n        part = part.strip()\n        if \":\" in part:\n            obj, vtx = part.split(\":\", 1)\n            pairs.append((int(obj.strip()), int(vtx.strip())))\n    if not pairs:\n        nuke.message(\"Could not parse vertex indices.\")\n        return\n\n    cam = _get_cam(node)\n    if cam is None:\n        nuke.message(\"Connect a Camera to input 2 (cam).\")\n        return\n\n    fmt = node.format()\n    if not fmt:\n        fmt = nuke.root()\[\"format\"\].value()\n\n    frange = _get_frame_range(node)\n    geo_knob = _find_geo_knob()\n    if geo_knob is None:\n        nuke.message(\"No active 3D viewer found. Open a 3D viewer with your geometry visible.\")\n        return\n\n    num_verts = len(pairs)\n    keys_x = \[\]\n    keys_y = \[\]\n\n    task = nuke.ProgressTask(\"Reconcile Vertices\")\n    total = int(frange.last()) - int(frange.first()) + 1\n\n    tmp = nuke.nodes.CurveTool()\n    try:\n        for i, frame in enumerate(frange):\n            if task.isCancelled():\n                break\n            task.setProgress(int(100.0 * i / max(total, 1)))\n            task.setMessage(\"Frame %d\" % frame)\n\n            nuke.execute(tmp, frame, frame)\n            cam_matrix = _cam_projection_matrix(cam, frame, fmt)\n\n            objs = geo_knob.getGeometry()\n            if objs is None:\n                continue\n\n            sum_x = 0.0\n            sum_y = 0.0\n            count = 0\n            for obj_idx, vtx_idx in pairs:\n                if obj_idx >= len(objs):\n                    continue\n                pts = objs\[obj_idx\].points()\n                if vtx_idx >= len(pts):\n                    continue\n                pos = pts\[vtx_idx\]\n                xform = objs\[obj_idx\].transform()\n                wp = xform * nuke.math.Vector4(pos.x, pos.y, pos.z, 1.0)\n                world_pos = nuke.math.Vector3(wp.x, wp.y, wp.z)\n                sx, sy = _project(cam_matrix, world_pos)\n                sum_x += sx\n                sum_y += sy\n                count += 1\n\n            if count > 0:\n                keys_x.append(nuke.AnimationKey(frame, sum_x / count))\n                keys_y.append(nuke.AnimationKey(frame, sum_y / count))\n    finally:\n        nuke.delete(tmp)\n        del task\n\n    opknob = node\[\"output\"\]\n    opknob.clearAnimated()\n    opknob.setAnimated()\n    for ch, curve in enumerate(opknob.animations()):\n        curve.addKey(\[keys_x, keys_y\]\[ch\])\n\n    node\[\"status\"\].setValue(\"{0} verts averaged, projected over {1}\".format(num_verts, frange))\n\n\nif __name__ == \"__main__\":\n    calculate(nuke.thisNode())\n" +STARTLINE}
+ addUserKnob {22 btn_clear_calc l Clear t "Clear the output animation." -STARTLINE T "import nuke\n\nnode = nuke.thisNode()\nopknob = node\[\"output\"\]\nopknob.clearAnimated()\nopknob.setValue(0, 0)\nopknob.setValue(0, 1)\nnode\[\"status\"\].setValue(\"Output cleared\")\n"}
+ addUserKnob {12 output l "XY Output"}
+ addUserKnob {26 ""}
+ addUserKnob {26 hdr_output l "" +STARTLINE T "<b>3. Output</b>"}
+ addUserKnob {22 btn_transform l "Create Transform" t "Create a Transform node with the calculated 2D translate curve." T "import nuke\n\nnode = nuke.thisNode()\nopknob = node\[\"output\"\]\nif not opknob.isAnimated():\n    nuke.message(\"No calculated data. Run Calculate first.\")\nelse:\n    grid_y = int(nuke.toNode(\"preferences\").knob(\"GridHeight\").value())\n    with nuke.root():\n        xf = nuke.nodes.Transform()\n        xf.setXYpos(node.xpos(), node.ypos() + grid_y * 3)\n        tknob = xf\[\"translate\"\]\n        tknob.clearAnimated()\n        tknob.setAnimated()\n        src_anims = opknob.animations()\n        for ch, curve in enumerate(tknob.animations()):\n            if ch < len(src_anims):\n                curve.addKey(src_anims\[ch\].keys())\n    node\[\"status\"\].setValue(\"Transform node created\")\n" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 status l Status T "Ready"}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "ReconcileVertex v2.1"}
+ addUserKnob {22 btn_website l DerekVFX.ca T "nuke.tcl('start', 'https://derekvfx.ca')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name cam
+  label "\[value number]"
+  xpos 400
+  ypos -301
+  number 1
+ }
+ Input {
+  inputs 0
+  name geo
+  label "\[value number]"
+  xpos 197
+  ypos -307
+  number 2
+ }
+ Input {
+  inputs 0
+  name img
+  label "\[value number]"
+  xpos 620
+  ypos -302
+ }
+ Output {
+  name Output1
+  selected true
+  xpos 620
+  ypos 158
+ }
+end_group
