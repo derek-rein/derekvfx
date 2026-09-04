@@ -1,0 +1,134 @@
+set cut_paste_input [stack 0]
+version 17.0 v3
+push $cut_paste_input
+Group {
+ name spectralAberration
+ help "spectralAberration v1.2\n\nWavelength-sampled CA. Not RGB channel scale.\n\nIf the Viewer looks unchanged:\n1. Ctrl+Enter into this Group\n2. Select SpectralCA_kernel\n3. BlinkScript tab → factory Recompile\n4. Click Bind knobs on this Group\n5. Set amount to 0.05 and protect to 0. Look at the corners.\n\nBlinkScript requires commercial Nuke.\nderekvfx.ca"
+ onCreate "n = nuke.thisNode()\nk = n.node('SpectralCA_kernel')\nif k is not None:\n    try:\n        src = k\['kernelSource'].value()\n        k\['kernelSource'].setValue(src)\n    except Exception:\n        pass\n    try:\n        if 'rebuild' in k.knobs():\n            k\['rebuild'].setValue('')\n    except Exception:\n        pass\n    pairs = \[\n        ('SpectralCA_amount', 'parent.amount'),\n        ('SpectralCA_samples', 'parent.samples'),\n        ('SpectralCA_focusNm', 'parent.focusNm'),\n        ('SpectralCA_lambdaMin', 'parent.lambdaMin'),\n        ('SpectralCA_lambdaMax', 'parent.lambdaMax'),\n        ('SpectralCA_mode', 'parent.mode'),\n        ('SpectralCA_curve', 'parent.curve'),\n        ('SpectralCA_invert', 'parent.invert'),\n        ('SpectralCA_alphaMode', 'parent.alphaMode'),\n        ('SpectralCA_aspect', 'parent.aspect'),\n        ('SpectralCA_protect', 'parent.protect'),\n        ('SpectralCA_falloff', 'parent.falloff'),\n        ('SpectralCA_angleDeg', 'parent.angleDeg'),\n        ('SpectralCA_spinDeg', 'parent.spinDeg'),\n        ('SpectralCA_fringeSat', 'parent.fringeSat'),\n    ]\n    for knob, expr in pairs:\n        if k.knob(knob):\n            try:\n                k\[knob].setExpression(expr)\n            except Exception:\n                pass\n    if k.knob('SpectralCA_center'):\n        try:\n            k\['SpectralCA_center'].setExpression('parent.center.x', 0)\n            k\['SpectralCA_center'].setExpression('parent.center.y', 1)\n        except Exception:\n            pass\n    if k.knob('SpectralCA_formatSize'):\n        try:\n            k\['SpectralCA_formatSize'].setExpression('width', 0)\n            k\['SpectralCA_formatSize'].setExpression('height', 1)\n        except Exception:\n            pass\n"
+ tile_color 0x421010ff
+ label "spectral CA"
+ selected true
+ xpos 507
+ ypos 971
+ addUserKnob {20 User l spectralAberration}
+ addUserKnob {22 bindBtn l "Bind knobs" t "Wire Group knobs to the inner Blink kernel. Does not call execute() on PythonKnobs. If it says 0 knobs bound, use the factory Recompile inside SpectralCA_kernel first." -STARTLINE T "n = nuke.thisNode()\nk = n.node('SpectralCA_kernel')\nif k is None:\n    nuke.message('SpectralCA_kernel not found. Ctrl+Enter into the Group and check.')\nelse:\n    try:\n        src = k\['kernelSource'].value()\n        k\['kernelSource'].setValue(src)\n    except Exception:\n        pass\n    try:\n        if 'rebuild' in k.knobs():\n            k\['rebuild'].setValue('')\n    except Exception:\n        pass\n    try:\n        if 'recompileCount' in k.knobs():\n            k\['recompileCount'].setValue(int(k\['recompileCount'].value()) + 1)\n    except Exception:\n        pass\n    pairs = \[\n        ('SpectralCA_amount', 'parent.amount'),\n        ('SpectralCA_samples', 'parent.samples'),\n        ('SpectralCA_focusNm', 'parent.focusNm'),\n        ('SpectralCA_lambdaMin', 'parent.lambdaMin'),\n        ('SpectralCA_lambdaMax', 'parent.lambdaMax'),\n        ('SpectralCA_mode', 'parent.mode'),\n        ('SpectralCA_curve', 'parent.curve'),\n        ('SpectralCA_invert', 'parent.invert'),\n        ('SpectralCA_alphaMode', 'parent.alphaMode'),\n        ('SpectralCA_aspect', 'parent.aspect'),\n        ('SpectralCA_protect', 'parent.protect'),\n        ('SpectralCA_falloff', 'parent.falloff'),\n        ('SpectralCA_angleDeg', 'parent.angleDeg'),\n        ('SpectralCA_spinDeg', 'parent.spinDeg'),\n        ('SpectralCA_fringeSat', 'parent.fringeSat'),\n    ]\n    bound = 0\n    missing = \[]\n    for knob, expr in pairs:\n        if k.knob(knob):\n            try:\n                k\[knob].setExpression(expr)\n                bound += 1\n            except Exception:\n                missing.append(knob)\n        else:\n            missing.append(knob)\n    if k.knob('SpectralCA_center'):\n        try:\n            k\['SpectralCA_center'].setExpression('parent.center.x', 0)\n            k\['SpectralCA_center'].setExpression('parent.center.y', 1)\n            bound += 1\n        except Exception:\n            missing.append('SpectralCA_center')\n    else:\n        missing.append('SpectralCA_center')\n    if k.knob('SpectralCA_formatSize'):\n        try:\n            k\['SpectralCA_formatSize'].setExpression('width', 0)\n            k\['SpectralCA_formatSize'].setExpression('height', 1)\n            bound += 1\n        except Exception:\n            missing.append('SpectralCA_formatSize')\n    else:\n        missing.append('SpectralCA_formatSize')\n    if bound == 0:\n        nuke.message('Kernel params are not built yet.\\n\\nCtrl+Enter into the Group, select SpectralCA_kernel, open the BlinkScript tab, click the factory Recompile button, then click Bind knobs again.\\n\\nOr just drive amount on the Kernel Parameters tab (try 0.05, protect 0).')\n    else:\n        nuke.message('Bound %d kernel knobs.\\nSet amount to 0.05 and protect to 0, then look at the frame corners.' % bound)\n"}
+ addUserKnob {26 ""}
+ addUserKnob {4 mode t "radial = lateral CA.\nlinear = prism smear.\nspin = Helios swirl.\nradial+spin = radial then swirl." M {radial linear spin radial+spin}}
+ addUserKnob {4 curve l dispersion t "linear λ = even hues.\nBK7 Cauchy = crown glass.\nflint SF10 = heavier blue." M {"linear λ" "BK7 Cauchy" "flint SF10"}}
+ curve "flint SF10"
+ addUserKnob {7 amount t "0.05 is obvious. 0.008-0.02 matches plates. 0 is identity." R -0.2 0.2}
+ amount 0.022
+ addUserKnob {3 samples}
+ samples 22
+ addUserKnob {6 invert t "Flip red/blue sides." -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {7 focusNm l "focus (nm)" R 400 700}
+ focusNm 550
+ addUserKnob {7 lambdaMin l "λ min" R 380 500}
+ lambdaMin 400
+ addUserKnob {7 lambdaMax l "λ max" R 600 780}
+ lambdaMax 700
+ addUserKnob {7 fringeSat l "fringe sat" R 0 2}
+ fringeSat 1
+ addUserKnob {26 ""}
+ addUserKnob {12 center}
+ center {{width/2} {height/2}}
+ addUserKnob {22 snapCenter l "snap / lock center" -STARTLINE T "n = nuke.thisNode()\nn\['center'].clearAnimated()\nn\['center'].setExpression('width/2', 0)\nn\['center'].setExpression('height/2', 1)\n"}
+ addUserKnob {22 unlockCenter l unlock -STARTLINE T "n = nuke.thisNode()\ntry:\n    x = n.width()/2.0\n    y = n.height()/2.0\nexcept:\n    x = n\['center'].getValue(0)\n    y = n\['center'].getValue(1)\nn\['center'].clearAnimated()\nn\['center'].setValue(\[x, y])\n"}
+ addUserKnob {7 aspect R 0.25 4}
+ aspect 1
+ addUserKnob {7 protect t "0 = aberration everywhere. 0.2 = clean center."}
+ addUserKnob {7 falloff l "protect gamma" R 0.1 4}
+ falloff 1
+ addUserKnob {26 ""}
+ addUserKnob {7 spinDeg l swirl R -45 45}
+ addUserKnob {7 angleDeg l "linear angle" R -180 180}
+ addUserKnob {26 ""}
+ addUserKnob {4 alphaMode l alpha M {"source alpha" "dilate to fringe"}}
+ addUserKnob {7 overscan R 0 200}
+ overscan 32
+ addUserKnob {6 preserveBBox l "preserve bbox" +STARTLINE}
+ preserveBBox true
+ addUserKnob {26 ""}
+ addUserKnob {41 maskChannelMask l mask T MergeOut.maskChannelMask}
+ addUserKnob {41 invert_mask l invert T MergeOut.invert_mask}
+ addUserKnob {41 mix T MergeOut.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 lbl l "" +STARTLINE T "spectralAberration v1.2"}
+ addUserKnob {22 btn l DerekVFX.ca T "nuke.tcl('start', 'https://derekvfx.ca')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 0
+  ypos -400
+ }
+set Nd44d4f00 [stack 0]
+ Input {
+  inputs 0
+  name mask
+  xpos 280
+  ypos -400
+  number 1
+ }
+ AddChannels {
+  channels rgba
+  name AddChannels1
+  xpos 280
+  ypos -376
+ }
+push $Nd44d4f00
+push $Nd44d4f00
+ AdjBBox {
+  numpixels {{parent.overscan}}
+  name AdjBBox1
+  xpos 0
+  ypos -300
+ }
+ BlinkScript {
+  recompileCount 2
+  ProgramGroup 1
+  KernelDescription "3 \"SpectralCA\" iterate pixelWise b3cabcc9dea6241db8efaa5ebee73a76791c436fdfcf30f63f6d4d77719a322d 2 \"src\" Read Random \"dst\" Write Point 17 \"amount\" Float 1 CtcjPQ== \"samples\" Int 1 CwAAAA== \"focusNm\" Float 1 AIAJRA== \"lambdaMin\" Float 1 AADIQw== \"lambdaMax\" Float 1 AAAvRA== \"mode\" Int 1 AAAAAA== \"curve\" Int 1 AQAAAA== \"invert\" Int 1 AAAAAA== \"alphaMode\" Int 1 AAAAAA== \"center\" Float 2 AABwRAAAB0Q= \"formatSize\" Float 2 AADwRAAAh0Q= \"aspect\" Float 1 AACAPw== \"protect\" Float 1 zcxMPg== \"falloff\" Float 1 AACAPw== \"angleDeg\" Float 1 AAAAAA== \"spinDeg\" Float 1 AAAAAA== \"fringeSat\" Float 1 AACAPw== 17 \"amount\" 1 1 Default \"samples\" 1 1 Default \"focusNm\" 1 1 Default \"lambdaMin\" 1 1 Default \"lambdaMax\" 1 1 Default \"mode\" 1 1 Default \"curve\" 1 1 Default \"invert\" 1 1 Default \"alphaMode\" 1 1 Default \"center\" 2 1 Default \"formatSize\" 2 1 Default \"aspect\" 1 1 Default \"protect\" 1 1 Default \"falloff\" 1 1 Default \"angleDeg\" 1 1 Default \"spinDeg\" 1 1 Default \"fringeSat\" 1 1 Default 4 \"wRGB\" Float 3 32 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA= \"disp\" Float 1 32 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA= \"n\" Int 1 1 AAAAAA== \"maxRadius\" Float 1 1 AAAAAA=="
+  kernelSource "kernel SpectralCA : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessRandom, eEdgeClamped> src;\n  Image<eWrite> dst;\n\n  param:\n    float amount;\n    int samples;\n    float focusNm;\n    float lambdaMin;\n    float lambdaMax;\n    int mode;\n    int curve;\n    int invert;\n    int alphaMode;\n    float2 center;\n    float2 formatSize;\n    float aspect;\n    float protect;\n    float falloff;\n    float angleDeg;\n    float spinDeg;\n    float fringeSat;\n\n  local:\n    float3 wRGB\[32];\n    float disp\[32];\n    int n;\n    float maxRadius;\n\n  void define() \{\n    defineParam(amount,     \"amount\",     0.04f);\n    defineParam(samples,    \"samples\",    11);\n    defineParam(focusNm,    \"focusNm\",    550.0f);\n    defineParam(lambdaMin,  \"lambdaMin\",  400.0f);\n    defineParam(lambdaMax,  \"lambdaMax\",  700.0f);\n    defineParam(mode,       \"mode\",       0);\n    defineParam(curve,      \"curve\",      1);\n    defineParam(invert,     \"invert\",     0);\n    defineParam(alphaMode,  \"alphaMode\",  0);\n    defineParam(center,     \"center\",     float2(960.0f, 540.0f));\n    defineParam(formatSize, \"formatSize\", float2(1920.0f, 1080.0f));\n    defineParam(aspect,     \"aspect\",     1.0f);\n    defineParam(protect,    \"protect\",    0.2f);\n    defineParam(falloff,    \"falloff\",    1.0f);\n    defineParam(angleDeg,   \"angleDeg\",   0.0f);\n    defineParam(spinDeg,    \"spinDeg\",    0.0f);\n    defineParam(fringeSat,  \"fringeSat\",  1.0f);\n  \}\n\n  float cmfX(float lam) \{\n    float t1 = (lam - 442.0f) * ((lam < 442.0f) ? 0.0624f : 0.0374f);\n    float t2 = (lam - 599.8f) * ((lam < 599.8f) ? 0.0264f : 0.0323f);\n    float t3 = (lam - 501.1f) * ((lam < 501.1f) ? 0.0490f : 0.0382f);\n    return 0.362f * exp(-0.5f * t1 * t1)\n         + 1.056f * exp(-0.5f * t2 * t2)\n         - 0.065f * exp(-0.5f * t3 * t3);\n  \}\n\n  float cmfY(float lam) \{\n    float t1 = (lam - 568.8f) * ((lam < 568.8f) ? 0.0213f : 0.0247f);\n    float t2 = (lam - 530.9f) * ((lam < 530.9f) ? 0.0613f : 0.0322f);\n    return 0.821f * exp(-0.5f * t1 * t1)\n         + 0.286f * exp(-0.5f * t2 * t2);\n  \}\n\n  float cmfZ(float lam) \{\n    float t1 = (lam - 437.0f) * ((lam < 437.0f) ? 0.0845f : 0.0278f);\n    float t2 = (lam - 459.0f) * ((lam < 459.0f) ? 0.0385f : 0.0725f);\n    return 1.217f * exp(-0.5f * t1 * t1)\n         + 0.681f * exp(-0.5f * t2 * t2);\n  \}\n\n  float3 xyzToRec709(float3 xyz) \{\n    return float3(\n       3.2404542f * xyz.x - 1.5371385f * xyz.y - 0.4985314f * xyz.z,\n      -0.9692660f * xyz.x + 1.8760108f * xyz.y + 0.0415560f * xyz.z,\n       0.0556434f * xyz.x - 0.2040259f * xyz.y + 1.0572252f * xyz.z\n    );\n  \}\n\n  float iorDelta(float lamNm, float focus) \{\n    if (curve == 0) \{\n      return (focus - lamNm) / max(lambdaMax - lambdaMin, 1.0f);\n    \}\n    float u  = lamNm * 0.001f;\n    float uf = focus * 0.001f;\n    float B  = (curve == 2) ? 0.01342f : 0.00420f;\n    return (B / max(u * u, 1.0e-8f)) - (B / max(uf * uf, 1.0e-8f));\n  \}\n\n  float smstep(float e0, float e1, float x) \{\n    float t = clamp((x - e0) / max(e1 - e0, 1.0e-8f), 0.0f, 1.0f);\n    return t * t * (3.0f - 2.0f * t);\n  \}\n\n  void init() \{\n    n = samples;\n    if (n < 3) n = 3;\n    if (n > 32) n = 32;\n\n    float l0 = min(lambdaMin, lambdaMax);\n    float l1 = max(lambdaMin, lambdaMax);\n    if (l1 - l0 < 1.0f) l1 = l0 + 1.0f;\n    float focus = clamp(focusNm, l0, l1);\n\n    float sign = (invert != 0) ? -1.0f : 1.0f;\n    float maxAbs = 1.0e-4f;\n    int i;\n    for (i = 0; i < 32; i++) \{\n      wRGB\[i] = float3(0.0f, 0.0f, 0.0f);\n      disp\[i] = 0.0f;\n      if (i < n) \{\n        float t = (n > 1) ? float(i) / float(n - 1) : 0.5f;\n        float lam = l0 + t * (l1 - l0);\n        float d = iorDelta(lam, focus);\n        disp\[i] = d;\n        float ad = fabs(d);\n        if (ad > maxAbs) maxAbs = ad;\n      \}\n    \}\n\n    float3 sumW = float3(0.0f, 0.0f, 0.0f);\n    for (i = 0; i < 32; i++) \{\n      if (i < n) \{\n        float t = (n > 1) ? float(i) / float(n - 1) : 0.5f;\n        float lam = l0 + t * (l1 - l0);\n        disp\[i] = (disp\[i] / maxAbs) * sign;\n\n        float3 xyz = float3(cmfX(lam), cmfY(lam), cmfZ(lam));\n        float3 rgb = xyzToRec709(xyz);\n        rgb = float3(max(rgb.x, 0.0f), max(rgb.y, 0.0f), max(rgb.z, 0.0f));\n        float lum = (rgb.x + rgb.y + rgb.z) * 0.33333334f;\n        float sat = clamp(fringeSat, 0.0f, 2.0f);\n        rgb = float3(\n          lum + (rgb.x - lum) * sat,\n          lum + (rgb.y - lum) * sat,\n          lum + (rgb.z - lum) * sat\n        );\n        wRGB\[i] = rgb;\n        sumW += rgb;\n      \}\n    \}\n\n    sumW = float3(max(sumW.x, 1.0e-8f), max(sumW.y, 1.0e-8f), max(sumW.z, 1.0e-8f));\n    for (i = 0; i < 32; i++) \{\n      if (i < n) \{\n        wRGB\[i] = float3(wRGB\[i].x / sumW.x, wRGB\[i].y / sumW.y, wRGB\[i].z / sumW.z);\n      \}\n    \}\n\n    float2 fs = formatSize;\n    if (fs.x < 1.0f) fs.x = 1.0f;\n    if (fs.y < 1.0f) fs.y = 1.0f;\n    float asp = (aspect <= 0.0f) ? 1.0f : aspect;\n    maxRadius = 0.5f * length(float2(fs.x, fs.y * asp));\n    if (maxRadius < 1.0f) maxRadius = 1.0f;\n  \}\n\n  void process(int2 pos) \{\n    float2 p = float2(float(pos.x) + 0.5f, float(pos.y) + 0.5f);\n    SampleType(src) srcCol = bilinear(src, p.x, p.y);\n\n    float2 c = center;\n    float asp = (aspect <= 0.0f) ? 1.0f : aspect;\n    float2 v = p - c;\n    v.y *= asp;\n    float rNorm = length(v) / maxRadius;\n\n    float fade = 1.0f;\n    if (protect >= 0.999f) \{\n      fade = 0.0f;\n    \} else if (protect > 0.0f) \{\n      fade = smstep(protect, 1.0f, rNorm);\n      fade = pow(max(fade, 0.0f), max(falloff, 0.01f));\n    \}\n\n    float amountEff = amount * fade;\n    if (fabs(amountEff) < 1.0e-8f) \{\n      dst() = srcCol;\n      return;\n    \}\n\n    float ang = angleDeg * 0.017453292519943295f;\n    float2 dirLin = float2(cos(ang), sin(ang));\n    float spinMax = spinDeg * 0.017453292519943295f;\n\n    float3 acc = float3(0.0f, 0.0f, 0.0f);\n    float aMax = srcCol.w;\n\n    int i;\n    for (i = 0; i < 32; i++) \{\n      if (i < n) \{\n        float d = disp\[i] * amountEff;\n        float2 dir = v;\n\n        if (mode == 2 || mode == 3) \{\n          float th = spinMax * disp\[i] * fade;\n          float cs = cos(th);\n          float sn = sin(th);\n          dir = float2(dir.x * cs - dir.y * sn, dir.x * sn + dir.y * cs);\n        \}\n\n        float2 sPos = p;\n        if (mode == 1) \{\n          sPos = p - float2(dirLin.x, dirLin.y / asp) * (d * maxRadius);\n        \} else if (mode == 2) \{\n          dir.y /= asp;\n          sPos = c + dir;\n        \} else \{\n          float scale = 1.0f + d;\n          if (fabs(scale) < 1.0e-4f) scale = (scale < 0.0f) ? -1.0e-4f : 1.0e-4f;\n          dir = dir / scale;\n          dir.y /= asp;\n          sPos = c + dir;\n        \}\n\n        SampleType(src) s = bilinear(src, sPos.x, sPos.y);\n        acc.x += s.x * wRGB\[i].x;\n        acc.y += s.y * wRGB\[i].y;\n        acc.z += s.z * wRGB\[i].z;\n        if (s.w > aMax) aMax = s.w;\n      \}\n    \}\n\n    float4 outp;\n    outp.x = acc.x;\n    outp.y = acc.y;\n    outp.z = acc.z;\n    outp.w = (alphaMode == 1) ? aMax : srcCol.w;\n    dst() = outp;\n  \}\n\};\n"
+  rebuild ""
+  SpectralCA_amount {{parent.amount}}
+  SpectralCA_samples {{parent.samples}}
+  SpectralCA_focusNm {{parent.focusNm}}
+  SpectralCA_lambdaMin {{parent.lambdaMin}}
+  SpectralCA_lambdaMax {{parent.lambdaMax}}
+  SpectralCA_mode {{parent.mode}}
+  SpectralCA_curve {{parent.curve}}
+  SpectralCA_invert {{parent.invert}}
+  SpectralCA_alphaMode {{parent.alphaMode}}
+  SpectralCA_center {{parent.center.x} {parent.center.y}}
+  SpectralCA_formatSize {{width} {height}}
+  SpectralCA_aspect {{parent.aspect}}
+  SpectralCA_protect {{parent.protect}}
+  SpectralCA_falloff {{parent.falloff}}
+  SpectralCA_angleDeg {{parent.angleDeg}}
+  SpectralCA_spinDeg {{parent.spinDeg}}
+  SpectralCA_fringeSat {{parent.fringeSat}}
+  rebuild_finalise ""
+  name SpectralCA_kernel
+  xpos 0
+  ypos -200
+ }
+ Merge2 {
+  inputs 2+1
+  operation copy
+  name MergeOut
+  xpos 0
+  ypos -80
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos 0
+  disable {{!parent.preserveBBox}}
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 80
+ }
+end_group
